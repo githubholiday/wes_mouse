@@ -1,0 +1,2 @@
+python3=/annoroad/data1/software/bin/miniconda/envs/AP_Resequencing/bin/python3
+Rscript=/annoroad/data1/software/bin/miniconda/envs/AP_Resequencing/bin/Rscript

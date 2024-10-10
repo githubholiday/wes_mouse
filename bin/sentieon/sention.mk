@@ -6,7 +6,6 @@ Bconfig=$(config)
 endif
 include $(Bconfig)
 
-#sentieon=/opt/sentieon-genomics-202112.04/bin/sentieon
 sentieon=/opt/sentieon-genomics-202308.03/bin/sentieon
 sequencing_platform?=ILLUMINA
 quality=4
@@ -27,6 +26,7 @@ HELP:
 	@echo -e "\t" "outdir: 输出路径"
 	@echo 'thread: 程序运行使用的线程数, 默认16'
 	@echo Supplementary information :如果使用其他模块，需提供"sort_bam= or uniq_bam= or rmdup_bam= "
+
 bwa:
 	@echo "=================== Run sention bwa Begin at `date` =================== "
 	[ -d $(outdir) ] || mkdir -p $(outdir) && echo "dir ok"
@@ -55,8 +55,8 @@ rmdup:
 	cat $(outdir)/$(prefix).rmdup_metrics.txt.tmp | grep -v "^#SentieonCommandLine" > $(outdir)/$(prefix).rmdup_metrics.txt
 	$(sentieon) driver -r $(REF) -t $(thread) -i $(outdir)/$(prefix).rmdup.bam --algo AlignmentStat --adapter_seq '' $(outdir)/rmdup.$(prefix).aln_metrics.txt --algo CoverageMetrics  --omit_base_output --cov_thresh=1 --histogram_high=2000 --histogram_bin_count=1999 $(outdir)/rmudp.$(prefix).cover
 	@echo "================== Run sention rmdup End at `date` ================== "
-rmdup_bam?=$(outdir)/$(prefix).rmdup.bam
 
+rmdup_bam?=$(outdir)/$(prefix).rmdup.bam
 call_paramter=--emit_conf=10 --call_conf=30
 ploidy?=2
 call:
@@ -72,3 +72,34 @@ mergevcf:
 	@echo "================== Run sention mergevcf  Begin at `date` ================== "
 	$(sentieon) driver -r $(REF) -t $(thread) --algo GVCFtyper $(snp_indel_outdir)/ALL.raw.vcf.gz $(snp_indel_outdir)/GVCF/*.raw.g.vcf.gz
 	@echo "================== Run sention mergevcf  End at `date` ================== "
+
+recal_bam?=$(outdir)/Recal/$(prefix).recal.bam
+recal_data?=$(outdir)/$(prefix).recal_data.table
+.PHONY:Call
+Call:
+    mkdir -p $(outdir)
+    @echo "=================== Run Human WES Begin at `date` =================== "
+    $(sentieon) driver -r $(REF)  -t $(thread) -i $(rmdup_bam) --interval $(exonbed) --algo Haplotyper -d $(DBSNP) --emit_conf=10 --call_conf=30 --emit_mode=gvcf $(outdir)/$(prefix).raw.g.vcf.gz 
+    $(sentieon) driver -r $(REF) -t $(thread) --interval $(exonbed) --algo GVCFtyper -v $(outdir)/$(prefix).raw.g.vcf.gz $(outdir)/$(prefix).raw.vcf.gz
+	@echo "=================== Run Human WES End at `date` =================== "
+
+.PHONY:SELECT
+SELECT:
+        [ -d $(outdir)/$(sample).vcf ] && rm $(outdir)/$(sample).vcf || echo start analysis
+        gunzip -c $(outdir)/$(sample).vcf.gz>$(outdir)/$(sample).vcf
+        $(JAVA) $(java_command) -jar $(script)/GATK/GenomeAnalysisTK.jar -T SelectVariants -R $(ref) -V $(outdir)/$(sample).vcf -o $(outdir)/$(sample).snp.raw.vcf -selectType SNP
+        $(JAVA) $(java_command) -jar $(script)/GATK/GenomeAnalysisTK.jar -T SelectVariants -R $(ref) -V $(outdir)/$(sample).vcf -o $(outdir)/$(sample).indel.raw.vcf -selectType INDEL
+
+.PHONY:Filter
+Filter:
+        $(JAVA) $(java_command) -jar $(script)/GATK/GenomeAnalysisTK.jar -R $(ref) --variant $(outdir)/$(sample).snp.raw.vcf -o $(outdir)/$(sample).snp.filter.vcf $(snp_filter)
+        $(JAVA) $(java_command) -jar $(script)/GATK/GenomeAnalysisTK.jar -R $(ref) --variant $(outdir)/$(sample).indel.raw.vcf -o $(outdir)/$(sample).indel.filter.vcf $(indel_filter)
+        $(perl) -ne 'if(/^#/){print}else{@F=split(/\t/);print unless ($$F[6] ne "PASS")}' $(outdir)/$(sample).snp.filter.vcf >$(outdir)/$(sample).snp.filter.vcf.tmp
+        mv $(outdir)/$(sample).snp.filter.vcf.tmp $(outdir)/$(sample).snp.filter.vcf
+        $(perl) -ne 'if(/^#/){print}else{@F=split(/\t/);print unless ($$F[6] ne "PASS")}' $(outdir)/$(sample).indel.filter.vcf >$(outdir)/$(sample).indel.filter.vcf.tmp
+        mv $(outdir)/$(sample).indel.filter.vcf.tmp $(outdir)/$(sample).indel.filter.vcf
+
+.PHONY:extract
+extract:
+        $(perl) $(bindir)/script/snp_indel/vcf2gp.pl -v $(outdir)/$(sample).snp.filter.vcf -o $(outdir)/$(sample).All.SNP.variants.list.xls
+        $(perl) $(bindir)/script/snp_indel/vcf2gp.pl -v $(outdir)/$(sample).indel.filter.vcf -o $(outdir)/$(sample).All.INDEL.variants.list.xls

@@ -1,0 +1,9 @@
+sentieon=/opt/sentieon-genomics-202308.03/bin/sentieon
+samtools=/annoroad/share/software/install/samtools-0.1.19/samtools
+JAVA=/annoroad/share/software/install/jre1.7.0_25/bin/java
+java_command= -XX:ParallelGCThreads=$(java_thread) -Xms15g -Xmx15g
+
+#select参数
+snp_filter=-T VariantFiltration --filterExpression "QD < 2.0" --filterName LowQD --filterExpression "ReadPosRankSum < -8.0" --filterName LowRPRS --filterExpression "FS >60.0" --filterName HighFS --filterExpression "QUAL <30" --filterName LowQUAL --filterExpression "DP<4.0" --filterName LowDP --missingValuesInExpressionsShouldEvaluateAsFailing --logging_level ERROR
+
+indel_filter=-T VariantFiltration --filterExpression "QD < 2.0" --filterName LowQD --filterExpression "ReadPosRankSum < -20.0" --filterName LowRPRS --filterExpression "FS >200.0" --filterName HighFS --filterExpression "QUAL <30" --filterName LowQUAL --filterExpression "DP<4.0" --filterName LowDP --missingValuesInExpressionsShouldEvaluateAsFailing --logging_level ERROR

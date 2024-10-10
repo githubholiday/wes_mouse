@@ -1,0 +1,24 @@
+[Job Start]
+Name    MAP_STAT
+Memory  24G
+Queue   sci.q
+CPU     N
+Major   F
+Order   5
+Thread  4
+Qsub    True
+Command make -f BIN/Common_MAP.mk config=Para_config datatype=Para_datatype target_type=Para_targettype genome=Para_genome outdir=OUTDIR/Alignment/$(Sample)[
+1] fqstat=Para_fqstat sample=$(Sample)[1] sex=$(Sample)[2] STAT
+[Job End]
+
+[Job Start]
+Name    MAP_STAT_QC
+Memory  1G
+Queue   sci.q
+CPU     N
+Major   F
+Order   6
+Thread  1
+Qsub    True
+Depend  MAP_STAT
+Command make -f BIN/Common_MAP_Stat.mk config=Para_config samplelist=Para_samplelist indir=OUTDIR outdir=OUTDIR/Stat MAP_STAT_QC

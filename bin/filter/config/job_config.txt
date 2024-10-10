@@ -1,0 +1,37 @@
+[Job Start]
+Name	Filter
+Memory	1G
+Queue	"pag.q,sci.q,nassci.q,mid.q"
+CPU	N
+Major	T
+Order	1
+Thread	1
+Qsub	False
+Command	make -f BIN/mk_filter config=Para_config  filter=Para_filter samplelist=Para_samplelist outdir=OUTDIR/CleanData project=Para_project Clean
+[Job End]
+
+[Job Start]
+Name	fq1-report
+Memory	10G
+Queue	"pag.q,sci.q,nassci.q,mid.q"
+CPU	N
+Major	T
+Order	1
+Thread	2
+Qsub	True
+Command	mkdir -p OUTDIR/Alignment/$(sample)[0]
+make -f BIN/mk_nas_stat config=Para_config fq=$(sample)[1] outreport=OUTDIR/Alignment/$(sample)[0]/$(sample)[0].fq1.report FqReport
+[Job End]
+
+[Job Start]
+Name	fq2-report
+Memory	10G
+Queue	"pag.q,sci.q,nassci.q,mid.q"
+CPU	N
+Major	T
+Order	1
+Thread	2
+Qsub	True
+Command	mkdir -p OUTDIR/Alignment/$(sample)[0]
+make -f BIN/mk_nas_stat config=Para_config fq=$(sample)[2] outreport=OUTDIR/Alignment/$(sample)[0]/$(sample)[0].fq2.report FqReport
+[Job End]

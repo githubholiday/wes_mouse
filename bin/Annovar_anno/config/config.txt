@@ -1,0 +1,2 @@
+PERL=/annoroad/data1/software/bin/miniconda/bin/perl
+ANNOVAR=/annoroad/data1/bioinfo/PMO/Public/share/admin-sci/every-group/DNA-Medicine/Pipeline/Software/Annovar_201602/table_annovar.pl

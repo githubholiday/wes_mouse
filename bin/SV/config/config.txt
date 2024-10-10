@@ -1,0 +1,2 @@
+DELLY2_238=/annoroad/data1/software/bin/miniconda/envs/WES_circos/bin/delly
+python=/annoroad/data1/software/bin/miniconda/envs/Transcriptome_pipeline_2023_Python3.5.5/bin/python

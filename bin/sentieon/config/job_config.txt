@@ -59,7 +59,7 @@ Order	2
 Thread	16
 Qsub	True
 Depend	Local_Sention_rmdup
-Command	make -f BIN/local_sentieon/sention.mk config=Para_config  REF=Para_ref rmdup_bam=OUTDIR/Alignment/$(sample)[0]/$(sample)[0].rmdup.bam exonbed=Para_bed prefix=$(sample)[0] Call
+Command	make -f BIN/map_stat.mk config=Para_config samplelist=Para_samplelist indir=OUTDIR outdir=OUTDIR/Stat spi=Para_projectID MAP_STAT_QC
 [Job End]
 
 [Job Start]
@@ -72,7 +72,7 @@ Order	3
 Thread	4
 Qsub	True
 Depend	Sention_Stat
-Command	make -f BIN/Saile_SNP_INDEL.mk config=Para_config sample=$(Sample)[1] outdir=OUTDIR/SNP_INDEL/$(Sample)[1] sex=$(Sample)[2] genome=Para_genome SELECT Filter extract
+Command	make -f BIN/SNP_INDEL.mk config=Para_config sample=$(Sample)[1] outdir=OUTDIR/SNP_INDEL/$(Sample)[1] sex=$(Sample)[2] genome=Para_genome SELECT Filter extract
 [Job End]
 
 [Job Start]
@@ -84,13 +84,11 @@ Major   T
 Order   7
 Thread  4
 Qsub    True
-Command make -f BIN/Common_ANNO_Annovar.mk config=Para_config genome=Para_genome vcf=OUTDIR/SNP_INDEL/$(Sample)[1]/$(Sample)[1].snp.filter.vcf sample=$(Sampl
-e)[1] outdir=OUTDIR/SNP_INDEL_ANNO/ type=SNP class=Para_pipetype ANNOVAR_VCF OMIM KOGO HGMD cal_ADF split_ADF SNP_INDEL_CP
+Command make -f BIN/Common_ANNO_Annovar.mk config=Para_config genome=Para_genome vcf=OUTDIR/SNP_INDEL/$(Sample)[1]/$(Sample)[1].snp.filter.vcf sample=$(Sample)[1] outdir=OUTDIR/SNP_INDEL_ANNO/ type=SNP class=Para_pipetype ANNOVAR_VCF OMIM KOGO HGMD cal_ADF split_ADF SNP_INDEL_CP
 make -f BIN/Common_ANNO_Annovar.mk config=Para_config genome=Para_genome vcf=OUTDIR/SNP_INDEL/$(Sample)[1]/$(Sample)[1].snp.raw.vcf sample=$(Sample)[1] outdi
 r=OUTDIR/SNP_INDEL_ANNO/ type=SNP class=Para_pipetype ANNOVAR_Raw
 make -f BIN/Common_SNP_Stat.mk config=Para_config genome=Para_genome vcf=OUTDIR/SNP_INDEL/$(Sample)[1]/$(Sample)[1].snp.filter.vcf infile=OUTDIR/SNP_INDEL_AN
-NO/Result/$(Sample)[1].SNP.Para_genome\_multianno.txt sampleID=$(Sample)[1] outdir=OUTDIR/SNP_INDEL_ANNO/ SNP_COUNT SNP_DISTRIBUTION SNP_EXON SNP_TS_TV SNP_M
-UT CP
+NO/Result/$(Sample)[1].SNP.Para_genome\_multianno.txt sampleID=$(Sample)[1] outdir=OUTDIR/SNP_INDEL_ANNO/ SNP_COUNT SNP_DISTRIBUTION SNP_EXON SNP_TS_TV SNP_MUT CP
 make -f BIN/Common_ANNO_Format.mk indir=OUTDIR/SNP_INDEL_ANNO/Result/ type=SNP genome=Para_genome sample=$(Sample)[1] Cut_Anno_file
 make -f BIN/Common_ANNO_Format.mk infile=OUTDIR/SNP_INDEL_ANNO/Result/$(Sample)[1]/$(Sample)[1] genome=Para_genome type=SNP -j 4 chr1 chr2 chr3 chr4 chr5 chr
 6 chr7 chr8 chr9 chr10 chr11 chr12 chr13 chr14 chr15 chr16 chr17 chr18 chr19 chr20 chr21 chr22 chrX chrY
@@ -105,16 +103,13 @@ Major   T
 Order   7
 Thread  4
 Qsub    True
-Command make -f BIN/Common_ANNO_Annovar.mk config=Para_config genome=Para_genome vcf=OUTDIR/SNP_INDEL/$(Sample)[1]/$(Sample)[1].indel.filter.vcf sample=$(Sam
-ple)[1] outdir=OUTDIR/SNP_INDEL_ANNO/ type=INDEL class=Para_pipetype ANNOVAR_VCF OMIM KOGO HGMD cal_ADF split_ADF SNP_INDEL_CP
+Command make -f BIN/Common_ANNO_Annovar.mk config=Para_config genome=Para_genome vcf=OUTDIR/SNP_INDEL/$(Sample)[1]/$(Sample)[1].indel.filter.vcf sample=$(Sample)[1] outdir=OUTDIR/SNP_INDEL_ANNO/ type=INDEL class=Para_pipetype ANNOVAR_VCF OMIM KOGO HGMD cal_ADF split_ADF SNP_INDEL_CP
 make -f BIN/Common_ANNO_Annovar.mk config=Para_config genome=Para_genome vcf=OUTDIR/SNP_INDEL/$(Sample)[1]/$(Sample)[1].indel.raw.vcf sample=$(Sample)[1] out
 dir=OUTDIR/SNP_INDEL_ANNO/ type=INDEL class=Para_pipetype ANNOVAR_Raw
 make -f BIN/Common_INDEL_Stat.mk config=Para_config genome=Para_genome vcf=OUTDIR/SNP_INDEL/$(Sample)[1]/$(Sample)[1].indel.filter.vcf infile=OUTDIR/SNP_INDE
-L_ANNO/Result/$(Sample)[1].INDEL.Para_genome\_multianno.txt sampleID=$(Sample)[1] outdir=OUTDIR/SNP_INDEL_ANNO/ INDEL_COUNT INDEL_DISTRIBUTION INDEL_EXON IND
-EL_LEN CP
+L_ANNO/Result/$(Sample)[1].INDEL.Para_genome\_multianno.txt sampleID=$(Sample)[1] outdir=OUTDIR/SNP_INDEL_ANNO/ INDEL_COUNT INDEL_DISTRIBUTION INDEL_EXON INDEL_LEN CP
 make -f BIN/Common_ANNO_Format.mk indir=OUTDIR/SNP_INDEL_ANNO/Result/ genome=Para_genome type=INDEL sample=$(Sample)[1] Cut_Anno_file
-make -f BIN/Common_ANNO_Format.mk infile=OUTDIR/SNP_INDEL_ANNO/Result/$(Sample)[1]/$(Sample)[1] type=INDEL genome=Para_genome -j 4 chr1 chr2 chr3 chr4 chr5 c
-hr6 chr7 chr8 chr9 chr10 chr11 chr12 chr13 chr14 chr15 chr16 chr17 chr18 chr19 chr20 chr21 chr22 chrX chrY
+make -f BIN/Common_ANNO_Format.mk infile=OUTDIR/SNP_INDEL_ANNO/Result/$(Sample)[1]/$(Sample)[1] type=INDEL genome=Para_genome -j 4 chr1 chr2 chr3 chr4 chr5 chr6 chr7 chr8 chr9 chr10 chr11 chr12 chr13 chr14 chr15 chr16 chr17 chr18 chr19 chr20 chr21 chr22 chrX chrY
 [Job End]
 
 [Job Start]
@@ -141,18 +136,14 @@ Major   T
 Order   7
 Thread  5
 Qsub    True
-Command make -f BIN/Common_ANNO_Annovar.mk config=Para_config genome=Para_genome vcf=OUTDIR/SV/$(Sample)[1]/$(Sample)[1].SV.pass.vcf sample=$(Sample)[1] type
-=SV outdir=OUTDIR/SV_ANNO/ genome=Para_genome ANNOVAR_VCF ANNOVAR_CytoBand SV_CP
-make -f BIN/Common_SV_Stat.mk infile=OUTDIR/SV/$(Sample)[1]/$(Sample)[1].SV.pass.vcf genome=Para_genome sampleID=$(Sample)[1] outdir=OUTDIR/SV_ANNO/Result/St
-at genome=Para_genome SV_COUNT
-make -f BIN/Common_SV_Stat.mk infile=OUTDIR/SV_ANNO/Result/$(Sample)[1].SV.Para_genome\_multianno.txt genome=Para_genome sampleID=$(Sample)[1] outdir=OUTDIR/
-SV_ANNO/Result/Stat genome=Para_genome SV_DISTRIBUTION
-make -f BIN/Common_SV_Stat.mk infile=OUTDIR/SV/$(Sample)[1]/$(Sample)[1].SV.pass.vcf genome=Para_genome sampleID=$(Sample)[1] outdir=OUTDIR/SV_ANNO/Result/St
-at genome=Para_genome SV_TYPE
+Command make -f BIN/Common_ANNO_Annovar.mk config=Para_config genome=Para_genome vcf=OUTDIR/SV/$(Sample)[1]/$(Sample)[1].SV.pass.vcf sample=$(Sample)[1] type=SV outdir=OUTDIR/SV_ANNO/ genome=Para_genome ANNOVAR_VCF ANNOVAR_CytoBand SV_CP
+make -f BIN/Common_SV_Stat.mk infile=OUTDIR/SV/$(Sample)[1]/$(Sample)[1].SV.pass.vcf genome=Para_genome sampleID=$(Sample)[1] outdir=OUTDIR/SV_ANNO/Result/Stat genome=Para_genome SV_COUNT
+make -f BIN/Common_SV_Stat.mk infile=OUTDIR/SV_ANNO/Result/$(Sample)[1].SV.Para_genome\_multianno.txt genome=Para_genome sampleID=$(Sample)[1] outdir=OUTDIR/SV_ANNO/Result/Stat genome=Para_genome SV_DISTRIBUTION
+make -f BIN/Common_SV_Stat.mk infile=OUTDIR/SV/$(Sample)[1]/$(Sample)[1].SV.pass.vcf genome=Para_genome sampleID=$(Sample)[1] outdir=OUTDIR/SV_ANNO/Result/Stat genome=Para_genome SV_TYPE
 make -f BIN/Common_ANNO_Format.mk infile=OUTDIR/SV_ANNO/Result/$(Sample)[1] type=SV genome=Para_genome chr_all
 [Job End]
 
-#CNV检测及注释
+#CNV检测及注释以及下面部分都没整好
 
 [Job Start]
 Name    Total_Stat
@@ -163,8 +154,7 @@ Major   T
 Order   13
 Thread  1
 Qsub    True
-Command make -f BIN/Common_STAT.mk config=Para_config joblist=Para_joblist indir=OUTDIR outdir=OUTDIR/Stat project_id=Para_projectID project_name=Para_projec
-t type=Para_datatype genome=Para_genome STAT QC
+Command make -f BIN/Common_STAT.mk config=Para_config joblist=Para_joblist indir=OUTDIR outdir=OUTDIR/Stat project_id=Para_projectID project_name=Para_project type=Para_datatype genome=Para_genome STAT QC
 [Job End]
 
 [Job Start]
@@ -176,7 +166,6 @@ Major   T
 Order   14
 Thread  1
 Qsub    True
-Command make -f BIN/Common_REPORT.mk config=Para_config pipetype=Para_pipetype datatype=Para_datatype indir=OUTDIR outdir=OUTDIR/Web_Report project_id=Para_p
-rojectID project=Para_project platform=Para_platform genome=Para_genome classtype=Para_classtype UPLOAD WEB
+Command make -f BIN/Common_REPORT.mk config=Para_config pipetype=Para_pipetype datatype=Para_datatype indir=OUTDIR outdir=OUTDIR/Web_Report project_id=Para_projectID project=Para_project platform=Para_platform genome=Para_genome classtype=Para_classtype UPLOAD WEB
 [Job End]
 

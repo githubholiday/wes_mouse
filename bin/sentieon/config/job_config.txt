@@ -7,7 +7,7 @@ Major	T
 Order	1
 Thread	16
 Qsub	True
-Command	make -f BIN/local_sentieon/sention.mk config=Para_config REF=Para_ref R1=OUTDIR/CleanData/$(sample)[1]/$(sample)[1]_R1.fq.gz R2=OUTDIR/CleanData/$(sample)[1]/$(sample)[1]_R2.fq.gz outdir=OUTDIR/Alignment/$(sample)[0] prefix=$(sample)[0] sequencing_platform=Para_platform bwa
+Command	make -f BIN/local_sentieon/sention.mk config=Para_config REF=Para_ref R1=OUTDIR/CleanData/$(sample)[0]/$(sample)[0]_R1.fq.gz R2=OUTDIR/CleanData/$(sample)[0]/$(sample)[0]_R2.fq.gz outdir=OUTDIR/Alignment/$(sample)[0] prefix=$(sample)[0] sequencing_platform=Para_platform bwa
 [Job End]
 
 [Job Start]
@@ -46,7 +46,7 @@ Order	1
 Thread	16
 Qsub	True
 Depend	Local_Sention_uniq
-Command	make -f BIN/local_sentieon/sention.mk config=Para_config uniq_bam=OUTDIR/Alignment/$(sample)[0]/$(sample)[0].uniq.bam outdir=OUTDIR/Alignment/$(sample)[0] REF=Para_ref prefix=$(sample)[0] rmdup
+Command	echo nothing
 [Job End]
 
 [Job Start]
@@ -59,7 +59,7 @@ Order	2
 Thread	16
 Qsub	True
 Depend	Local_Sention_rmdup
-Command	make -f BIN/map_stat.mk config=Para_config samplelist=Para_samplelist indir=OUTDIR outdir=OUTDIR/Stat spi=Para_projectID MAP_STAT_QC
+Command	make -f BIN/sention_call_SNP.mk config=Para_config thread=16 genome=Para_genome recal_bam=OUTDIR/Alignment/$(Sample)[0]/$(Sample)[0].rmdup.bam Datatype=Para_datatype outdir=OUTDIR/SNP_INDEL/$(Sample)[1] sex=XY prefix=$(Sample)[1] recal_data=OUTDIR/Alignment/$(Sample)[1]/$(Sample)[1].recal_data.table Call
 [Job End]
 
 [Job Start]

@@ -56,17 +56,6 @@ rmdup:
 	$(sentieon) driver -r $(REF) -t $(thread) -i $(outdir)/$(prefix).rmdup.bam --algo AlignmentStat --adapter_seq '' $(outdir)/rmdup.$(prefix).aln_metrics.txt --algo CoverageMetrics  --omit_base_output --cov_thresh=1 --histogram_high=2000 --histogram_bin_count=1999 $(outdir)/rmudp.$(prefix).cover
 	@echo "================== Run sention rmdup End at `date` ================== "
 
-rmdup_bam?=$(outdir)/$(prefix).rmdup.bam
-call_paramter=--emit_conf=10 --call_conf=30
-ploidy?=2
-call:
-	@echo "================== Run sention call Begin at `date` ================== "
-	mkdir -p $(snp_indel_outdir)/GVCF
-	mkdir -p $(snp_indel_outdir)/$(prefix)
-	$(sentieon) driver -r $(REF) -t $(thread) -i $(rmdup_bam) --algo Haplotyper --emit_mode=gvcf --ploidy=$(ploidy) $(call_paramter) $(snp_indel_outdir)/GVCF/$(prefix).raw.g.vcf.gz
-	$(sentieon) driver -r $(REF) -t $(thread) -i $(rmdup_bam) --algo GVCFtyper -v $(snp_indel_outdir)/GVCF/$(prefix).raw.g.vcf.gz $(snp_indel_outdir)/$(prefix)/$(prefix).raw.vcf.gz	
-	@echo "================== Run sention call end at `date` ================== "
-
 mergevcf:
 	mkdir -p $(snp_indel_outdir)
 	@echo "================== Run sention mergevcf  Begin at `date` ================== "

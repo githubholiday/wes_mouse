@@ -27,30 +27,7 @@ bamdir <- file.path(paste(dirPath,"/",sampname,"/",sep=""), bamFile);
 bedFile <- file.path(args[3]);
 bedFile_info<-read.table(bedFile,sep="\t",header=F);
 
-#getgc =function (ref, genome = NULL) {
-#  if(is.null(genome)){genome=BSgenome.Hsapiens.UCSC.hg19}
- # gc=rep(NA,length(ref))
- # for(chr in unique(seqnames(ref))){
- #   message("Getting GC content for chr ", chr, sep = "")
- #   chr.index=which(as.matrix(seqnames(ref))==chr)
- #   ref.chr=IRanges(start= start(ref)[chr.index] , end = end(ref)[chr.index])
- #   if (chr == "X" | chr == "x" | chr == "chrX" | chr == "chrx") {
-  #    chrtemp <- 'chrX'
-  #  } else if (chr == "Y" | chr == "y" | chr == "chrY" | chr == "chry") {
-  #    chrtemp <- 'chrY'
-  #  } else {
-  #    chrtemp <- as.numeric(mapSeqlevels(as.character(chr), "NCBI")[1])
-  #  }
-   # if (length(chrtemp) == 0) message("Chromosome cannot be found in NCBI Homo sapiens database!")
-  #  chrm <- unmasked(genome[[chrtemp]])
-  #  seqs <- Views(chrm, ref.chr)
-  #  af <- alphabetFrequency(seqs, baseOnly = TRUE, as.prob = TRUE)
-  #  gc[chr.index] <- round((af[, "G"] + af[, "C"]) * 100, 2)
- # }
- # gc
-#}
-
-getmapp = function (ref, genome = BSgenome.Mmusculus.UCSC.mm10, bed) {
+getmapp_raw = function (ref, genome = BSgenome.Mmusculus.UCSC.mm10, bed) {
   if(is.null(genome)){genome = BSgenome.Hsapiens.UCSC.hg19}
   #if(genome@metadata$genome == 'hg19'){mapp_gref = mapp_hg19}
   #if(genome@metadata$genome == 'hg38'){mapp_gref = mapp_hg38}
@@ -72,6 +49,40 @@ getmapp = function (ref, genome = BSgenome.Mmusculus.UCSC.mm10, bed) {
   }
   mapp
 }
+
+
+
+getmapp = function (ref, genome , bed) {
+    if(is.null(genome)){genome = BSgenome.Mmusculus.UCSC.mm10}
+    mapp <- rep(1, length(ref))
+    seqlevelsStyle(ref)='UCSC'
+    L = 150
+    for(chr in unique(seqnames(ref))){
+        ref_chr = ref[which(seqnames(ref) == chr )]
+        genome.chr <- genome[[chr]]
+        mapp.chr <- rep(1, length(ref.chr))
+        chr.index=which(as.matrix(seqnames(ref))==chr)
+        for(mappi in 1:length(mapp.chr)){
+            if(width(ref.chr)[mappi]>=L){
+               dict = Views(genome.chr, start=seq((start(ref.chr))[mappi],(end(ref.chr))[mappi]-L+1,1), width=L) 
+            }else{
+                dict = Views(genome.chr, start=start(ref.chr)[mappi]+round(width(ref.chr)[mappi]/2)-round(L/2), width=L)
+            }
+
+            if(sum(alphabetFrequency(dict, baseOnly=T)[,'other'])>0){
+                mapp[chr.index]=0
+            }else{
+                pd = PDict(dict)
+                ci=rep(0,length(pd))
+                for(t in 1:length(genome)){
+                    res=matchPDict(pd,genome[[t]]); ci=ci+elementNROWS(res)
+                }
+                mapp[chr.index]=1/mean(ci)
+            }
+        }
+    mapp
+}
+
 
 if(length(sampname) > 1){
 	bambedObj <- getbambed(bamdir = bamdir, bedFile = bedFile,sampname = sampname, projectname = args[4])

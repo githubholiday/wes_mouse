@@ -156,8 +156,6 @@ make -f BIN/SV_Stat/Common_SV_Stat.mk config=Para_config infile=OUTDIR/SV/$(samp
 make -f BIN/Common_ANNO_Format/Common_ANNO_Format.mk config=Para_config infile=OUTDIR/SV_ANNO/Middle/$(sample)[0] type=SV genome=Mus_musculus.UCSC chr_all
 [Job End]
 
-#CNV检测及注释以及下面部分都没整好
-
 [Job Start]
 Name	Total_Stat
 Memory	1G

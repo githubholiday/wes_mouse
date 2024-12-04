@@ -34,7 +34,7 @@ UPLOAD:
 	@echo
 	-rm -r $(outdir)/*
 	mkdir -p $(outdir)/upload/common
-	$(python3) $(script)/get_config.py -o $(outdir) -c $(indir)/../pre/config.ini
+	$(PYTHON3) $(script)/get_config.py -o $(outdir) -c $(indir)/../pre/config.ini
 	$(PERL) $(script)/get_upload.pl -i $(indir) -o $(outdir) -m $(configd)/template.txt -c $(configd)/upload.config -k $(configd)/keep.list -l $(outdir)/../../pre/sample.list
 	cp -r $(configd)/upload.config  $(outdir)/
 	@echo

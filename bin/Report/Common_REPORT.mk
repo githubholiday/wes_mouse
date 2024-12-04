@@ -56,7 +56,7 @@ WEB:
 	@echo `date "+%Y-%m-%d %H:%M:%S"` "-Web_Report-INFO- ### Generate Web-Report Start"
 	@echo
 	mkdir -p $(outdir)
-	ssh 192.168.1.3 $(python3_report) $(Report_PY) -i $(outdir)/MonoDisease.template -c $(outdir)/report.config -u admin -t cloud 
+	ssh 192.168.1.3 $(python3_report) $(Report_PY) -i $(outdir)/MonoDisease.template -c $(outdir)/report.conf -u admin -t cloud 
 	@echo `date "+%Y-%m-%d %H:%M:%S"` "-Web_Report-INFO- ### Generate Web-Report Finish"
 
 

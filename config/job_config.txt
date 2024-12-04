@@ -97,7 +97,7 @@ Major	T
 Order	3
 Thread	4
 Qsub	True
-Depend	Sention_Stat
+Depend	Sentieon_Stat
 Command	make -f BIN/local_sentieon/sentieon.mk config=Para_config sample=$(sample)[0] outdir=OUTDIR/SNP_INDEL/$(sample)[0] ref=Para_ref SELECT Filter extract
 [Job End]
 

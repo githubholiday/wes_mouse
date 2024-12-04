@@ -34,10 +34,7 @@ UPLOAD:
 	@echo
 	-rm -r $(outdir)/*
 	mkdir -p $(outdir)/upload/common
-	@echo report.conf
-	$(PYTHON3) $(script)/get_config.py -o $(outdir) -c $(pipe_conf)
-	@echo MonoDisease.template
-	$(PERL) $(script)/get_upload.pl -i $(indir) -o $(outdir) -m $(configd)/$(platform)/$(pipetype)_$(datatype)_template.txt -c $(outdir)/upload.config -k $(configd)/keep.list -l $(outdir)/../../pre/sample.list
+	$(PERL) $(script)/get_upload.pl -i $(indir) -o $(outdir) -m $(configd)/template.txt -c $(configd)/upload.config -k $(configd)/keep.list -l $(outdir)/../../pre/sample.list
 	@echo
 	find $(outdir)/upload -name "*txt" -exec rename txt xls {} \;
 	@echo

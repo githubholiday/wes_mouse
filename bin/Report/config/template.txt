@@ -50,12 +50,12 @@ P:#,;#该图为外显子产品包含的所有分析条目，项目具体分析�
 MainMenu:数据处理
 
 SubMenu:原始测序数据
-P:#,;#Illumina高通量测序结果最初以原始图像数据文件存在，经bcl2fastq软件进行序列碱基识别后转化为原始测序序列（Sequenced Reads），我们称之为Raw Data或Raw Reads，其结果以FASTQ（简称为fq）文件格式存储。FASTQ文件包含每条测序序列（Read）的名称、碱基序列以及其对应的测序质量信息。在FASTQ格式文件中，每个碱基对应一个碱基质量字符，每个碱基质量字符对应的ASCII码值减去33（Sanger质量值体系），即为该碱基的测序质量得分（Phred Quality Score）。不同Phred Quality Score代表不同的碱基测序错误率，如Phred Quality Score值为20和30分别表示碱基测序错误率为1%和0.1%。其中FASTQ格式示例如下：
+P:#,;#高通量测序结果最初以原始图像数据文件存在，经拆分软件进行序列碱基识别后转化为原始测序序列（Sequenced Reads），我们称之为Raw Data或Raw Reads，其结果以FASTQ（简称为fq）文件格式存储。FASTQ文件包含每条测序序列（Read）的名称、碱基序列以及其对应的测序质量信息。在FASTQ格式文件中，每个碱基对应一个碱基质量字符，每个碱基质量字符对应的ASCII码值减去33（Sanger质量值体系），即为该碱基的测序质量得分（Phred Quality Score）。不同Phred Quality Score代表不同的碱基测序错误率，如Phred Quality Score值为20和30分别表示碱基测序错误率为1%和0.1%。其中FASTQ格式示例如下：
 Image:upload/common/fastq_format.png,100,1,FASTQ文件格式示例图
 FastqPRE:
-（1） 第一行以“@”开头，随后为Illumina测序识别符和描述文字;
+（1） 第一行以“@”开头，随后为测序识别符和描述文字;
 （2） 第二行是碱基序列;
-（3） 第三行以“+”开头，随后为Illumina测序标识别符，一般省略;
+（3） 第三行以“+”开头，随后为测序标识别符，一般省略;
 （4） 第四行是对应碱基的测序质量，该行中每个字符对应的ASCII值减去33，即为对应第二行碱基的测序质量值。
 FastqPRE
 

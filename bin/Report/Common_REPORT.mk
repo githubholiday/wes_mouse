@@ -34,7 +34,9 @@ UPLOAD:
 	@echo
 	-rm -r $(outdir)/*
 	mkdir -p $(outdir)/upload/common
+	$(python3) $(script)/get_config.py -o $(outdir) -c $(indir)/../pre/config.ini
 	$(PERL) $(script)/get_upload.pl -i $(indir) -o $(outdir) -m $(configd)/template.txt -c $(configd)/upload.config -k $(configd)/keep.list -l $(outdir)/../../pre/sample.list
+	cp -r $(configd)/upload.config  $(outdir)/
 	@echo
 	find $(outdir)/upload -name "*txt" -exec rename txt xls {} \;
 	@echo
@@ -55,8 +57,25 @@ WEB:
 	@echo `date "+%Y-%m-%d %H:%M:%S"` "-Web_Report-INFO- ### Generate Web-Report Start"
 	@echo
 	mkdir -p $(outdir)
+	make -f /annoroad/data1/bioinfo/PROJECT/Commercial/Cooperation/Public/Pipeline/Stable/Public/Report/Report_local/current/Public_webreport/makefile config=$(config) report_dir=$(outdir) projectType=MonoDisease Web_Report
+	@echo
+	@mkdir -p $(Dir)/$(project_id)
+	@-cp $(outdir)/upload/*FQ/filter_stat.xls $(Dir)/$(project_id)/$(project_id)_$(project)_Filter.xls
+	@-cp $(outdir)/upload/*MAP/All.map.stat.xls $(Dir)/$(project_id)/$(project_id)_$(project)_MAP.xls
+	@echo "make -f /annoroad/data1/bioinfo/PROJECT/Commercial/Cooperation/Public/Pipeline/Stable/Public/Report/Report_local/current/Public_webreport/makefile report_dir=$(outdir) projectType=MonoDisease Web_Report" >$(outdir)/creat_report.sh
+	@echo
+	@echo `date "+%Y-%m-%d %H:%M:%S"` "-Web_Report-INFO- ### Generate Web-Report End"
+	@echo
+	#for i in `find $(outdir)/upload -name '*xls'`;do /usr/bin/iconv -c -f utf-8 -t gb2312 $$i >$${i}.bak && mv $${i}.bak $$i;done
+
+
+WEB_Raw:
+	@echo
+	@echo `date "+%Y-%m-%d %H:%M:%S"` "-Web_Report-INFO- ### Generate Web-Report Start"
+	@echo
+	mkdir -p $(outdir)
 	#ssh c0008 $(PYTHON3) $(script)/Report.py -i $(outdir)/MonoDisease.template -c $(outdir)/report.conf -u admin && echo Generate Web-Report Success!
-	make -f /annoroad/data1/bioinfo/PROJECT/Commercial/Cooperation/Public/Pipeline/Stable/Public/Report/Report_local/current/Public_webreport/makefile report_dir=$(outdir) projectType=MonoDisease Web_Report
+	make -f /annoroad/data1/bioinfo/PROJECT/Commercial/Cooperation/Public/Pipeline/Stable/Public/Report/Report_local/current/Public_webreport/makefile config=$(config) report_dir=$(outdir) projectType=MonoDisease Web_Report
 	@echo
 	@mkdir -p $(Dir)/$(project_id)
 	@-cp $(outdir)/upload/*FQ/filter_stat.xls $(Dir)/$(project_id)/$(project_id)_$(project)_Filter.xls

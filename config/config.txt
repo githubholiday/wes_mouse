@@ -39,3 +39,8 @@ dbname=Mus_musculus
 
 ##SV-DELLY2
 DELLY2_238=export OMP_NUM_THREADS=5 && /annoroad/data1/software/bin/miniconda/envs/WES_circos/bin/delly
+
+
+## Report
+python3_report=/annoroad/data1/software/bin/miniconda/envs/python3_base/bin/python3
+Report_PY=/annoroad/data1/bioinfo/PROJECT/Commercial/Cooperation/Public/Pipeline/Stable/Public/Report/Report_local/current/Public_webreport/Report.py

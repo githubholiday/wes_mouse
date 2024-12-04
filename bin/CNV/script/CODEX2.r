@@ -1,5 +1,5 @@
 args<-commandArgs(TRUE)
-if (length(args) < 33) {
+if (length(args) < 12) {
         print ("Rscript CODEX.r <BamFile_dir> <Samplelist> <BedFile> <ProjectName> <Map_threshold> <Cov_threshold> <length_threshold> <mapp_threshold> <gc_threshold> <lmax> <mode> <outdir> <ref>");
         q();
         }
@@ -49,8 +49,6 @@ getmapp_raw = function (ref, genome = BSgenome.Mmusculus.UCSC.mm10, bed) {
   }
   mapp
 }
-
-
 
 getmapp = function (ref, genome , bed) {
     if(is.null(genome)){genome = BSgenome.Mmusculus.UCSC.mm10}

@@ -7,7 +7,7 @@ Major	T
 Order	1
 Thread	1
 Qsub	False
-Command	make -f BIN/mk_filter config=Para_config  filter=Para_filter samplelist=Para_samplelist outdir=OUTDIR/CleanData project=Para_project Clean
+Command	make -f BIN/mk_filter config=Para_config filter=Para_filter samplelist=Para_samplelist outdir=OUTDIR/Filter/ project=Para_project Clean
 [Job End]
 
 [Job Start]

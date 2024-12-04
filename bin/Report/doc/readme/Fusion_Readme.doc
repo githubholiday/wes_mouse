@@ -1,0 +1,25 @@
+说明此文件夹中所有文件中的内容所代表的含义
+
+|-- Fusion
+|--|-- sample.FinalBreakpoint.xls                  融合基因检测结果
+|--|-- sample.fusion.stat.png/pdf                  融合基因统计结果
+|--|-- sample..fusion.png/pdf                      融合circos展示结果
+
+
+sample.FinalBreakpoint.xls    文件格式说明
+（1）5P： 基因1
+（2）3P： 基因2
+（3）Chr1： 基因1所在染色体
+（4）RNA_BK1： 基因1对应的断点
+（5）Exon_BK1： 基因1对应的外显子位置
+（6）Chr2： 基因1所在染色体
+（7）RNA_BK2： 基因1对应的断点
+（8）Exon_BK2： 基因1对应的外显子位置
+（9）WGS_BK1： DNA数据对应的断点1（存在DNA数据时）
+（10）WGS_BK2： DNA数据对应的断点2（存在DNA数据时）
+
+sample.fusion.stat.png/pdf   文件格式说明
+横坐标为融合基因，“--”相连；纵坐标为支持的read数据
+
+sample..fusion.png/pdf
+融合基因统览图，图中的环由22条常染色体组成，环内每条线代表一个融合基因，线的两端代表融合断点位置。

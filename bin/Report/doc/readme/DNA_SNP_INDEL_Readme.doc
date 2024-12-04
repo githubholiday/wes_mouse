@@ -1,0 +1,31 @@
+说明此文件夹中所有文件中的内容所代表的含义。
+
+|-- Somatic_Mutation
+|--|-- sample.SNP_INDEL.somatic_mutation.xls          体细胞突变信息表
+|--|-- sample_TMB.png/pdf                             TMB结果统计图
+
+
+sample.SNP_INDEL.somatic_mutation.xls                  文件格式说明
+
+Chr                          染色体
+start                        起始位置
+end                          终止位置
+ref                          参考基因组碱基型
+alt                          变异碱基型
+gene                         基因名称
+genePos                      位点所在基因功能区
+exonicFunc                   突变位点分类
+transcript                   转录本
+exon                         外显子编号
+cdna                         碱基改变
+pep                          氨基酸改变
+splicing                     剪切位点
+depth_normal                 正常样品的测序深度
+freq_normal                  正常样品的突变频率
+depth_tumor                  癌症样品的测序深度
+freq_tumor                   癌症样品的突变频率
+filter                       是否通过过滤
+
+
+sample_TMB.png/pdf
+横坐标为不同癌种，纵坐标为不同癌种对应的TMB值（数据来源TCGA数据库），红色横线为样品对应的TMB值。

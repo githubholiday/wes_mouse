@@ -1,0 +1,37 @@
+说明此文件夹中所有文件中的内容所代表的含义。
+
+*MAP
+|-- sample_cumuPlot.pdf/png                样本累积深度分布图
+|-- sample_histPlot.pdf/png                样本单碱基深度分布图
+|-- All.map.stat.pdf/png                   比对率及覆盖度分析图
+|-- All.map.stat.xls                       比对率及覆盖度统计表
+
+
+All.map.stat.xls内容说明：
+（1） Target Region (bp)：基因组目标捕获区域大小；
+（2） Clean Reads：过滤后的Reads的个数；
+（3） Clean Bases ：过滤后的碱基数；
+（4） Mapped Reads：比对到参考基因组上的Reads数；
+（5） Mapped Bases：比对到参考基因组上的碱基数；
+（6） Mapping Rate (%)：比对到参考基因组上的Reads的百分比；
+（7） Reads Mapped to Target Region：比对到基因组目标捕获区域上的Reads个数；
+（8） Capture Specificity(%)：比对到基因组目标捕获区域的Reads数占比对到基因组Reads的比例；
+（9） Duplication Rate (%)：去除PCR重复的碱基数占比对到基因组唯一位置的碱基数的比例；
+（10） Uniq Rate (%)：比对到基因组唯一位置的碱基数占比对上的碱基数的比例；
+（11） Bases Mapped to Target Region：比对到基因组目标捕获区域上的碱基个数；
+（12） Mean Depth of Target Region：基因组目标捕获区域的平均测序深度；
+（13） Coverage of Target Region (%)：覆盖度，即目标捕获区中有多大比例的区域至少测到了1次；
+（14） Fraction of Target Covered >= NX：基因组目标捕获区域深度>= NX的碱基覆盖度；
+（15） Bases Mapped to Flanking Region：比对到基因组目标捕获区域的侧翼区（100bp）中碱基的数量；
+（16） Mean Depth of Flanking Region：基因组目标捕获区域的侧翼区（100bp）的平均测序深度；
+（17） Coverage of Flanking Region (%)：基因组目标捕获区域的侧翼区（100bp）的平均覆盖度；
+（18） Fraction of Flanking Covered ≥ NX：基因组目标捕获区域的侧翼区（100bp）深度≥ NX的碱基覆盖度。
+
+All.map.stat.pdf/png 内容说明：
+横坐标为样本名，纵坐标为比对率及覆盖率。
+
+sample_cumuPlot.pdf/png 内容说明：
+累积深度分布图以测序深度为横坐标，Fraction of bases为纵坐标。
+
+sample_histPlot.pdf/png 内容说明：
+单碱基深度分布图以碱基累积深度为横坐标，Fraction of bases为纵坐标。

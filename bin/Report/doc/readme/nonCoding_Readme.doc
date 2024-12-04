@@ -1,0 +1,28 @@
+说明此文件夹中所有文件中的内容所代表的含义。
+
+*nonCoding_Anno
+|-- sample.nonConding_Anno.xls                  各个样本SNV的非编码区注释结果
+
+
+sample.nonConding_Anno.xls格式说明：
+CHROM：    染色体编号；
+POS：      位置信息；
+ID：       变异ID，一般为“.”，与原始vcf文件中保持一致；
+REF：      参考碱基类型；
+ALT：      变异碱基类型；
+QUAL：     变异质量值，与原始vcf文件中保持一致；
+FILTER：   是否通过过滤筛选；
+SAMPLE：   样本名称；
+GERP：     GERP值，主要用于评价position-specific evolutionary constraint；
+CDS：      该变异位点是否位于CDS区，因为主要是注释非编码区，所以该列一般为“NO”；
+HUB：      互作注释中心，PPI是蛋白互作结果，REG是调节网络注释，PHOS是磷酸化网络注释等；
+SEN：      是否位于敏感区域；
+GENE：     目标基因名称，
+CANG：     相关的基因信息，[]中标注的可能是与肿瘤（cancer）、转录因子（TF_regulating_known_cancer_gene）、调节表达信息（up_regulated）等等；
+NCENC：    非编码的ENCODE注释信息；
+HOT：      Highly occupied target region；
+MOTIFBR：  motif break 信息；
+MOTIFG：   motif gain 信息；
+NCDS：     noncoding score；
+RECUR：    Recurrent elements/variants；
+DBRECUR：  在肿瘤数据库中变异复发信息；

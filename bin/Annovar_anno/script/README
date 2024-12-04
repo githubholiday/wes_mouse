@@ -1,0 +1,5 @@
+20170426
+Annovar更新了版本，详见上层目录的说明
+因为只注释群calling文件，所以调整了脚本reseq_snp_indel_format.pl
+
+

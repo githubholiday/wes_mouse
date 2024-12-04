@@ -1,0 +1,69 @@
+模块说明:
+此模块基于Annovar的注释结果，结合疾病及相关的表型信息，利用InterVar软件对每个变异位点进行分级，并利用Phenolyzer软件对疾病的致病性进行打分，最终按照Phenolyzer得分从大到小的顺序输出变异相关的基因转录本信息以及相关的变异信息等
+
+用法：
+make -f $Bin/bin/makefile//ACMG_level.mk infile= sample= outdir= disease= ACMG_ANNO 
+
+参数说明：
+infile ：Annovar注释结果
+out_prefix ：InderVar及Phenolyzer软件输出文件的前缀
+outdir ：结果输出目录
+disease ：Phenolyzer 注释时的疾病信息(HPO编号、OMIM号、疾病全称等)
+
+结果说明：
+Middle  #程序运行的中间结果文件
+`-- suyanxun
+    |-- HPO_Inter_Pheno.HPO.anno.txt #Annovar、InterVar、Phenolyzer、HPO 的合并注释结果
+    |-- Inter_Pheno_Annovar.txt #Annovar、InterVar、Phenolyzer 三个软件的合并注释结果
+    |-- InterVar  #InterVar注释输入及输出结果目录
+    |   |-- InterVar.*_multianno.txt #InterVar注释输入文件
+    |   |-- InterVar.*_multianno.txt.grl_p
+    |   `-- InterVar.*_multianno.txt.intervar #InterVar注释输出文件
+    |-- Phenolyzer
+    |   |-- Phenolyzer.*_multianno.txt #Phenolyzer注释输入文件
+    |   |-- Phenolyzer.Phenolyzer.final_gene_list
+    |   |-- Phenolyzer.Phenolyzer.*_multianno.txt.Phenolyzer #Phenolyzer注释输入文件
+    |   |-- Phenolyzer.Phenolyzer_hp_0008551_diseases
+    |   |-- Phenolyzer.Phenolyzer_hp_0008551_gene_scores
+    |   |-- Phenolyzer.Phenolyzer_hp_0008551_hpo
+    |   |-- Phenolyzer.Phenolyzer_hp_0008569_diseases
+    |   |-- Phenolyzer.Phenolyzer_hp_0008569_gene_scores
+    |   |-- Phenolyzer.Phenolyzer_hp_0008569_hpo
+    |   |-- Phenolyzer.Phenolyzer.merge_gene_scores
+    |   |-- Phenolyzer.Phenolyzer.predicted_gene_scores
+    |   `-- Phenolyzer.Phenolyzer.seed_gene_list
+    |-- suyanxun.disease #被注释的疾病信息
+    |-- suyanxun_InterVar_infile.*_multianno.txt #InterVar注释输入文件
+    `-- suyanxun_Phenolyzer_infile.*_multianno.txt #Phenolyzer注释输入文件
+Result
+`-- suyanxun
+    |-- Clinical_pathogenic_report.txt 最终注释结果
+    |-- Clinical_pathogenic_report.txt.top10 最终注释结果top10
+
+最终结果: Clinical_pathogenic_report.txt
+ 1）基因：基因名称
+ 2）转录本：发生变异的转录本编号
+ 3）Exon：发生变异的外显子编号
+ 4）染色体：发生变异的染色体号
+ 5）区带：变异所在区带
+ 6）位置：变异在染色体上的位置
+ 7）Ref值：参考碱基
+ 8）Mut值：突变后的碱基
+ 9）核酸突变：核酸突变情况
+10）氨基酸改变：氨基酸改变情况
+11）突变效应：突变类型
+12）纯合/杂合
+13）rs号
+14）1000g：千人基因组中的变异频率
+15）EXAC：EXAC数据库变异评率
+16）ATCG：变异频率
+17）致病性分析（HGMD）：HGMD数据库致病性分析
+18) 致病性分析（Clinvar）：Clinvar数据库致病性分析
+19）疾病信息（CHPO）：疾病相关信息
+20）遗传方式(HPO)：疾病遗传方式
+21）疾病标识（OMIM）：疾病OMIM号
+22）SIFT：SIFT得分 
+23）Polyphen2：Polyphen2得分
+24）ACMG分级：ACMG等级
+25）Phenolyzer得分：Phenolyzer得分；当为正常个体时，此列值为 "-" 当为疾病个体时，此列值为得分值或者"."，表示没有注释到相关信息
+

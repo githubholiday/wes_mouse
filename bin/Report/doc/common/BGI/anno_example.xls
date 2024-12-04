@@ -1,0 +1,19 @@
+Item	Content
+Chr	chr1
+start	6191735
+end	6191735
+ref	C
+alt	T
+gene	CHD5
+genePos	exonic
+exonicFunc	nonsynonymous SNV
+transcript	NM_015557
+exon	exon21
+cdna	c.G3218A
+pep	p.G1073D
+splicing	NA:NA
+depth_normal	113
+freq_normal	113/0(0.0000)
+depth_tumor	163
+freq_tumor	156/7(0.0429)
+filter	PASS

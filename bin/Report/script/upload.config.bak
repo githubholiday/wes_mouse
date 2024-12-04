@@ -1,0 +1,178 @@
+[M]=项目信息	1	single,pair	wgs,wes,target
+[S]=实验流程	1	single,pair	wgs,wes,target
+
+[M]=数据处理	1	single,pair	wgs,wes,target
+
+[S]=原始测序数据	1	single,pair	wgs,wes,target
+
+[S]=原始数据过滤	1	single,pair	wgs,wes,target
+INDIR/FQ/Analysis/report/upload/1_filter/1_1_stat_table/filter*	OUTDIR/upload/FQ/	copy	1	single,pair	wgs,wes,target
+
+[S]=过滤后数据量统计	1	single,pair	wgs,wes,target
+INDIR/FQ/Analysis/report/upload/1_filter/1_1_stat_table/*Bases.p*	OUTDIR/upload/FQ/	copy	1	single,pair	wgs,wes,target
+
+[S]=过滤后数据的碱基含量分布	1	single,pair	wgs,wes,target
+INDIR/FQ/Analysis/report/upload/1_filter/1_3_base_content/*.base.p*	OUTDIR/upload/FQ/	copy	1	single,pair	wgs,wes,target
+
+[S]=过滤后数据的碱基质量值分布	1	single,pair	wgs,wes,target
+INDIR/FQ/Analysis/report/upload/1_filter/1_2_base_quality/*.quality.p*	OUTDIR/upload/FQ/	copy	1	single,pair	wgs,wes,target
+INDIR/FQ/Analysis/report/upload/1_filter/1_1_stat_table/Q30.p*	OUTDIR/upload/FQ/	copy	1	single,pair	wgs,wes,target
+
+[M]=比对及质控	1	single,pair	wgs,wes,target
+
+[S]=比对信息统计	1	single,pair	wgs,wes,target
+INDIR/Stat/All.map.stat.*	OUTDIR/upload/MAP/	copy	1	single,pair	wgs,wes,target
+
+[S]=测序深度分布	1	single,pair	wgs,wes,target
+INDIR/Alignment/*/*Plot.png	OUTDIR/upload/MAP/	copy	1	single,pair	wgs,wes,target
+INDIR/Alignment/*/*Plot.pdf	OUTDIR/upload/MAP/	copy	1	single,pair	wgs,wes,target
+
+[M]=变异检测注释	1	single,pair	wgs,wes,target
+
+[S]=SNP检测及注释	1	single	wgs,wes,target
+INDIR/SNP_INDEL_ANNO/Result/*.SNP.hg19_multianno.txt	OUTDIR/upload/SNP/	link	1	single	wgs,wes,target
+INDIR/SNP_INDEL_ANNO/Result/*/*Format*.SNP.hg19_multianno.xls	OUTDIR/upload/SNP/Samples/	link	1	single	wgs,wes,target
+INDIR/Stat/All.snp.*	OUTDIR/upload/SNP/Stat/	copy	1	single	wgs,wes,target
+INDIR/SNP_INDEL_ANNO/Result/Stat/*.SNP.TS_TV.stat.txt	OUTDIR/upload/SNP/Stat/	copy	1	single	wgs,wes,target
+
+[S]=SNP检测及精简注释	1	single	wgs,wes
+INDIR/SNP_INDEL_ANNO/Result/*.SNP.hg19_multianno.txt	OUTDIR/upload/SNP/	link	1	single	wgs,wes
+INDIR/Stat/All.snp.*	OUTDIR/upload/SNP/Stat/	copy	1	single	wgs,wes
+INDIR/SNP_INDEL_ANNO/Result/Stat/*.SNP.TS_TV.stat.txt	OUTDIR/upload/SNP/Stat/	copy	1	single	wgs,wes
+
+[S]=Somatic-SNV检测及注释	1	pair	wgs,wes,target
+INDIR/SNP_INDEL_ANNO/Result/*.SNP.hg19_multianno.txt	OUTDIR/upload/SNP/	link	1	pair	wgs,wes,target
+INDIR/SNP_INDEL_ANNO/Result/*/*Format*.SNP.hg19_multianno.xls	OUTDIR/upload/SNP/Samples/	link	1	pair	wgs,wes,target
+INDIR/Stat/All.snp.*	OUTDIR/upload/SNP/Stat/	copy	1	pair	wgs,wes,target
+INDIR/SNP_INDEL_ANNO/Result/Stat/*.SNP.TS_TV.stat.txt	OUTDIR/upload/SNP/Stat/	copy	1	pair	wgs,wes,target
+
+[S]=SNP保守性预测和致病性分析	1	single	wgs,wes,target
+INDIR/Conservation/*/*.damage.hg19_multianno.*	OUTDIR/upload/Conservation/	copy	1	single	wgs,wes,target
+
+[S]=Somatic-SNV保守性预测和致病性分析	1	pair	wgs,wes,target
+INDIR/Conservation/*/*.damage.hg19_multianno.*	OUTDIR/upload/Conservation/	copy	1	pair	wgs,wes,target
+
+[S]=OMIM数据库分析	1	single	wgs,wes,target
+INDIR/OMIM/*/*.OMIM.anno.txt	OUTDIR/upload/OMIM/	copy	1	single	wgs,wes,target
+
+[S]=InDel检测及注释	1	single	wgs,wes,target
+INDIR/SNP_INDEL_ANNO/Result/*.INDEL.hg19_multianno.txt	OUTDIR/upload/InDel/	link	1	single	wgs,wes,target
+INDIR/SNP_INDEL_ANNO/Result/*/*Format*.INDEL.hg19_multianno.xls	OUTDIR/upload/InDel/Samples/	link	1	single	wgs,wes,target
+INDIR/Stat/All.indel.*	OUTDIR/upload/InDel/Stat/	copy	1	single	wgs,wes,target
+INDIR/SNP_INDEL_ANNO/Result/Stat/*.INDEL.length.pattern.stat.p*	OUTDIR/upload/InDel/Stat/	copy	1	single	wgs,wes,target
+
+[S]=InDel检测及精简注释	1	single	wgs,wes
+INDIR/SNP_INDEL_ANNO/Result/*.INDEL.hg19_multianno.txt	OUTDIR/upload/InDel/	link	1	single	wgs,wes
+INDIR/Stat/All.indel.*	OUTDIR/upload/InDel/Stat/	copy	1	single	wgs,wes
+INDIR/SNP_INDEL_ANNO/Result/Stat/*.INDEL.length.pattern.stat.p*	OUTDIR/upload/InDel/Stat/	copy	1	single	wgs,wes
+
+[S]=Somatic-InDel检测及注释	1	pair	wgs,wes,target
+INDIR/SNP_INDEL_ANNO/Result/*.INDEL.hg19_multianno.txt	OUTDIR/upload/InDel/	link	1	pair	wgs,wes,target
+INDIR/SNP_INDEL_ANNO/Result/*/*Format*.INDEL.hg19_multianno.xls	OUTDIR/upload/InDel/Samples/	link	1	pair	wgs,wes,target
+INDIR/Stat/All.indel.*	OUTDIR/upload/InDel/Stat/	copy	1	pair	wgs,wes,target
+INDIR/SNP_INDEL_ANNO/Result/Stat/*.INDEL.length.pattern.stat.p*	OUTDIR/upload/InDel/Stat/	copy	1	pair	wgs,wes,target
+
+[S]=SV检测及注释	1	single	wgs,wes,target
+INDIR/SV_ANNO/Result/*.SV.hg19_multianno.txt	OUTDIR/upload/SV/	copy	1	single	wgs,wes,target
+INDIR/SV_ANNO/Result/*.SV.hg19_multianno.Format.xls	OUTDIR/upload/SV/	copy	1	single	wgs,wes,target
+INDIR/Stat/All.sv.*	OUTDIR/upload/SV/Stat/	copy	1	single	wgs,wes,target
+
+[S]=Somatic-SV检测及注释	1	pair	wgs,wes,target
+INDIR/SV_ANNO/Result/*.SV.hg19_multianno.txt	OUTDIR/upload/SV/	copy	1	pair	wgs,wes,target
+INDIR/Stat/All.sv.*	OUTDIR/upload/SV/Stat/	copy	1	pair	wgs,wes,target
+
+[S]=CNV检测及注释	1	single	wes
+INDIR/CNV/*/*.CNV*.xls	OUTDIR/upload/CNV/	copy	1	single	wes
+INDIR/CNV_ANNO/*.CNV.hg19_multianno.txt	OUTDIR/upload/CNV/	copy	1	single	wes
+INDIR/CNV_ANNO/*.CNV.hg19_multianno.Format.xls	OUTDIR/upload/CNV/	copy	1	single	wes
+
+[S]=CNV的检测及注释	1	single	wgs
+INDIR/CNV/*/*.CNV.pattern.p*	OUTDIR/upload/CNV/Stat/	copy	1	single	wgs
+INDIR/CNV/*/*.CNV*.xls	OUTDIR/upload/CNV/	copy	1	single	wgs
+INDIR/CNV_ANNO/*.CNV.hg19_multianno.txt	OUTDIR/upload/CNV/	copy	1	single	wgs
+INDIR/CNV_ANNO/*.CNV.hg19_multianno.Format.xls	OUTDIR/upload/CNV/	copy	1	single	wgs
+INDIR/Stat/All.cnv.*	OUTDIR/upload/CNV/Stat/	copy	1	single	wgs
+
+[S]=Somatic-CNV检测及注释	1	pair	wgs
+INDIR/CNV/*/*.CNV.pattern.p*	OUTDIR/upload/CNV/Stat/	copy	1	pair	wgs
+INDIR/CNV/*/*.CNV*.xls	OUTDIR/upload/CNV/	copy	1	pair	wgs
+INDIR/CNV_ANNO/*.CNV.hg19_multianno.txt	OUTDIR/upload/CNV/	copy	1	pair	wgs
+INDIR/Stat/All.cnv.*	OUTDIR/upload/CNV/Stat/	copy	1	pair	wgs
+
+[S]=SNP&InDel差异分析	1	single,pair	wgs,wes,target
+INDIR/SNP_INDEL_DIFF/SNP/Result/*	OUTDIR/upload/SNP_INDEL_DIFF/SNP/	copy	1	single,pair	wgs,wes,target
+INDIR/SNP_INDEL_DIFF/INDEL/Result/*	OUTDIR/upload/SNP_INDEL_DIFF/INDEL/	copy	1	single,pair	wgs,wes,target
+
+[S]=Somatic-CNV检测及注释	1	pair	wes
+INDIR/CNV/*/*.CNV.pattern.p*	OUTDIR/upload/CNV/Stat/	copy	1	pair	wes
+INDIR/CNV/*/*.CNV*.xls	OUTDIR/upload/CNV/	copy	1	pair	wes
+INDIR/CNV_ANNO/*.CNV.hg19_multianno.txt	OUTDIR/upload/CNV/	copy	1	pair	wes
+INDIR/Stat/All.cnv.*	OUTDIR/upload/CNV/Stat/	copy	1	pair	wes
+
+[S]=融合基因分析	1	single,pair	wgs,wes,target
+INDIR/Stat/All.Fugene*	OUTDIR/upload/FusionGene/	copy	1	single,pair	wgs,wes,target
+INDIR/FusionGene/*FusionReport.txt	OUTDIR/upload/FusionGene/	copy	1	single,pair	wgs,wes,target
+
+[S]=变异总览	1	single,pair	wgs,wes,target
+INDIR/CIRCOS/*/fig/*.png	OUTDIR/upload/CIRCOS/	copy	1	single,pair	wgs,wes,target
+
+[M]=高级分析	1	single,pair	wgs,wes,target
+
+[S]=突变位点过滤	1	single	wgs,wes,target
+INDIR/Rare/*.rare.stat.txt	OUTDIR/upload/Rare/	copy	1	single	wgs,wes,target
+INDIR/Rare/*.rare.hg19_multianno.txt	OUTDIR/upload/Rare/	copy	1	single	wgs,wes,target
+
+[S]=新生突变分析	1	single	wgs,wes,target
+INDIR/Family/*/DENOVO/*_denovo.multianno.all.txt	OUTDIR/upload/Family/DENOVO/	copy	1	single	wgs,wes,target
+INDIR/Family/*/DENOVO/*_denovo.rare.hg19_multianno.txt	OUTDIR/upload/Family/DENOVO/	copy	1	single	wgs,wes,target
+INDIR/Family/*/DENOVO/*_denovo.rare.stat.txt	OUTDIR/upload/Family/DENOVO/	copy	1	single	wgs,wes,target
+INDIR/Family/*/DENOVO/GOKEGG/*.DENOVO.sort.*	OUTDIR/upload/Family/DENOVO/GO/	copy	1	single	wgs,wes,target
+INDIR/Family/*/DENOVO/GOKEGG/DAG/*.DENOVO.DAG_BP.p*	OUTDIR/upload/Family/DENOVO/GO/	copy	1	single	wgs,wes,target
+INDIR/Family/*/DENOVO/GOKEGG/DAG/*.DENOVO.DAG_CC.p*	OUTDIR/upload/Family/DENOVO/GO/	copy	1	single	wgs,wes,target
+INDIR/Family/*/DENOVO/GOKEGG/DAG/*.DENOVO.DAG_MF.p*	OUTDIR/upload/Family/DENOVO/GO/	copy	1	single	wgs,wes,target
+INDIR/Family/*/DENOVO/GOKEGG/kegg/*.DENOVO.kegg.enrich.p*	OUTDIR/upload/Family/DENOVO/KEGG/	copy	1	single	wgs,wes,target
+
+[S]=显性遗传突变分析	1	single	wgs,wes,target
+INDIR/Family/*/DOM/*_dom.multianno.all.txt	OUTDIR/upload/Family/DOM/	copy	1	single	wgs,wes,target
+INDIR/Family/*/DOM/*_dom.rare.hg19_multianno.txt	OUTDIR/upload/Family/DOM/	copy	1	single	wgs,wes,target
+INDIR/Family/*/DOM/*_dom.rare.stat.txt	OUTDIR/upload/Family/DOM/	copy	1	single	wgs,wes,target
+INDIR/Family/*/DOM/GOKEGG/*.DOM.sort.*	OUTDIR/upload/Family/DOM/GO/	copy	1	single	wgs,wes,target
+INDIR/Family/*/DOM/GOKEGG/DAG/*.DOM.DAG_BP.p*	OUTDIR/upload/Family/DOM/GO/	copy	1	single	wgs,wes,target
+INDIR/Family/*/DOM/GOKEGG/DAG/*.DOM.DAG_CC.p*	OUTDIR/upload/Family/DOM/GO/	copy	1	single	wgs,wes,target
+INDIR/Family/*/DOM/GOKEGG/DAG/*.DOM.DAG_MF.p*	OUTDIR/upload/Family/DOM/GO/	copy	1	single	wgs,wes,target
+INDIR/Family/*/DOM/GOKEGG/kegg/*.DOM.kegg.enrich.p*	OUTDIR/upload/Family/DOM/KEGG/	copy	1	single	wgs,wes,target
+
+[S]=隐性遗传突变分析	1	single	wgs,wes,target
+INDIR/Family/*/REC/*_rec.multianno.all.txt	OUTDIR/upload/Family/REC/	copy	1	single	wgs,wes,target
+INDIR/Family/*/REC/*_rec.rare.hg19_multianno.txt	OUTDIR/upload/Family/REC/	copy	1	single	wgs,wes,target
+INDIR/Family/*/REC/*_rec.rare.stat.txt	OUTDIR/upload/Family/REC/	copy	1	single	wgs,wes,target
+INDIR/Family/*/REC/GOKEGG/*.REC.sort.*	OUTDIR/upload/Family/REC/GO/	copy	1	single	wgs,wes,target
+INDIR/Family/*/REC/GOKEGG/DAG/*.REC.DAG_BP.p*	OUTDIR/upload/Family/REC/GO/	copy	1	single	wgs,wes,target
+INDIR/Family/*/REC/GOKEGG/DAG/*.REC.DAG_CC.p*	OUTDIR/upload/Family/REC/GO/	copy	1	single	wgs,wes,target
+INDIR/Family/*/REC/GOKEGG/DAG/*.REC.DAG_MF.p*	OUTDIR/upload/Family/REC/GO/	copy	1	single	wgs,wes,target
+INDIR/Family/*/REC/GOKEGG/kegg/*.REC.kegg.enrich.p*	OUTDIR/upload/Family/REC/KEGG/	copy	1	single	wgs,wes,target
+
+[S]=复合杂合遗传突变分析	1	single	wgs,wes,target
+INDIR/Family/*/COM/*_com.multianno.all.txt	OUTDIR/upload/Family/COM/	copy	1	single	wgs,wes,target
+INDIR/Family/*/COM/*_com.rare.hg19_multianno.txt	OUTDIR/upload/Family/COM/	copy	1	single	wgs,wes,target
+INDIR/Family/*/COM/*_com.rare.stat.txt	OUTDIR/upload/Family/COM/	copy	1	single	wgs,wes,target
+INDIR/Family/*/COM/GOKEGG/*.COM.sort.*	OUTDIR/upload/Family/COM/GO/	copy	1	single	wgs,wes,target
+INDIR/Family/*/COM/GOKEGG/DAG/*.COM.DAG_BP.p*	OUTDIR/upload/Family/COM/GO/	copy	1	single	wgs,wes,target
+INDIR/Family/*/COM/GOKEGG/DAG/*.COM.DAG_CC.p*	OUTDIR/upload/Family/COM/GO/	copy	1	single	wgs,wes,target
+INDIR/Family/*/COM/GOKEGG/DAG/*.COM.DAG_MF.p*	OUTDIR/upload/Family/COM/GO/	copy	1	single	wgs,wes,target
+INDIR/Family/*/COM/GOKEGG/kegg/*.COM.kegg.enrich.p*	OUTDIR/upload/Family/COM/KEGG/	copy	1	single	wgs,wes,target
+
+[S]=非编码区突变注释	1	pair	wgs,wes,target
+INDIR/nonCoding_Anno/Result/*.nonConding_Anno.xls	OUTDIR/upload/nonConding_Anno/	1	pair	wgs,wes,target
+
+[M]=变异分析结果	1	clinical	report
+[S]=致病可能性最高的10个突变	1	clinical	report
+INDIR/Clinical_ANNO/SNP/Result/*/*.txt	OUTDIR/upload/Clinical_report/SNP/	copy	1	clinical	report
+INDIR/Clinical_ANNO/INDEL/Result/*/*.txt	OUTDIR/upload/Clinical_report/INDEL/	copy	1	clinical	report
+[M]=变异分析结果	1	clinical	report
+[S]=所有的变异位点注释结果	1	clinical	report
+INDIR/Clinical_ANNO/SNP/Result/*/*.txt	OUTDIR/upload/Clinical_report/SNP/	copy	1	clinical	report
+INDIR/Clinical_ANNO/INDEL/Result/*/*.txt	OUTDIR/upload/Clinical_report/INDEL/	copy	1	clinical	report
+[M]=基本信息	1	clinical	report
+[S]=基本信息	1	clinical	report
+INDIR/Clinical_ANNO/SNP/Sample/*info.txt	OUTDIR/upload/sample_info/	copy	1	clinical	report

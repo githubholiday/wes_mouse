@@ -1,0 +1,117 @@
+说明此文件夹中所有文件中的内容所代表的含义。
+
+*SNP
+|-- sample.SNP.*_multianno.xls                  过滤后SNP的Annovar注释结果
+|-- sample.raw.SNP.*_multianno.xls              所有SNP的refGene注释结果
+|-- Stat                                           相关统计结果目录
+|---|-- *.TS_TV.stat.xls                           SNP 转换和颠换的统计，包括全基因组上和外显子区域
+|---|-- All.snp.genome.png/pdf/xls                 所有样品基因组不同区域的SNP分布结果
+|---|-- All.snp.exonic.png/pdf/xls                 所有样品外显子区的SNP突变类型分布结果
+|---|-- All.snp.pattern.png/pdf/xls                所有样品SNP的碱基突变模式分布结果
+|---|-- All.snp.num.png/pdf/xls                    SNP个数统计结果
+|---Samples
+|---|-- sample.Format.chr*.SNP.*_multianno.xls  过滤后SNP的Annovar注释结果(按染色体分割)
+
+
+*SNP.*_multianno.xls    格式说明(详细说明见结题报告说明文档下载链接)
+Chr                   变异所在染色体
+Start                 变异起始位点
+End                   变异终止位点
+Ref                   参考基因组碱基型
+Alt                   样品变异碱基型
+RefDepth              参考基因组的reads数目
+AltDepth              突变的reads数目
+AltFre                突变的reads数目/(参考基因组的reads数目+突变的reads数目)
+Hom                   纯合（纯合为1，杂合为0）
+Hem                   杂合（杂合为1，纯合为0）
+Quality               变异的比对质量值
+Func.refGene          基于refGene数据库对变异位点所在区域进行注释
+Gene.refGene          基于refGene数据库对变异位点相关转录本的注释
+GeneDetail.refGene    基于refGene数据库对UTR、splicing等区域的注释，如为间区，则为突变位点距上下游基因的距离，如为外显子区，则为发生突变的基因，以及所发生的碱基突变类型，GLYMA20G31580.1:c.-130A>T,表示突变在转录本GLYMA20G31580.1的第UTR5区域，第130个碱基A变为T
+ExonicFunc.refGene    基于refGene数据库对外显子区域的变异位点注释
+AAChange.refGene      基于refGene数据库对变异位点处的氨基酸改变注释，如GLYMA2269S00200:GLYMA2269S00200.1:exon1:c.C298A:p.Q100K表示突变位于基因GLYMA2269S00200，转录本GLYMA2269S00200.1的第一个外显子区，第298个碱基由C突变为A，第100个氨基酸由Q变为K
+other                 数据库注释结果
+
+*.Format.chr*.SNP.*_multianno.xls 格式说明
+Chr                   变异所在染色体
+Start                 变异起始位点
+End                   变异终止位点
+Ref                   参考基因组碱基型
+Alt                   样品变异碱基型
+RefDepth              参考基因组的reads数目
+AltDepth              突变的reads数目
+AltFre                突变的reads数目/(参考基因组的reads数目+突变的reads数目)
+Hom                   纯合（纯合为1，杂合为0）
+Hem                   杂合（杂合为1，纯合为0）
+Quality               变异的比对质量值
+snp138                dbsnp138数据库中变异位点对应的等位基因频率
+avsnp147              dbSNP147数据库注释结果,有提供rs编号，无.表示
+Func.refGene          基于refGene数据库对变异位点所在区域进行注释
+Gene.refGene          基于refGene数据库对变异位点相关转录本的注释
+GeneDetail.refGene    基于refGene数据库对UTR、splicing等区域的注释，如为间区，则为突变位点距上下游基因的距离，如为外显子区，则为发生突变的基因，以及所发生的碱基突变类型，GLYMA20G31580.1:c.-130A>T,表示突变在转录本GLYMA20G31580.1的第UTR5区域，第130个碱基A变为T
+ExonicFunc.refGene    基于refGene数据库对外显子区域的变异位点注释
+AAChange.refGene      基于refGene数据库对变异位点处的氨基酸改变注释，如GLYMA2269S00200:GLYMA2269S00200.1:exon1:c.C298A:p.Q100K表示突变位于基因GLYMA2269S00200，转录本GLYMA2269S00200.1的第一个外显子区，第298个碱基由C突变为A，第100个氨基酸由Q变为K
+other                 数据库注释结果
+
+sample.raw.SNP.*_multianno.xls    格式说明
+Chr                   变异所在染色体
+Start                 变异起始位点
+End                   变异终止位点
+Ref                   参考基因组碱基型
+Alt                   样品变异碱基型
+Func.refGene          基于refGene数据库对变异位点所在区域进行注释
+Gene.refGene          基于refGene数据库对变异位点相关转录本的注释
+GeneDetail.refGene    基于refGene数据库对UTR、splicing等区域的注释，如为间区，则为突变位点距上下游基因的距离，如为外显子区，则为发生突变的基因，以及所发生的碱基突变类型，GLYMA20G31580.1:c.-130A>T,表示突变在转录本GLYMA20G31580.1的第UTR5区域，第130个碱基A变为T
+ExonicFunc.refGene    基于refGene数据库对外显子区域的变异位点注释
+AAChange.refGene      基于refGene数据库对变异位点处的氨基酸改变注释，如GLYMA2269S00200:GLYMA2269S00200.1:exon1:c.C298A:p.Q100K表示突变位于基因GLYMA2269S00200，转录本GLYMA2269S00200.1的第一个外显子区，第298个碱基由C突变为A，第100个氨基酸由Q变为K
+Otherinfo             位点的突变检测信息，详见VCF格式说明
+
+
+*.TS_TV.stat.xls 格式说明
+（1）TS_genome：              所有捕获到的区域上发生转换的SNP数；
+（2）TV_geneome：             所有捕获到的区域上发生颠换的SNP数；
+（3）TS/TV_genome：           所有捕获到的区域上SNP转换/颠换比率；
+（4）TS_exonic：              外显子区域上发生转换的SNP数；
+（5）TV_exonic：              外显子区域发生颠换的SNP数；
+（6）TS/TV_ exonic：          外显子区域上SNP转换/颠换比率。
+
+All.snp.genome.png/pdf 格式说明
+柱状图，横坐标为样本名，纵坐标为各区间的SNP个数百分比；作图时，将相同功能区的合并，如UTR5;UTR3归入UTR5分类。
+
+All.snp.genome.xls 格式说明
+UTR3：发生在基因的UTR3的SNP数目；
+UTR5：发生在基因的UTR5的SNP数目；
+downstream：发生在基因下游（1000bp）内的SNP数目；
+exonic：发生在外显子区域的SNP数目；
+intergenic：发生在基因间区的SNP数目；
+intronic：发生在内含子区域的SNP数目；
+ncRNA：没有相关编码注释的RNA，并非不翻译的RNA，参见ANNOVAR的Gene注释说明； splicing：发生在基因剪切区域内（剪切位点上游2bp，即非Exonic区）的SNP数目；
+upstream：发生在基因上游（1000bp）内的SNP数目；
+other：是指杂合的SNP，与参考基因组不一致，所以Annovar未得到注释，注释结果中为“.”。
+
+All.snp.exonic.png/pdf 格式说明
+柱状图，横坐标为样本名，纵坐标为各类型的SNP个数百分比。
+
+All.snp.exonic.xls 格式说明
+nonsynonymous SNV：非同义突变，密码子的改变导致编码的氨基酸改变（此处SNV同SNP）；
+synonymous SNV：同义突变，密码子变异为编码同一氨基酸的密码子，核苷酸的改变不引起氨基酸的改变，即不引起基因产物的突变；
+stopgain：密码子的改变导致终止子的出现；
+stoploss：密码子的改变导致终止子的缺失；
+unknown：数据库注释中未知的注释类型。
+
+All.snp.pattern.png/pdf 格式说明
+横坐标为样本名，纵坐标为各类型的SNP个数百分比。
+
+All.snp.pattern.xls 格式说明
+A>T/T>A：即A到T的突变（包含反链的T到A的突变）；
+A>C/T>G：即A到C的突变（包含反链的T到G的突变）；
+A>G/T>C：即A到G的突变（包含反链的T到C的突变）；
+G>C/C>G：即G到C的突变（包含反链的C到G的突变）；
+G>T/C>A：即G到T的突变（包含反链的C到A的突变）；
+G>A/C>T：即G到A的突变（包含反链的C到T的突变）。
+
+All.snp.num.png/pdf
+横坐标为样品名，纵坐标为SNP个数。
+
+All.snp.num.xls
+SNP：每个样本SNP数量。

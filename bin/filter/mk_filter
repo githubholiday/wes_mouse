@@ -1,5 +1,5 @@
 tmpdir=$(dir  $(abspath $(firstword $(MAKEFILE_LIST))))/
-Bin=$(shell dirname $(abspath $(firstword $(MAKEFILE_LIST))))/../
+Bin=$(shell dirname $(abspath $(firstword $(MAKEFILE_LIST))))/
 ifeq ($(strip $(config)),)
 Bconfig=$(Bin)/config/config.txt
 else
@@ -18,21 +18,15 @@ HELP:
 	@echo "filter 为过滤分析的结果路径"
 	@echo "filter 增加了基于Analysis的Cleandata整理tag,并替代旧的Clean，基于Cleandata链接的tag改名为Clean_ln"
 
-Nas_fq:
-	@echo "################### cp Fq to Nas start at:" `date`
-	@mkdir -p $(outdir)
-	$(python3) $(Bin)/script/nas/nas_cleandata_cp.py -fq1 $(fq1) -fq2 $(fq2) -nas $(outdir) -s $(sample)
-	@echo "################### cp Fq to Nas end at :" `date`
 
 .PHONY:Clean
 Clean:
 	@echo "################### Clean link-QC start at :" `date`
-	@mkdir -p $(outdir)
-	@mkdir -p $(outdir)/QC/Filter
-	cut -f 1 $(samplelist) >$(outdir)/QC/sample.list
-	$(python3) $(Bin)/script/filter/filter_arrange.py -i $(filter) -s $(samplelist) -o $(outdir) -p $(perl) -r $(Rscript)
-	$(python3) $(Bin)/script/filter/STAT_result_statitic.py -i $(filter) -s $(samplelist) -o $(outdir)/STAT_result.xls -f
-	head -n 1 $(outdir)/STAT_result.xls|$(perl) -i -p -e "s/\t/\n/g" |sed '1d' >$(outdir)/QC/Filter/sample1.list
+	mkdir -p $(outdir)
+	cut -f 1 $(samplelist) >$(outdir)/sample.list
+	$(python3) $(Bin)/script/filter_arrange.py -i $(filter) -s $(samplelist) -o $(outdir) -p $(perl) -r $(Rscript)
+	$(python3) $(Bin)/script//STAT_result_statitic.py -i $(filter) -s $(samplelist) -o $(outdir)/STAT_result.xls -f
+	head -n 1 $(outdir)/STAT_result.xls|$(perl) -i -p -e "s/\t/\n/g" |sed '1d' >$(outdir)/sample1.list
 	@echo "################### Clean link-QC end at:" `date`
 
 CleanRaw:

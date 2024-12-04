@@ -1,0 +1,165 @@
+Chr	变异所在染色体	基本信息	26
+Start	变异起始位点	基本信息	26
+End	变异终止位点	基本信息	26
+Ref	参考基因组碱基型	基本信息	26
+Alt	样品变异碱基型	基本信息	26
+RefDepth	参考基因组的reads数目	基本信息	26
+AltDepth	突变的reads数目	基本信息	26
+AltFre	突变的reads数目/(参考基因组的reads数目+突变的reads数目)	基本信息	26
+Hom	纯合（纯合为1，杂合为0）	基本信息	26
+Hem	杂合（杂合为1，纯合为0）	基本信息	26
+Quality	变异的比对质量值	基本信息	26
+Func.refGene	基于refGene数据库对变异位点所在区域进行注释	基因注释	52
+Gene.refGene	基于refGene数据库对变异位点相关基因的注释	基因注释	52
+GeneDetail.refGene	基于refGene数据库对转录本、核酸变异的注释，对应多个转录本会列出多个	基因注释	52
+ExonicFunc.refGene	基于refGene数据库对外显子区域的变异位点的功能注释	基因注释	52
+AAChange.refGene	基于refGene数据库对变异位点处的氨基酸改变注释	基因注释	52
+Func.ensGene	基于Ensembl数据库对变异位点所在区域进行注释	基因注释	52
+Gene.ensGene	基于Ensembl数据库对变异位点相关基因的注释	基因注释	52
+GeneDetail.ensGene	基于Ensembl数据库对转录本、核酸变异的注释，对应多个转录本会列出多个	基因注释	52
+ExonicFunc.ensGene	基于Ensembl数据库对外显子区域的变异位点的功能注释	基因注释	52
+AAChange.ensGene	基于Ensembl数据库对变异位点处的氨基酸改变注释	基因注释	52
+Func.knownGene	基于ucsc数据库对变异位点所在区域进行注释	基因注释	52
+Gene.knownGene	基于ucsc数据库对变异位点相关基因的注释	基因注释	52
+GeneDetail.knownGene	基于ucsc数据库对转录本、核酸变异的注释，对应多个转录本会列出多个	基因注释	52
+ExonicFunc.knownGene	基于ucsc数据库对外显子区域的变异位点的功能注释	基因注释	52
+AAChange.knownGene	基于ucsc数据库对变异位点处的氨基酸改变注释	基因注释	52
+snp138	dbsnp138数据库中变异位点注释结果，有提供rs编号，无.表示	已知的SNP注释	34
+avsnp147	dbSNP147数据库注释结果,有提供rs编号，无.表示	已知的SNP注释	34
+ATCG_freq	安诺健康人变异数据库突变频率	已知的SNP注释	34
+HGMD_Disease_ID	HGMD数据库的疾病ID	已知疾病相关的数据库的注释	45
+HGMD_Pubmed	HGMD数据库SNP-Disease关系对支持的Pubmed ID	已知疾病相关的数据库的注释	45
+cosmic68wgs	COSMIC版本68数据库注释结果，全基因组数据	已知疾病相关的数据库的注释	45
+cosmic70	COSMIC版本70数据库注释结果	已知疾病相关的数据库的注释	45
+CLINSIG	Clinvar注释结果	已知疾病相关的数据库的注释	45
+CLNDBN	Clinvar注释结果	已知疾病相关的数据库的注释	45
+CLNACC	Clinvar注释结果	已知疾病相关的数据库的注释	45
+CLNDSDB	Clinvar注释结果	已知疾病相关的数据库的注释	45
+CLNDSDBID	Clinvar注释结果	已知疾病相关的数据库的注释	45
+OMIM Number	OMIM数据库ID号	已知疾病相关的数据库的注释	45
+OMIM Disorder	OMIM数据库关联的疾病	已知疾病相关的数据库的注释	45
+gwasCatalog	检测该变异位点是否在以往的GWAS研究中被报道，给出相关联疾病信息	已知疾病相关的数据库的注释	45
+BIC_20180417	检测该变异位点是否和乳腺癌易感基因有关	已知疾病相关的数据库的注释	45
+1000g2016apr_all	千人基因组计划数据（2016年4月公布的版本）中所有人群中该变异位点的等位基因频率	等位基因频率	35
+1000g2016apr_eas	千人基因组计划数据（2016年4月公布的版本）中东亚人群中该变异位点的等位基因频率	等位基因频率	35
+1000g2016apr_sas	千人基因组计划数据（2016年4月公布的版本）中南亚人群中该变异位点的等位基因频率	等位基因频率	35
+ExAC_ALL	ExACV3.1数据，基于65000个外显子所有人群中该变异位点的等位基因频率	等位基因频率	35
+ExAC_AFR	ExACV3.1数据，基于65000个外显子非洲人群中该变异位点的等位基因频率	等位基因频率	35
+ExAC_AMR	ExAC0.3数据，基于65000个外显子混合美国人群中该变异位点的等位基因频率	等位基因频率	35
+ExAC_EAS	ExACV3.1数据，基于65000个外显子东亚人群中该变异位点的等位基因频率	等位基因频率	35
+ExAC_FIN	ExAC0.3数据，基于65000个外显子芬兰人群中该变异位点的等位基因频率	等位基因频率	35
+ExAC_NFE	ExAC0.3数据，基于65000个外显子欧洲芬兰以外人群中该变异位点的等位基因频率	等位基因频率	35
+ExAC_OTH	ExAC0.3数据，基于65000个外显子其它人群中该变异位点的等位基因频率	等位基因频率	35
+ExAC_SAS	ExACV3.1数据，基于65000个外显子南亚人群中该变异位点的等位基因频率	等位基因频率	35
+esp6500siv2_all	NHLBI-ESP计划，6500个外显子的等位基因频率，all是所有结果，以hg19的坐标系统为基准	等位基因频率	35
+cg46	CG46个无关个体的等位基因频率，无.表示	等位基因频率	35
+cg69	CG69个个体的等位基因频率，无.表示	等位基因频率	35
+Kaviar_AF	Kaviar_AF database，从34个项目中整合的13K个基因组和64K外显子得到的170M已知的变异数据，等位基因频率	等位基因频率	35
+Kaviar_AC	Kaviar_AF database，从34个项目中整合的13K个基因组和64K外显子得到的170M已知的变异数据，此基因型等位基因数目	等位基因频率	35
+Kaviar_AN	Kaviar_AF database，从34个项目中整合的13K个基因组和64K外显子得到的170M已知的变异数据，所有的等位基因数目	等位基因频率	35
+revel	REVEL预测的致病性得分，得分越接近于1越致病	致病性预测得分	29
+SIFT_score	SIFT预测的致病性得分，越接近于0越致病	致病性预测得分	29
+SIFT_converted_rankscore	SIFT预测的致病性得分转化得分	致病性预测得分	29
+SIFT_pred	SIFT根据阈值判断得到的预测分类，D为较高可信度的致病性位点；P为可信度一般的致病性位点	致病性预测得分	29
+Polyphen2_HDIV_score	Polyphen2预测的致病性得分，越接近1越致病	致病性预测得分	29
+Polyphen2_HDIV_rankscore	Polyphen2预测的致病性得分转化得分	致病性预测得分	29
+Polyphen2_HDIV_pred	Polyphen2根据阈值判断得到的预测分类:D为较高可信度的致病性位点；P为可信度一般的致病性位点：B为可信度差的致病性位点	致病性预测得分	29
+Polyphen2_HVAR_score	Polyphen2预测的致病性得分，越接近1越致病	致病性预测得分	29
+Polyphen2_HVAR_rankscore	Polyphen2预测的致病性得分转化得分	致病性预测得分	29
+Polyphen2_HVAR_pred	Polyphen2根据阈值判断得到的预测分类:D为较高可信度的致病性位点；P为可信度一般的致病性位点：B为可信度差的致病性位点	致病性预测得分	29
+LRT_score	LRT预测得到的分值，无.表示	致病性预测得分	29
+LRT_converted_rankscore	LRT预测得到的分值转化得分	致病性预测得分	29
+LRT_pred	LRT根据阈值判断得到的预测分类，D为较高可信度的致病性位点；N是一般可信度的致病性位点；U是未知分类的致病性位点	致病性预测得分	29
+MutationTaster_score	MutationTaster预测的致病性得分	致病性预测得分	29
+MutationTaster_converted_rankscore	MutationTaster预测的致病性得分转化得分	致病性预测得分	29
+MutationTaster_pred	MutationTaster根据阈值判断得到的预测分类: A为变异在ClinVar中标记为致病性或者该变异是导致终止密码子提前的无义突变；D为变异在软件中被预测为致病性突变；N为变异在软件中被预测为多态性；P为变异在Hapmap数据中存在三种基因型或者在千人基因组计划数据库中显示纯和突变频数大于4。	致病性预测得分	29
+MutationAssessor_score	MutationAssessor预测的致病性得分	致病性预测得分	29
+MutationAssessor_score_rankscore	MutationAssessor预测的致病性得分转化得分	致病性预测得分	29
+MutationAssessor_pred	MutationAssessor根据阈值判断得到的预测分类:H为较高可信度的致病性位点；M为中等可信的致病性位点,L为低可信度的致病性位点,N为无害位点	致病性预测得分	29
+FATHMM_score	FATHMM预测的致病性得分	致病性预测得分	29
+FATHMM_converted_rankscore	FATHMM预测的致病性得分转化得分	致病性预测得分	29
+FATHMM_pred	FATHMM根据阈值得到的预测分类：D为较高可信度的致病性位点；P为可信度一般的致病性位点	致病性预测得分	29
+PROVEAN_score	PROVEAN预测的致病性得分，越小越致病，阈值默认是-2.5	致病性预测得分	29
+PROVEAN_converted_rankscore	PROVEAN预测的致病性得分转化得分	致病性预测得分	29
+PROVEAN_pred	PROVEAN根据阈值得到的预测分类：D为致病性位点；N为无害位点	致病性预测得分	29
+VEST3_score	VEST预测得到的致病性得分，越接近于1越致病	致病性预测得分	29
+VEST3_rankscore	VEST预测得到的致病性得分转化得分	致病性预测得分	29
+MetaSVM_score	MetaSVM预测得到的致病性得分	致病性预测得分	29
+MetaSVM_rankscore	MetaSVM预测得到的致病性得分转化得分	致病性预测得分	29
+MetaSVM_pred	MetaSVM根据阈值得到的预测分类：D是与疾病相关的位点，T是无害位点	致病性预测得分	29
+MetaLR_score	MetaLR预测得到的致病性得分	致病性预测得分	29
+MetaLR_rankscore	MetaLR预测得到的致病性得分转化得分	致病性预测得分	29
+MetaLR_pred	MetaLR根据阈值得到的致病性分类：D是与疾病相关的位点，T是无害位点	致病性预测得分	29
+M-CAP_score	M-CAP预测得到的致病性得分	致病性预测得分	29
+M-CAP_rankscore	M-CAP预测得到的致病性得分转化得分	致病性预测得分	29
+M-CAP_pred	M-CAP预测得到的致病性预测分类	致病性预测得分	29
+CADD_raw	CADD预测到的致病性得分，越大越致病	致病性预测得分	29
+CADD_raw_rankscore	CADD预测到的致病性得分转化得分	致病性预测得分	29
+CADD_phred	CADD预测到的致病性得分，越大越致病	致病性预测得分	29
+DANN_score	DANN预测得到的致病性得分，越接近于1越致病	致病性预测得分	29
+DANN_rankscore	DANN预测得到的致病性得分转化得分	致病性预测得分	29
+fathmm-MKL_coding_score	FATHMM通过马尔科夫模型预测的致病性得分，越接近于1越有害	致病性预测得分	29
+fathmm-MKL_coding_rankscore	FATHMM通过马尔科夫模型预测的致病性得分转化得分	致病性预测得分	29
+fathmm-MKL_coding_pred	FATHMM的预测分类，D为较高可信度的致病性位点，N为一般可信度的致病性位点	致病性预测得分	29
+Eigen_coding_or_noncoding	Whether Eigen-raw and Eigen-phred scores are based on coding model or noncoding model	致病性预测得分	29
+Eigen-raw	Eigen score for coding SNVs. A functional prediction score based on conservation, allele frequencies, and deleteriousness prediction using an unsupervised learning method	致病性预测得分	29
+Eigen-PC-raw	Eigen PC score for genome-wide SNVs. A functional prediction score based on conservation, allele frequencies, deleteriousness prediction (for missense SNVs) and epigenomic signals (for synonymous and non-coding SNVs) using an unsupervised learning	致病性预测得分	29
+GenoCanyon_score	A functional prediction score based on conservation and biochemical annotations using an unsupervised statistical learning	致病性预测得分	29
+GenoCanyon_score_rankscore	GenoCanyon_score scores were ranked among all integrated fitCons scores in dbNSFP. The rankscore is the ratio of the rank of the score over the total number of GenoCanyon_score scores in dbNSFP	致病性预测得分	29
+integrated_fitCons_score	整合后的预测得到的分值，无.表示	致病性预测得分	29
+integrated_fitCons_score_rankscore	前列数值的转化分值	致病性预测得分	29
+integrated_confidence_value	整合后较为可信的分值，无.表示	致病性预测得分	29
+dbscSNV_ADA_SCORE	dbscSNV数据库注释的对剪切位点的影响得分，此值和dbscSNV_RF_SCORE得分小于0.6时，认为会影响剪切位点功能	致病性预测得分	29
+dbscSNV_RF_SCORE	dbscSNV数据库注释的对剪切位点的影响得分，此值和dbscSNV_ADA_SCORE得分小于0.6时，认为会影响剪切位点功能	致病性预测得分	29
+ljb23_metasvm	dbNSFP中非同义突变致病性注释，D表示有害的，T表示可接受的	致病性预测得分	29
+GERP++_RS	Gerp++预测的保守性得分	保守性预测得分	6
+GERP++_RS_rankscore	Gerp++预测的保守性得分转化分值	保守性预测得分	6
+phyloP100way_vertebrate	脊椎动物保守区域注释结果，物种数目为100个	保守性预测得分	6
+phyloP100way_vertebrate_rankscore	前列数值的转化分值	保守性预测得分	6
+phyloP20way_mammalian	哺乳动物保守区域注释结果，物种数目为20个	保守性预测得分	6
+phyloP20way_mammalian_rankscore	前列数值的转化分值	保守性预测得分	6
+phastCons100way_vertebrate	由phastCons程序基于脊椎动物基因组比对预测得到的结果，物种数目为100个	保守性预测得分	6
+phastCons100way_vertebrate_rankscore	前列数值的转化分值	保守性预测得分	6
+phastCons20way_mammalian	由phastCons程序基于哺乳动物基因组比对预测得到的结果，物种数目为20个	保守性预测得分	6
+phastCons20way_mammalian_rankscore	前列数值的转化分值	保守性预测得分	6
+SiPhy_29way_logOdds	给出该变异位点是否位于保守区域中，如果在保守区域中，给出该区域的分值	保守性预测得分	6
+SiPhy_29way_logOdds_rankscore	前列数值的转化分值	保守性预测得分	6
+phastConsElements46way	给出该变异位点是否位于保守区域中，如果在保守区域中，给出该区域的分值	保守性预测得分	6
+tfbsConsSites	基于transfac矩阵数据库，计算所有转录因子结合位点在人比对中的保守分值	保守性预测得分	6
+gerp++elem	gerp elem score，保守性预测	保守性预测得分	6
+gerp++gt2	GERP++score>2的区域，针对全基因组，包含在dbnsfp中，保守性预测	保守性预测得分	6
+dgvMerged	检测该变异是否位于已知的结构变异	基于区域注释	30
+cpgIslandExt	CpG岛预测结果，注释结果为CpG岛名称，如CpG：116（116是该CpG岛中CG二核苷酸的数目）	基于区域注释	30
+cytoBand	变异位点所处的染色体区段	基于区域注释	30
+rmsk	rmsk数据库中关于重复区域的注释	基于区域注释	30
+Interpro_domain	dbNSFP3.1,蛋白的结构域注释	功能注释	54
+GTEx_V6_gene	target gene of the (significant) eQTL SNP	功能注释	54
+GTEx_V6_tissue	tissue type of the expression data with which the eQTL/gene pair is detected	功能注释	54
+wgRna	基于miRBase和snoRNABase数据库，给出注释到的基因名称	功能注释	54
+genomicSuperDups	检测该变异位点是否位于重复区段	功能注释	54
+GWAVA_region_score	GWAVA变异的功能注释，region分值	功能注释	54
+GWAVA_tss_score	GWAVA变异的功能注释，tss分值	功能注释	54
+GWAVA_unmatched_score	GWAVA变异的功能注释，unmatched分值	功能注释	54
+dpsi_max_tissue	SPIDEX预测变异对RNA剪切影响的注释结果	功能注释	54
+dpsi_zscore	SPIDEX预测Zscore（标准化）后的分值	功能注释	54
+targetScanS	UCSC的TargetScans数据库，microRNA结合位点，3’UTR中保守的microRNA靶向位点	功能注释	54
+UniProtKB-AC	UniProt数据库注释结果	功能注释	54
+UniProtKB-ID	UniProt数据库注释结果	功能注释	54
+KO	变异所在基因注释到的KO号	功能注释	54
+GO	变异所在基因注释到的GO号	功能注释	54
+Reactome	Reactome数据库的pathway注释	功能注释	54
+Description	Uniport注释的相关的描述信息	功能注释	54
+AF	vcf文件中的其他注释信息：等位基因频率	其他	17
+qual	vcf文件中的其他注释信息：质量	其他	17
+DP	vcf文件中的其他注释信息：碱基覆盖深度	其他	17
+chr	染色体号	其他	17
+POS	位置	其他	17
+ID	ID	其他	17
+REF	野生型	其他	17
+ALT	突变型	其他	17
+QUAL	vcf文件中的其他注释信息：质量	其他	17
+FILTER	vcf文件中的其他注释信息：Passed all filters	其他	17
+INFO	vcf中注释的其他信息，AC:Allele count;AF:Allele Frequency;AN:Total number of alleles;DP:depth;	其他	17
+FORMAT	vcf中注释的其他信息，用于说明Genotype的格式GT:AD:DP:GQ:PL表示Genotype:Allelic depths:depth:Genotype quality:The phred-scaled genotype likelihoods rounded to the closest integer	其他	17
+Genotype	vcf中注释的其他信息，样本的基因型信息	其他	17
+Otherinfo	其它:如基因型、深度的一些信息	其他	17

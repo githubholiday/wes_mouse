@@ -1,0 +1,19 @@
+说明此文件夹中所有文件中的内容所代表的含义
+
+仅对HLA ClassⅠ分子进行分型
+
+|-- HLAtyping
+|--|-- sample_HLAtyping.xls                   HLA分型信息
+
+sample_HLAtyping.xls    文件格式说明
+
+HLA-Type：HLA分型
+Alleles: HLA分型对应的等位基因信息
+
+Alleles详细说明：
+
+以HLA-A*29:03为例：
+HLA:   HLA prefix
+A:     Gene
+29:    allele group
+03:    specific HLA protein

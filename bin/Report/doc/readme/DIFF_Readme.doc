@@ -1,0 +1,66 @@
+说明此文件夹中所有文件中的内容所代表的含义。
+
+|-- SNP-INDEL_DIFF
+|--|-- SNP/INDEL
+|--|--|-- *.stat.xls：                                   两组样品突变位点分布统计信息
+|--|--|-- *.venn.png：                                   两组样品VENN图
+|--|--|-- *.uniq.*_multianno.xls：                    样品特有位点注释信息
+|--|--|-- *.all.overlap.*_multianno.xls：             所有样本共有位点注释信息
+
+
+*.stat.xls    格式说明
+ITEM                             差异分析分类
+UTR3：                           发生在基因的UTR3的SNP/INDEL数目；
+UTR5：                           发生在基因的UTR5的SNP/INDEL数目；
+UTR5;UTR3：                      同时发生在UTR3和UTR5区域内的SNP/INDEL数目，两个不同的基因；
+Downstream：                     发生在基因下游（1000bp）内的SNP/INDEL数目；
+Exonic：                         发生在外显子区域的SNP/INDEL数目；
+Exonic;splicing：                同时发生在外显子区域和基因剪切区域内的SNP/INDEL数目，两个不同的基因；
+Intergenic：                     发生在基因间区的SNP/INDEL数目；
+Intronic：                       发生在内含子区域的SNP/INDEL数目；
+NcRNA：                          没有相关编码注释的RNA，并非不翻译的RNA，参见ANNOVAR的Gene注释说明；子区间注释同上；
+Splicing：                       发生在基因剪切区域内（剪切位点上游2bp，即非Exonic区）的SNP/INDEL数目；
+Upstream：                       发生在基因上游（1000bp）内的SNP/INDEL数目；
+Upstream;downstream：            发生在基因上游或者下游（1000bp）内的SNP/INDEL数目，两个不同的基因；
+Total：                          基因组中全部的SNP/INDEL数目；
+Other：                          是指杂合的SNP/INDEL，与参考基因组不一致，所以Annovar未得到注释，注释结果中为“.”。
+
+
+*.venn.png
+Venn图，不同颜色圆圈代表不同样品的突变位点，交集表示样品间共有的突变位点，差异表示样品特有的突变位点。
+
+
+*_multianno.xls
+#Sample				  样本名称
+Chr                   变异所在染色体
+Start                 变异起始位点
+End                   变异终止位点
+Ref                   参考基因组碱基型
+Alt                   样品变异碱基型
+RefDepth              参考基因组的reads数目
+AltDepth              突变的reads数目
+AltFre                突变的reads数目/(参考基因组的reads数目+突变的reads数目)
+Hom                   纯合（纯合为1，杂合为0）
+Hem                   杂合（杂合为1，纯合为0）
+Quality               变异的比对质量值
+Func.refGene          基于refGene数据库对变异位点所在区域进行注释
+Gene.refGene          基于refGene数据库对变异位点相关转录本的注释
+GeneDetail.refGene    基于refGene数据库对UTR、splicing等区域的注释，如为间区，则为突变位点距上下游基因的距离，如为外显子区，则为发生突变的基因，以及所发生的碱基突变类型，GLYMA20G31580.1:c.-130A>T,表示突变在转录本GLYMA20G31580.1的第UTR5区域，第130个碱基A变为T
+ExonicFunc.refGene    基于refGene数据库对外显子区域的变异位点注释
+AAChange.refGene      基于refGene数据库对变异位点处的氨基酸改变注释，如GLYMA2269S00200:GLYMA2269S00200.1:exon1:c.C298A:p.Q100K表示突变位于基因GLYMA2269S00200，转录本GLYMA2269S00200.1的第一个外显子区，第298个碱基由C突变为A，第100个氨基酸由Q变为K
+other                 数据库注释结果
+
+*.multianno.all.txt   一组样本差异汇总信息
+Chr                   变异所在染色体
+Start                 变异起始位点
+End                   变异终止位点
+Ref                   参考基因组碱基型
+samplename            对应样品变异碱基型,未检测到时用“.”表示
+Func.ensGene          基于ensGene数据库对变异位点所在区域进行注释
+Gene.ensGene          基于ensGene数据库对变异位点相关转录本的注释
+GeneDetail.ensGene    基于ensGene数据库对UTR、splicing等区域的注释，如为间区，则为突变位点距上下游基因的距离，如为外显子区，则为发生突变的基因
+，以及所发生的碱基突变类型，GLYMA20G31580.1:c.-130A>T,表示突变在转录本GLYMA20G31580.1的第UTR5区域，第130个碱基A变为T
+ExonicFunc.ensGene    基于ensGene数据库对外显子区域的变异位点注释
+AAChange.ensGene      基于ensGene数据库对变异位点处的氨基酸改变注释，如GLYMA2269S00200:GLYMA2269S00200.1:exon1:c.C298A:p.Q100K表示突变位于基因
+GLYMA2269S00200，转录本GLYMA2269S00200.1的第一个外显子区，第298个碱基由C突变为A，第100个氨基酸由Q变为K
+other                 数据库注释结果

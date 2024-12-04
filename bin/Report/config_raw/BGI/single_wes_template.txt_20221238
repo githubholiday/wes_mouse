@@ -1,0 +1,928 @@
+Title:$(PROJECT_NAME)
+
+MainMenu:项目信息
+
+SubMenu:背景介绍
+P:#,;#外显子组（Exome）是一个物种基因组中全部外显子区域的总和，是遗传物质中编码蛋白质的DNA序列，约占整个基因组的1%-2%。外显子的全面分析有助检测出和疾病相关的编码区突变，从而研究DNA变异对正常生物学机制与疾病发病机制的影响。外显子测序已经在多种单基因遗传病研究、多基因遗传病研究、肿瘤研究及产前诊断中得到了应用。
+P:#,;#安诺优达外显子组测序，是基于华大测序平台，利用序列捕获技术将人全基因组外显子区域DNA捕捉并富集后进行高通量测序的基因组分析方法，能够直接发现与蛋白质功能变异相关的遗传突变。
+P:#,;#单基因病是指由一对等位基因控制的疾病或病理性状，常见的有短指症、β－地中海贫血、慢性进行性舞蹈病、白化病、苯丙酮尿症等。由于基因是位于染色体上，而染色体有常染色体和性染色体之分，基因也有显性基因与隐性基因之别，故位于不同染色体上的致病基因，其遗传方式是不同的。因此，单基因病中又可分出常染色体显性遗传病(如短指症等)、常染色体隐性遗传病（如白化病等）、X伴性显性遗传病（如抗维生素D缺乏病等）、X伴性隐性遗传病（如色盲等）、Y伴性遗传病（如耳廓长毛症等）等几类。
+
+SubMenu:实验流程
+P:#,;#本研究采用AgilentV6外显子靶向序列富集系统对人的外显子序列进行捕获。其实验流程描述如下：
+
+ThirdMenu: DNA 质量检测
+P:#,;#（1） 1％的琼脂糖电泳检测DNA样品是否有降解以及杂质；
+P:#,;#（2） NanoPhotometer®分光光度计检测样品纯度（IMPLEN, CA, USA）；
+P:#,;#（3） Qubit® 3.0 Flurometer（Life Technologies, CA, USA）检测DNA样品浓度。
+
+ThirdMenu: EXON文库制备
+P:#,;#取用基因组DNA模板，首先根据SureSelectXT Target Enrichment System （G7530-90000）方法及流程进行小片段文库制备，进行杂交捕获。本操作流程主要包括以下几个内容：
+P:#,;#（1）DNA片段化
+P:#,;#（2）末端修复和添加dA尾
+P:#,;#（3）接头连接
+P:#,;#（4）PCR扩增
+P:#,;#（5）PCR产物质检
+P:#,;#（6）变性和环化
+P:#,;#（7）环化产物质检
+
+ThirdMenu: 库检
+P:#,;#文库构建完成后，先使用Qubit3.0进行初步定量，稀释文库至1ng/ul，随后使用Agilent 2100对文库的insert size进行检测，insert size符合预期后，使用Bio-RAD CFX 96荧光定量PCR仪，Bio-RAD KIT iQ SYBR GRN进行Q-PCR，对文库的有效浓度进行准确定量（文库有效浓度＞10nM），以保证文库质量。
+
+ThirdMenu: 测序
+P:#,;#检测合格的环化产物，可进入到测序环节，主要流程包括：
+P:#,;#（1）DNB制作
+P:#,;#（2）DNB加载
+P:#,;#（3）MGI平台测序
+Image:upload/common/experiment.png,400,1,实验流程图
+
+SubMenu:信息分析流程
+P:#,;#安诺优达外显子测序信息分析流程主要分为以下部分：
+P:#17,18;#（1） 数据处理及质控：将原始下机数据进行过滤并评估测序质量(只分析项目不包含此项)；
+P:#17,18;#（2） 比对及质控：将过滤后的数据比对到参考基因组上并对相应指标质控；
+P:#17,18;#（3） 突变检测及注释：检测所有样本的SNP、InDel、SV、CNV以及融合基因，并进行各数据库的注释和分析以及变异全局总览；
+P:#17,18;#（4） 高级分析和数据挖掘：在变异结果基础上，对突变位点进行过滤以及药物靶点和药物反应分析，然后进行新生突变、显性隐性遗传模式分析、复合杂合遗传模式分析以及生存分析。
+P:#,;#具体技术流程如下图：
+Image:upload/common/single_analysis_pipeline.png,600,1,信息分析流程图
+P:#,;#该图为外显子产品包含的所有分析条目，项目具体分析条目包含但可能不全包含于此。其中虚线部分为家系分析，需要提供样本对应的家系信息；驱动基因分析建议样本数大于20个；生存分析需要提供样本的生存信息；差异分析要求每组样品数<=5。
+
+#过滤-----------------------------------------------
+
+MainMenu:数据处理
+
+SubMenu:原始测序数据
+P:#,;#华大高通量测序结果最初以原始图像数据文件存在，经软件WriteFQ进行序列碱基识别后转化为原始测序序列（Sequenced Reads），我们称之为Raw Data或Raw Reads，其结果以FASTQ（简称为fq）文件格式存储。FASTQ文件包含每条测序序列（Read）的名称、碱基序列以及其对应的测序质量信息。在FASTQ格式文件中，每个碱基对应一个碱基质量字符，每个碱基质量字符对应的ASCII码值减去33（Sanger质量值体系），即为该碱基的测序质量得分（Phred Quality Score）。不同Phred Quality Score代表不同的碱基测序错误率，如Phred Quality Score值为20和30分别表示碱基测序错误率为1%和0.1%。其中FASTQ格式示例如下：
+Image:upload/common/fastq_format.png,100,1,FASTQ文件格式示例图
+FastqPRE:
+（1） 第一行以“@”开头，随后为测序识别符和描述文字;
+（2） 第二行是碱基序列;
+（3） 第三行以“+”开头，随后为测序标识别符，一般省略;
+（4） 第四行是对应碱基的测序质量，该行中每个字符对应的ASCII值减去33，即为对应第二行碱基的测序质量值。
+FastqPRE
+
+SubMenu:原始数据过滤
+P:#,;#测序得到的某些原始下机序列，会含有测序接头序列以及低质量序列，为保证后续信息分析的质量，我们对原始序列进行过滤，得到高质量的Clean Reads，再进行后续分析。
+P:#,;#数据处理步骤如下：
+FilterPRE:
+（1） 去除接头污染的Reads（Reads中接头污染的碱基数大于5bp。对于双端测序，若一端受到接头污染，则去掉两端的Reads）；
+（2） 去除低质量的Reads（Reads中质量值Q≤19的碱基占总碱基的50%以上，对于双端测序，若一端为低质量Reads，则会去掉两端Reads）；
+（3） 去除含N比例大于5%的Reads（对于双端测序，若一端含N比例大于5%，则会去掉两端Reads）。
+FilterPRE
+P:#,;#数据产出及过滤统计结果见下表：
+Table:upload/*_FQ/filter*stat.xls,,2,1000,,0,数据产出质量情况一览表
+PRE:,,40;
+（1） Raw Reads Number：原始下机的Reads数；
+（2） Raw Bases Number：原始下机序列的碱基数；
+（3） Clean Reads Number：过滤后得到的高质量的Reads数；
+（4） Clean Reads Rate(%): 过滤后得到的Clean Reads占Raw Reads的比例。这个值越大，说明测序质量越好；
+（5） Clean Bases Number：过滤后的高质量序列的碱基数；
+（6） Low-quality Reads Number：去除的低质量的Reads数（如双端测序，一端是低质量，则去除的为双端）；
+（7） Low-quality Reads Rate(%)：去掉的低质量的Reads占Raw Reads的比例；
+（8） Ns Reads Number：去除的含N比例大于5%的Reads数；
+（9） Ns Reads Rate(%)：去除的含N比例大于5%的Reads占Raw Reads的比例；
+（10） Adapter polluted Reads Number：去除的接头污染的Reads数；
+（11） Adapter polluted Reads Rate(%)：去除的接头污染的Reads占Raw Reads的比例；
+（12） Raw Q30 Bases Rate(%)：Raw Reads中测序质量值大于30（错误率小于0.1%）的碱基占总碱基（Raw Bases）的比例；
+（13） Clean Q30 Bases Rate(%)：Clean Reads中测序质量值大于30（错误率小于0.1%）的碱基占总碱基（Clean Bases）的比例。
+PRE
+P:#,;#数据产出质量情况结果下载链接：
+Excel:upload/*_FQ/filter*stat.xls,,,结果下载链接：;
+P:#,;#Raw Reads包含低质量的序列、接头污染的序列、含N碱基比例大于5%的序列以及Clean Reads。Clean Reads所占的比例越高，数据质量越好，对所有样本绘制数据组成柱状图，可以直观地反映数据的质量情况：
+Image:upload/*_FQ/filter_rate.png,,1,Raw Data数据组成统计图
+P:#,;#横坐标表示样品名，纵坐标表示不同过滤标准过滤掉的Reads的百分比。
+P:#,;#Raw Data数据组成结果下载链接：
+Excel:upload/*_FQ/filter_rate.p*,,,结果下载链接：;
+
+SubMenu:过滤后数据量统计
+P:#,;#下图为本项目样本的Clean Bases数据量统计图：
+Image:upload/*_FQ/CleanBases.png,,1,样品数据量分布图
+P:#,;#横坐标是样本名，纵坐标为数据量。
+P:#,;#样品数据量结果下载链接：
+Excel:upload/*_FQ/CleanBases.p*,,,结果下载链接：;
+
+SubMenu:过滤后数据的碱基含量分布
+P:#,;#以过滤后序列的碱基位置作为横坐标，以每个位置的ATCGN碱基的比例作为纵坐标，得到碱基分布图。正常情况下，由于碱基互补配对原则和测序的随机性，在每个测序位置上A碱基和T碱基比例相近，G碱基和C碱基比例相近。
+P:#,;#碱基含量分布图如下：
+Image:upload/*_FQ/*.base.png,,1,碱基含量分布图
+P:#,;#横坐标为Reads（双端测序则为一对Reads）的碱基位置，纵坐标为单碱基所占的比例，不同颜色代表不同的碱基类型。
+P:#,;#碱基含量分布结果下载链接：
+Excel:upload/*_FQ/*.base.p*,,,结果下载链接：;
+
+SubMenu:过滤后数据的碱基质量值分布
+P:#,;#碱基测序质量值反映了测序错误率，质量值越大，错误率越小，它受测序仪本身、测序试剂、样品等多个因素共同影响。碱基测序错误率是利用Phred数值（Phred Score，Qphred）通过以下公式转化得到（其中e为碱基测序错误率）：
+Image:upload/common/phred_formula.png,50,1,Phred值计算公式
+P:#,;#Phred数值是在碱基识别（Base Calling）过程中，通过一种预测碱基发生错误概率模型计算得到的，对应关系如下表所示：
+Table:upload/common/phred_score.txt,,4,1000,,0,碱基识别与Phred分值之间的简明对应关系表
+P:#,;#以Clean Reads的碱基位置作为横坐标，每个位置的平均测序质量值作为纵坐标，得到每个样品的测序数据质量分布图，直观反映每个样品在测序过程中测序质量的稳定性。
+Image:upload/*_FQ/*quality.png,,1,Clean Reads碱基平均质量值分布
+P:#,;#横坐标为Clean Reads的碱基位置，纵坐标为平均碱基质量。
+P:#,;#Clean Reads碱基平均质量值结果下载链接：
+Excel:upload/*_FQ/*quality.p*,,,结果下载链接：;
+P:#,;#另一方面，每个样品Clean Data的Q30碱基的百分比可直观反映最终用于后续分析的数据质量，其值越大说明测序错误率小于0.1%的碱基在总碱基中的比例越高。
+Image:upload/*_FQ/Q30.png,,1,所有样本Clean Reads的质量统计图
+P:#,;#横坐标是样本名，纵坐标为Clean Data中Q30碱基百分比，红色线为质控合格线。
+P:#,;#Clean Reads的质量统计结果下载链接：
+Excel:upload/*_FQ/Q30.p*,,,结果下载链接：;
+
+#比对--------------------------------------------
+
+MainMenu:比对及质控
+
+SubMenu:比对信息统计
+P:#,;#本项目以UCSC hg19参考基因组作为参考序列，利用比对软件BWA（Li et al., 2009），将过滤后的Clean Reads比对到参考基因组上，得到BAM（http://samtools.github.io/hts-specs/SAMv1.pdf）格式比对结果文件。使用Samtools（Li et al., 2009）软件对BAM文件进行排序，只保留序列唯一比对结果，再利用Picard（http://broadinstitute.github.io/picard/）标记比对结果中的Duplication read，同时还利用GATK（McKenna, A. et al., 2000）对InDel周围的序列进行局部重新比对，降低SNP检测假阳性，得到高准确性的用于变异检测的比对结果BAM文件。
+P:#,;#对于外显子测序分析，目标区域捕获效率、比对率以及覆盖度等指标值能综合反映样本、建库及测序等方面的质量情况，其中Uniq Rate可直观反映唯一比对到参考基因组上序列的比例，Duplication Rate反映样品建库质量。对每个样本的最终比对结果进行统计，结果如下：
+Table:upload/*_MAP/All.map.stat.xls,,2,1000,,0,比对数据统计
+PRE:,,55;
+（1） Target Region (bp)：基因组目标捕获区域大小；
+（2） Clean Reads：过滤后的Reads的个数；
+（3） Clean Bases ：过滤后的碱基数；
+（4） Mapped Reads：比对到参考基因组上的Reads数；
+（5） Mapped Bases：比对到参考基因组上的碱基数；
+（6） Mapping Rate (%)：比对到参考基因组上的Reads的百分比；
+（7） Reads Mapped to Target Region：比对到基因组目标捕获区域上的Reads个数；
+（8） Capture Specificity(%)：比对到基因组目标捕获区域的Reads数占比对到基因组Reads的比例；
+（9） Duplication Rate (%)：去除PCR重复的碱基数占比对到基因组唯一位置的碱基数的比例；
+（10） Uniq Rate (%)：比对到基因组唯一位置的碱基数占比对上的碱基数的比例；
+（11） Bases Mapped to Target Region：比对到基因组目标捕获区域上的碱基个数；
+（12） Mean Depth of Target Region：基因组目标捕获区域的平均测序深度；
+（13） Coverage of Target Region (%)：覆盖度，即目标捕获区中有多大比例的区域至少测到了1次；
+（14） Fraction of Target Covered >= NX：基因组目标捕获区域深度>= NX的碱基覆盖度；
+（15） Bases Mapped to Flanking Region：比对到基因组目标捕获区域的侧翼区（100bp）中碱基的数量；
+（16） Mean Depth of Flanking Region：基因组目标捕获区域的侧翼区（100bp）的平均测序深度；
+（17） Coverage of Flanking Region (%)：基因组目标捕获区域的侧翼区（100bp）的平均覆盖度；
+（18） Fraction of Flanking Covered ≥ NX：基因组目标捕获区域的侧翼区（100bp）深度≥ NX的碱基覆盖度。
+PRE
+P:#,;#比对数据统计结果下载链接：
+Excel:upload/*_MAP/All.map.stat.xls,,,结果下载链接：;
+P:#,;#对每个样品的比对结果进行比对率和覆盖度统计，作图如下：
+Image:upload/*_MAP/All.map.stat.png,,1,比对率及覆盖率分析图
+P:#,;#横坐标为样本名，纵坐标为比对率，目标区域覆盖度。
+P:#,;#比对率及覆盖率结果下载链接：
+Excel:upload/*_MAP/All.map.stat.p*,,,结果下载链接：;
+
+SubMenu:测序深度分布
+P:#,;#测序深度的分布可以反映建库测序的均一性及对目标捕获区域的详细覆盖情况。
+P:#,;#对于每个样品，绘制单碱基深度分布图，以测序深度为横坐标，相应深度的位点比例为纵坐标，此处Fraction of Bases=（特定深度对应的位点数/目标捕获区域的长度），它反映了特定深度下对应的目标捕获区域的比例。
+Image:upload/*_MAP/*_histPlot.png,,1,单碱基深度分布图
+P:#,;#单碱基深度分布图以测序深度为横坐标，相应深度的碱基所占比例为纵坐标。
+P:#,;#单碱基深度分布结果下载链接：
+Excel:upload/*_MAP/*_histPlot.p*,,,结果下载链接：;
+P:#,;#累积深度分布图以深度为横坐标，大于相应深度的位点比例为纵坐标，此处Fraction of Bases=（大于此深度的位点数/目标捕获区域的长度），它反映了大于特定深度下的目标捕获区域的比例。
+Image:upload/*_MAP/*_cumuPlot.png,,1,累积深度分布图
+P:#,;#累积深度分布图以累积测序深度为横坐标，大于相应深度的碱基所占比例为纵坐标。
+P:#,;#累积深度分布结果下载链接：
+Excel:upload/*_MAP/*_cumuPlot.p*,,,结果下载链接：;
+
+#变异检测-----------------------------------
+
+MainMenu:变异检测注释
+
+SubMenu:SNP检测及注释
+P:#,;#单核苷酸多态性（Single Nucleotide Polymorphism，SNP）指的是由单个核苷酸——A，T，C或G的改变而引起的DNA序列的改变，造成包括人类在内的物种之间染色体基因组的多样性。几乎所有常见的单核苷酸多态性（SNP）位点只有两个等位基因。单核苷酸多态性（SNP）位点的分布是不均匀的，在非编码区比在编码区更常见。一般来说，自然选择倾向于保留最利于遗传适应性的单核苷酸多态性（SNP）位点。其中大部分单核苷酸多态性（SNP）位点与疾病和发育无关，只有少部分与疾病相关。
+
+ThirdMenu:SNP检测及过滤
+P:#,;#在比对到参考基因组序列的基础上，通过突变分析软件GATK从中提取全基因组中所有的潜在多态性SNP位点，再根据质量值、深度、重复性等因素做进一步的过滤筛选，最终得到高可信度的SNP数据集，并对其进行ANNOVAR（Wang, K., 2010）注释。
+Image:upload/*_SNP/Stat/All.snp.num.png,,1,SNP个数统计图
+P:#,;#横坐标为样本名称，纵坐标为各样本的SNP个数。
+P:#,;#SNP个数统计结果下载链接：
+Excel:upload/*_SNP/Stat/All.snp.num.p*,,,结果下载链接：;
+P:#,;#碱基颠换（transversion）是指在碱基置换中嘌呤与嘧啶之间的替代，而转换（transition）则是一个嘌呤被另一个嘌呤，或者是一个嘧啶被另一个嘧啶替代。由于结构原因，转换发生的概率高于颠换发生的概率，转换和颠换的比率可以反映检测到的SNP准确性，全基因组内的比值约在 2.2 左右，编码区内的比值约在 3.2 左右。
+P:#,;#对各个样品分别进行基因组和编码区的SNP转换/颠换比率统计，结果见下表所示：
+Table:upload/*_SNP/Stat/*.SNP.TS_TV.stat.xls,,7,1000,,0,目标捕获区域和编码区的SNP转换/颠换比率统计
+PRE:,,40;
+（1） TS_genome：目标捕获区域上发生转换的SNP数；
+（2） TV_genome：目标捕获区域上发生颠换的SNP数；
+（3） TS/TV_genome：目标捕获区域上SNP转换/颠换比率；
+（4） TS_exonic：外显子区域上发生转换的SNP数；
+（5） TV_exonic：外显子区域发生颠换的SNP数；
+（6） TS/TV_exonic：外显子区域上SNP转换/颠换比率。
+PRE
+P:#,;#转换/颠换比率统计结果下载链接：
+Excel:upload/*_SNP/Stat/*.SNP.TS_TV.stat.xls,,,结果下载链接：;
+
+ThirdMenu:SNP注释及统计
+P:#,;#通过ANNOVAR软件对各样品的SNP过滤结果进行注释，主要包括三方面：基于基因、基因组区域以及功能的注释。基于基因的数据库注释，主要注释该变异所在的基因名称、是否影响编码蛋白以及所影响的氨基酸位置信息，如refGene数据库的注释；基于基因组区域的数据库注释，主要注释该变异所位于的基因组功能区域，如gene、exon、UTR、转录因子结合位点等，如tfbsConsSites数据库的注释；基于功能的数据库注释，主要注释该变异是否出现在一些常见数据库中以及该变异的保守性和致病性，如1000 Genomes、dbSNP、dbNSFP等数据库的注释。
+P:#,;#本项目共注释了包括1000 Genomes、COSMIC、Clinvar、dbSNP、OMIM、miRBase、ExAC、cpgIslandExt、dbNSFP、ESP6500在内的40多个常见且重要的突变数据库。多个数据库的注释有利于对变异所影响的方面以及在人群中的突变频率等信息进行全面了解。
+P:#,;#对各样品的SNP进行数据库注释后的结果如下表所示：
+Table:upload/*_SNP/*.SNP.hg19_multianno.xls,2,5,1000,,0,SNP结果示例表（前两行前五列）
+PRE:,,60;
+（1） Chr：染色体号；
+（2） Start：突变起始位置；
+（3） End：突变终止位置；
+（4） Ref：参考基因型；
+（5） Alt：突变型；
+（6） 第六列之后为各数据库注释结果，详细说明见下方链接。
+PRE
+P:#,;#为了方便查看，注释结果按染色体切割并按分类添加颜色，结果下载链接：
+Excel:upload/*_SNP/Samples/*.SNP.hg19_multianno.xls,,,为了方便查看，注释结果按染色体切割并按分类添加颜色，结果下载链接：;
+P:#,;#原始注释文件下载链接：
+Excel:upload/*_SNP/*.SNP.hg19_multianno.xls,,,原始注释文件下载链接：;
+P:#,;#结果文件说明下载链接：
+Excel:upload/common/sup1.xlsx,,,结果文件说明下载链接：;
+P:#,;#关于基因组区域注释，对各区域上的SNP个数所占百分比统计作图，可直观看出样本突变在基因组不同区域的分布情况。
+Image:upload/*_SNP/Stat/All.snp.genome.png,,1,基因组不同区域的SNP分布图
+P:#,;#横坐标为样本名，纵坐标为各区间的SNP个数百分比；作图时，将相同功能区的SNP合并，如"UTR5;UTR3"归入UTR5分类。
+P:#,;#基因组不同区域的SNP分布结果下载链接：
+Excel:upload/*_SNP/Stat/All.snp.genome.p*,,,结果下载链接：;
+P:#,;#关于基因功能注释，外显子区域的SNP突变可能会影响到氨基酸的编码，进而影响基因功能。将位于外显子区域的突变根据其是否引起氨基酸的改变进行分类注释，如非同义突变、同义突变等，通常非同义突变导致相应氨基酸改变从而使得基因功能发生改变，而Stopgain和Stoploss导致了终止子的提前出现或缺失。对样品外显子区的SNP进行功能分类统计作图，可直观看出所有样品的功能分布情况。
+Image:upload/*_SNP/Stat/All.snp.exonic.png,,1,SNP功能分布图
+P:#,;#横坐标为样本名，纵坐标为各类型的SNP个数百分比。
+P:#,;#SNP功能分布结果下载链接：
+Excel:upload/*_SNP/Stat/All.snp.exonic.p*,,,结果下载链接：;
+
+ThirdMenu:SNP的突变频谱分析
+P:#,;#在检测得到高可信度的SNP的基础上，我们对SNP突变频谱进行了统计分析，通过分析我们可以直观看出各样本中各种突变类型以及所占比例。点突变包含6种类型：A>T/T>A, A>C/T>G, A>G/T>C, G>C/C>G, G>T/C>A, G>A/C>T，如A>C/T>G表示一条链A到C的突变和另一条链T到G的突变等两种类型，通过对所有样品的突变结果进行分类统计，可看出每个样品每种突变类型所占百分比，示意图如下：
+Image:upload/*_SNP/Stat/All.snp.pattern.png,,1,样品中各突变类型统计结果图
+P:#,;#横坐标代表每个样品，纵坐标代表突变类型所占百分比。
+P:#,;#各突变类型统计结果下载链接：
+Excel:upload/*_SNP/Stat/All.snp.pattern.p*,,,结果下载链接：;
+
+SubMenu:SNP检测及精简注释
+P:#,;#单核苷酸多态性（Single Nucleotide Polymorphism，SNP）指的是由单个核苷酸——A，T，C或G的改变而引起的DNA序列的改变，造成包括人类在内的物种之间染色体基因组的多样性。几乎所有常见的单核苷酸多态性（SNP）位点只有两个等位基因。单核苷酸多态性（SNP）位点的分布是不均匀的，在非编码区比在编码区更常见。一般来说，自然选择倾向于保留最利于遗传适应性的单核苷酸多态性（SNP）位点。其中大部分单核苷酸多态性（SNP）位点与疾病和发育无关，只有少部分与疾病相关。
+
+ThirdMenu:SNP检测及过滤
+P:#,;#在比对到参考基因组序列的基础上，通过突变分析软件GATK从中提取全基因组中所有的潜在多态性SNP位点，再根据质量值、深度、重复性等因素做进一步的过滤筛选，最终得到高可信度的SNP数据集，并对其进行ANNOVAR（Wang, K., 2010）注释。
+Image:upload/*_SNP/Stat/All.snp.num.png,,1,SNP个数统计图
+P:#,;#横坐标为样本名称，纵坐标为各样本的SNP个数。
+P:#,;#SNP个数统计结果下载链接：
+Excel:upload/*_SNP/Stat/All.snp.num.p*,,,结果下载链接：;
+P:#,;#碱基颠换（transversion）是指在碱基置换中嘌呤与嘧啶之间的替代，而转换（transition）则是一个嘌呤被另一个嘌呤，或者是一个嘧啶被另一个嘧啶替代。由于结构原因，转换发生的概率高于颠换发生的概率，转换和颠换的比率可以反映检测到的SNP准确性，全基因组内的比值约在 2.2 左右，编码区内的比值约在 3.2 左右。
+P:#,;#对各个样品分别进行基因组和编码区的SNP转换/颠换比率统计，结果见下表所示：
+Table:upload/*_SNP/Stat/*.SNP.TS_TV.stat.xls,,7,1000,,0,目标捕获区域和编码区的SNP转换/颠换比率统计
+PRE:,,40;
+（1） TS_genome：目标捕获区域上发生转换的SNP数；
+（2） TV_genome：目标捕获区域上发生颠换的SNP数；
+（3） TS/TV_genome：目标捕获区域上SNP转换/颠换比率；
+（4） TS_exonic：外显子区域上发生转换的SNP数；
+（5） TV_exonic：外显子区域发生颠换的SNP数；
+（6） TS/TV_exonic：外显子区域上SNP转换/颠换比率。
+PRE
+P:#,;#转换/颠换比率统计结果下载链接：
+Excel:upload/*_SNP/Stat/*.SNP.TS_TV.stat.xls,,,结果下载链接：;
+
+ThirdMenu:SNP注释及统计
+P:#,;#通过ANNOVAR软件对各样品的SNP过滤结果进行注释，主要包括三方面：基于基因、基因组区域以及功能的注释。基于基因的数据库注释，主要注释该变异所在的基因名称、是否影响编码蛋白以及所影响的氨基酸位置信息，如refGene数据库的注释；基于基因组区域的数据库注释，主要注释该变异所位于的基因组功能区域，如gene、exon、UTR、转录因子结合位点等，如tfbsConsSites数据库的注释；基于功能的数据库注释，主要注释该变异是否出现在一些常见数据库中以及该变异的保守性和致病性，如1000 Genomes、dbSNP、dbNSFP等数据库的注释。
+P:#,;#本项目共注释了包括refGene、ensGene、avsnp147、1000Genome、COSMIC在内的5个常见且重要的突变数据库。多个数据库的注释有利于对变异所影响的方面以及在人群中的突变频率等信息进行全面了解。
+P:#,;#对各样品的SNP进行数据库注释后的结果如下表所示：
+Table:upload/*_SNP/*.SNP.hg19_multianno.xls,2,5,1000,,0,SNP结果示例表（前两行前五列）
+PRE:,,60;
+（1） Chr：染色体号；
+（2） Start：突变起始位置；
+（3） End：突变终止位置；
+（4） Ref：参考基因型；
+（5） Alt：突变型；
+（6） 第六列之后为各数据库注释结果，详细说明见下方链接。
+PRE
+P:#,;#原始注释文件下载链接：
+Excel:upload/*_SNP/*.SNP.hg19_multianno.xls,,,原始注释文件下载链接：;
+P:#,;#结果文件说明下载链接：
+Excel:upload/common/sup1.xlsx,,,结果文件说明下载链接：;
+P:#,;#关于基因组区域注释，对各区域上的SNP个数所占百分比统计作图，可直观看出样本突变在基因组不同区域的分布情况。
+Image:upload/*_SNP/Stat/All.snp.genome.png,,1,基因组不同区域的SNP分布图
+P:#,;#横坐标为样本名，纵坐标为各区间的SNP个数百分比；作图时，将相同功能区的SNP合并，如"UTR5;UTR3"归入UTR5分类。
+P:#,;#基因组不同区域的SNP分布结果下载链接：
+Excel:upload/*_SNP/Stat/All.snp.genome.p*,,,结果下载链接：;
+P:#,;#关于基因功能注释，外显子区域的SNP突变可能会影响到氨基酸的编码，进而影响基因功能。将位于外显子区域的突变根据其是否引起氨基酸的改变进行分类注释，如非同义突变、同义突变等，通常非同义突变导致相应氨基酸改变从而使得基因功能发生改变，而Stopgain和Stoploss导致了终止子的提前出现或缺失。对样品外显子区的SNP进行功能分类统计作图，可直观看出所有样品的功能分布情况。
+Image:upload/*_SNP/Stat/All.snp.exonic.png,,1,SNP功能分布图
+P:#,;#横坐标为样本名，纵坐标为各类型的SNP个数百分比。
+P:#,;#SNP功能分布结果下载链接：
+Excel:upload/*_SNP/Stat/All.snp.exonic.p*,,,结果下载链接：;
+
+ThirdMenu:SNP的突变频谱分析
+P:#,;#在检测得到高可信度的SNP的基础上，我们对SNP突变频谱进行了统计分析，通过分析我们可以直观看出各样本中各种突变类型以及所占比例。点突变包含6种类型：A>T/T>A, A>C/T>G, A>G/T>C, G>C/C>G, G>T/C>A, G>A/C>T，如A>C/T>G表示一条链A到C的突变和另一条链T到G的突变等两种类型，通过对所有样品的突变结果进行分类统计，可看出每个样品每种突变类型所占百分比，示意图如下：
+Image:upload/*_SNP/Stat/All.snp.pattern.png,,1,样品中各突变类型统计结果图
+P:#,;#横坐标代表每个样品，纵坐标代表突变类型所占百分比。
+P:#,;#各突变类型统计结果下载链接：
+Excel:upload/*_SNP/Stat/All.snp.pattern.p*,,,结果下载链接：;
+
+SubMenu:SNP保守性预测和致病性分析
+P:#,;#dbNSFP（Liu, X., 2011）数据库是一个针对非同义突变注释的数据库，主要通过相应的计算分值来评估氨基酸的保守性以及致病性。这些分值包括SIFT scores，PolyPhen2 HDIV scores，PolyPhen2 HVAR scores，LRT scores，MutationTaster scores，MutationAssessor score，FATHMM scores，GERP++ scores，PhyloP scores和SiPhy scores等，不同的得分值均是基于不同的算法来评估突变的保守性和致病性。
+P:#,;#每种分值对应原始分值（score），转化分值（score_converted）和预测分类（pred）。本项目主要根据SIFT（score<=0.05）和PolyPhen2_HVAR（score>=0.909）所预测的突变分类来进行筛选，具体各个类别对应的取值标准见下方链接。
+P:#,;#SNP保守性预测与致病性分析结果如下图所示：
+Image:upload/*_Conservation/*.damage.hg19_multianno.png,,1,SNP保守性预测与致病性分析结果图
+P:#,;#横坐标为POLYPHEN的预测分值，纵坐标为SIFT的预测分值，灰线分别代表POLYPHEN和SIFT的有害性阈值，图中红色的点代表两种方法预测均为有害，蓝色的点代表其中一种方法预测有害，或者两种方法预测都无害。
+P:#,;#SNP保守性分析结果下载链接：
+Excel:upload/*_Conservation/*.damage.hg19_multianno.*,,,结果下载链接：;
+P:#,;#结果文件说明下载链接：
+Excel:upload/common/sup2.xlsx,,,结果文件说明下载链接：;
+
+SubMenu:OMIM数据库分析
+P:#,;#OMIM（Online Mendelian Inheritance in Man）（http://omim.org/）是人类基因和遗传表型关联的综合性数据库。该数据库包含了所有已知的孟德尔遗传病和超过15,000个基因相关信息，并搜集了这些基因与各类遗传病的关系。
+P:#,;#为了探明碱基突变可能导致的疾病，我们利用OMIM数据库信息对SNP进行注释，结果展示如下。
+Table:upload/*_OMIM/*.OMIM.anno.xls,2,5,1000,,0,OMIM数据库注释（前两行前五列）
+PRE:,,60;
+（1） Chr：染色体号；
+（2） Start：突变起始位置；
+（3） End：突变终止位置；
+（4） Ref：参考基因型；
+（5） Alt：突变型；
+（6） 第六列之后为各数据库注释结果，详细说明见下方链接。
+PRE
+P:#,;#OMIM数据库注释结果下载链接：
+Excel:upload/*_OMIM/*.OMIM.anno.xls,,,结果下载链接：;
+P:#,;#结果文件说明下载链接：
+Excel:upload/common/sup3.xlsx,,,结果文件说明下载链接：;
+
+SubMenu:InDel检测及精简注释
+P:#,;#插入缺失（insertion-deletion，InDel），指的是两个亲本在全基因组中存在的一种差异，相对另一个亲本而言，其中一个亲本的基因组中有一定数量的核苷酸插入或缺失；或者说单个样本与参考基因组相比所存在的核苷酸的插入或缺失。InDel的分布和变化是生物性状表现的重要基础，也可能是杂种优势、自交退化等现象的遗传基础，对保留生物的遗传多样性具有重要意义。
+
+ThirdMenu:InDel检测及过滤
+P:#,;#与SNP一样，通过软件GATK进行InDel变异检测及过滤，对每个样本所检测到的高质量InDel个数进行统计，作图如下：
+Image:upload/*_InDel/Stat/All.indel.num.png,,1,InDel个数统计图
+P:#,;#横坐标为样本名称，纵坐标为检测的InDel的个数。
+P:#,;#InDel个数统计结果下载链接：
+Excel:upload/*_InDel/Stat/All.indel.num.p*,,,结果下载链接：;
+P:#,;#在外显子区，3个碱基长度的InDel数量较2碱基或4碱基长度的InDel多，主要在于3碱基InDel不容易引起移码。对每个样品，分别统计目标捕获区域及外显子区的不同长度的InDel的个数作图如下：
+Image:upload/*_InDel/Stat/*.INDEL.length.pattern.stat.png,,1,InDel突变模式分布图
+P:#,;#横坐标为InDel长度，纵坐标为对应的InDel的个数。
+P:#,;#InDel突变模式分布结果下载链接：
+Excel:upload/*_InDel/Stat/*.INDEL.length.pattern.stat.p*,,,结果下载链接：;
+
+ThirdMenu:InDel注释及统计
+P:#,;#利用ANNOVAR对InDel进行数据库注释，其结果如下表所示：
+Table:upload/*_InDel/*.INDEL.hg19_multianno.xls,2,5,1000,,0,InDel结果示例表（前两行前五列）
+PRE:,,50;
+（1） Chr：染色体号；
+（2） Start：突变起始位置；
+（3） End：突变终止位置；
+（4） Ref：参考基因型；
+（5） Alt：突变型；
+（6） 第六列之后为各数据库注释结果，详细说明见下方链接。
+PRE
+P:#,;#原始注释文件下载链接：
+Excel:upload/*_InDel/*.INDEL.hg19_multianno.xls,,,原始注释文件下载链接：;
+P:#,;#结果文件说明下载链接：
+Excel:upload/common/sup1.xlsx,,,结果文件说明下载链接：;
+P:#,;#统计每个样品在相应基因组区域上的分布百分比，作图如下：
+Image:upload/*_InDel/Stat/All.indel.genome.png,,1,基因组不同区域的InDel分布图
+P:#,;#横坐标为样本名，纵坐标为各区间的InDel个数百分比；作图时，将相同功能区的InDel合并，如"UTR5;UTR3"归入UTR5分类。
+P:#,;#基因组不同区域的InDel分布结果下载链接：
+Excel:upload/*_InDel/Stat/All.indel.genome.p*,,,结果下载链接：;
+P:#,;#对于外显子区域上的突变，分别统计移码突变、非移码突变、Stopgain（终止子的提前出现）和Stoploss（终止子缺失）等功能分类相关的InDel个数百分比，作图如下：
+Image:upload/*_InDel/Stat/All.indel.exonic.png,,1,InDel功能分布图
+P:#,;#横坐标为样本名，纵坐标为各类型的InDel个数百分比。
+P:#,;#InDel功能分布结果下载链接：
+Excel:upload/*_InDel/Stat/All.indel.exonic.p*,,,结果下载链接：;
+
+SubMenu:InDel检测及注释
+P:#,;#插入缺失（insertion-deletion，InDel），指的是两个亲本在全基因组中存在的一种差异，相对另一个亲本而言，其中一个亲本的基因组中有一定数量的核苷酸插入或缺失；或者说单个样本与参考基因组相比所存在的核苷酸的插入或缺失。InDel的分布和变化是生物性状表现的重要基础，也可能是杂种优势、自交退化等现象的遗传基础，对保留生物的遗传多样性具有重要意义。
+
+ThirdMenu:InDel检测及过滤
+P:#,;#与SNP一样，通过软件GATK进行InDel变异检测及过滤，对每个样本所检测到的高质量InDel个数进行统计，作图如下：
+Image:upload/*_InDel/Stat/All.indel.num.png,,1,InDel个数统计图
+P:#,;#横坐标为样本名称，纵坐标为检测的InDel的个数。
+P:#,;#InDel个数统计结果下载链接：
+Excel:upload/*_InDel/Stat/All.indel.num.p*,,,结果下载链接：;
+P:#,;#在外显子区，3个碱基长度的InDel数量较2碱基或4碱基长度的InDel多，主要在于3碱基InDel不容易引起移码。对每个样品，分别统计目标捕获区域及外显子区的不同长度的InDel的个数作图如下：
+Image:upload/*_InDel/Stat/*.INDEL.length.pattern.stat.png,,1,InDel突变模式分布图
+P:#,;#横坐标为InDel长度，纵坐标为对应的InDel的个数。
+P:#,;#InDel突变模式分布结果下载链接：
+Excel:upload/*_InDel/Stat/*.INDEL.length.pattern.stat.p*,,,结果下载链接：;
+
+ThirdMenu:InDel注释及统计
+P:#,;#利用ANNOVAR对InDel进行数据库注释，其结果如下表所示：
+Table:upload/*_InDel/*.INDEL.hg19_multianno.xls,2,5,1000,,0,InDel结果示例表（前两行前五列）
+PRE:,,50;
+（1） Chr：染色体号；
+（2） Start：突变起始位置；
+（3） End：突变终止位置；
+（4） Ref：参考基因型；
+（5） Alt：突变型；
+（6） 第六列之后为各数据库注释结果，详细说明见下方链接。
+PRE
+P:#,;#为了方便查看，注释结果按染色体切割并按分类添加颜色，结果下载链接：
+Excel:upload/*_InDel/Samples/*.INDEL.hg19_multianno.xls,,,为了方便查看，注释结果按染色体切割并按分类添加颜色，结果下载链接：;
+P:#,;#原始注释文件下载链接：
+Excel:upload/*_InDel/*.INDEL.hg19_multianno.xls,,,原始注释文件下载链接：;
+P:#,;#结果文件说明下载链接：
+Excel:upload/common/sup1.xlsx,,,结果文件说明下载链接：;
+P:#,;#统计每个样品在相应基因组区域上的分布百分比，作图如下：
+Image:upload/*_InDel/Stat/All.indel.genome.png,,1,基因组不同区域的InDel分布图
+P:#,;#横坐标为样本名，纵坐标为各区间的InDel个数百分比；作图时，将相同功能区的InDel合并，如"UTR5;UTR3"归入UTR5分类。
+P:#,;#基因组不同区域的InDel分布结果下载链接：
+Excel:upload/*_InDel/Stat/All.indel.genome.p*,,,结果下载链接：;
+P:#,;#对于外显子区域上的突变，分别统计移码突变、非移码突变、Stopgain（终止子的提前出现）和Stoploss（终止子缺失）等功能分类相关的InDel个数百分比，作图如下：
+Image:upload/*_InDel/Stat/All.indel.exonic.png,,1,InDel功能分布图
+P:#,;#横坐标为样本名，纵坐标为各类型的InDel个数百分比。
+P:#,;#InDel功能分布结果下载链接：
+Excel:upload/*_InDel/Stat/All.indel.exonic.p*,,,结果下载链接：;
+
+SubMenu:SNP&InDel差异分析
+P:#,;#针对样品的SNP和InDel的注释信息，进行样品间的差异分析。
+
+ThirdMenu:SNP差异分析
+P:#,;#统计比对样本间共有和特异的SNP个数，并以VENN图的方式展示如下：
+Image:upload/*_SNP_INDEL_DIFF/SNP/*venn.png,,1,样本间SNP分布VENN图
+P:#,;#图中圆圈特有部分表示样本特有的SNP数量，圆圈交集表示两样本共有的SNP数量。
+P:#,;#样本间SNP分布结果下载链接：
+Excel:upload/*_SNP_INDEL_DIFF/SNP/*venn.png,,,结果下载链接：;
+P:#,;#针对不同的功能区间，对样本的SNP做差异分析，如下表所示：
+Table:upload/*_SNP_INDEL_DIFF/SNP/*stat.xls,,2,1000,,0,SNP差异分析表（仅展示前两列）
+PRE:,,50;
+（1） UTR3：发生在基因的UTR3的SNP数目；
+（2） UTR5：发生在基因的UTR5的SNP数目；
+（3） UTR5;UTR3：同时发生在UTR3和UTR5区域内的SNP数目，两个不同的基因；
+（4） Downstream：发生在基因下游（1000bp）内的SNP数目；
+（5） Exonic：发生在外显子区域的SNP数目；
+（6） Exonic;splicing：同时发生在外显子区域和基因剪切区域内的SNP数目，两个不同的基因；
+（7） Intergenic：发生在基因间区的SNP数目；
+（8） Intronic：发生在内含子区域的SNP数目；
+（9） NcRNA*：没有相关编码注释的RNA，并非不翻译的RNA，参见ANNOVAR的Gene注释说明；子区间注释同上；
+（10） Splicing：发生在基因剪切区域内（剪切位点上下游2bp，即非Exonic区）的SNP数目；
+（11） Upstream：发生在基因上游（1000bp）内的SNP数目；
+（12） Upstream:downstream：发生在基因上游或者下游（1000bp）内的SNP数目，两个不同的基因；
+（13） Total：基因组中全部的SNP数目。
+PRE
+P:#,;#SNP差异分析注释结果下载链接：
+Excel:upload/*_SNP_INDEL_DIFF/SNP/*hg19_multianno.xls,,结果下载链接：;
+P:#,;#结果文件说明下载链接：
+Excel:upload/common/sup1.xlsx,,,结果文件说明下载链接：;
+
+ThirdMenu:InDel差异分析
+P:#,;#统计比对样本间共有和特异的InDel个数，并以VENN图的方式展示如下：
+Image:upload/*_SNP_INDEL_DIFF/INDEL/*venn.png,,1,样本间InDel分布VENN图
+P:#,;#图中圆圈特有部分表示样本特有的InDel数量，圆圈交集表示两样本共有的InDel数量。
+P:#,;#样本间InDel分布结果下载链接：
+Excel:upload/*_SNP_INDEL_DIFF/INDEL/*venn.png,,,结果下载链接：;
+P:#,;#针对不同的功能区间，对样本的InDel做差异分析，如下表所示：
+Table:upload/*_SNP_INDEL_DIFF/INDEL/*stat.xls,,2,1000,,0,InDel差异分析表（仅展示前两列）
+PRE:,,50;
+（1） UTR3：发生在基因的UTR3的InDel数目；
+（2） UTR5：发生在基因的UTR5的InDel数目；
+（3） UTR5;UTR3：同时发生在UTR3和UTR5区域内的InDel数目，两个不同的基因；
+（4） Downstream：发生在基因下游（1000bp）内的InDel数目；
+（5） Exonic：发生在外显子区域的InDel数目；
+（6） Exonic;splicing：同时发生在外显子区域和基因剪切区域内的InDel数目，两个不同的基因；
+（7） Intergenic：发生在基因间区的InDel数目；
+（8） Intronic：发生在内含子区域的InDel数目；
+（9） NcRNA*：没有相关编码注释的RNA，并非不翻译的RNA，参见ANNOVAR的Gene注释说明；子区间注释同上；
+（10） Splicing：发生在基因剪切区域内（剪切位点上下游2bp，即非Exonic区）的InDel数目；
+（11） Upstream：发生在基因上游（1000bp）内的InDel数目；
+（12） Upstream:downstream：发生在基因上游或者下游（1000bp）内的InDel数目，两个不同的基因；
+（13） Total：基因组中全部的InDel数目。
+PRE
+P:#,;#INDEL差异分析注释结果下载链接：
+Excel:upload/*_SNP_INDEL_DIFF/INDEL/*hg19_multianno.xls,,结果下载链接：;
+P:#,;#结果文件说明下载链接：
+Excel:upload/common/sup1.xlsx,,,结果文件说明下载链接：;
+
+SubMenu:SV检测及注释
+P:#,;#染色体结构变异（Structural variation，SV）是染色体变异的一种，是内因和外因共同作用的结果，外因有各种射线、化学药剂、温度的剧变等，内因有生物体内代谢过程的失调、衰老等。染色体结构变异的主要类型有缺失、重复、倒位和易位。染色体结构的改变，会使排列在染色体上的基因数目和排列顺序发生改变，从而导致性状的变异。大多数染色体结构变异对生物体是不利的，有的甚至会导生物体死亡。稀有且相同的一些结构性变异往往和疾病（包括一些癌症）的发生相关联甚至还是其致病的诱因。
+
+ThirdMenu:SV检测及过滤
+P:#,;#染色体结构变异（SV）是基因组变异的重要组成，其主要突变类型有：插入、缺失、扩增、倒位、易位等。在比对到参考基因组序列的基础上，通过染色体结构变异分析软件DELLY2（Rausch, T. et al, 2012）检测样品在全目标捕获区域所有潜在的SV位点，并使用ANNOVAR软件对检测到SV进行相应的注释。
+P:#,;#将每个样本所检测到的SV个数进行统计，作如下柱状图：
+Image:upload/*_SV/Stat/All.sv.num.png,,1,SV个数统计图
+P:#,;#横坐标为样本名，纵坐标为SV检测个数。
+P:#,;#SV个数统计结果下载链接：
+Excel:upload/*_SV/Stat/All.sv.num.p*,,,结果下载链接：;
+
+ThirdMenu:SV注释及统计
+P:#,;#利用ANNOVAR软件对SV检测结果进行注释，如下表所示：
+Table:upload/*_SV/*.SV.hg19_multianno.xls,2,5,1000,,0,SV结果示例表（前两行前五列）
+PRE:,,50;
+（1） Chr：染色体号；
+（2） Start：突变起始位置；
+（3） End：突变终止位置；
+（4） Ref：参考基因型；
+（5） Alt：突变型；
+（6） 第六列之后为各数据库注释结果，详细说明见下方链接。
+PRE
+P:#,;#SV注释结果下载链接：
+Excel:upload/*_SV/*.SV.hg19_multianno.xls,,,结果下载链接：;
+P:#,;#结果文件说明下载链接：
+Excel:upload/common/sup1.xlsx,,,结果文件说明下载链接：;
+P:#,;#各样品检测到的SV结果在基因组不同区域上的分布统计见下图所示：
+Image:upload/*_SV/Stat/All.sv.genome.png,,1,基因组不同区域的SV分布统计
+P:#,;#横坐标为样本名，纵坐标为各区间的SV个数百分比；作图时，将相同功能区的合并，如"UTR5;UTR3"归入UTR5分类。
+P:#,;#基因组不同区域的SV分布统计结果下载链接：
+Excel:upload/*_SV/Stat/All.sv.genome.*,,,结果下载链接：;
+
+ThirdMenu:SV变异类型
+P:#,;#将检测到的染色体缺失（DEL）、染色体插入（INS）、染色体加倍（DUP）、染色体倒位（INV）和染色体间易位（TRA）等不同类型的SV的个数进行百分比统计，作图如下：
+Image:upload/*_SV/Stat/All.sv.type.png,,1,SV各种类型分布图
+P:#,;#横坐标为样本名称，纵坐标为各类型SV比例分布。DEL：染色体缺失；INS：染色体插入；DUP：染色体加倍；INV：染色体倒位；TRA：染色体间易位。
+P:#,;#SV各种类型分布结果下载链接：
+Excel:upload/*_SV/Stat/All.sv.type.p*,,,结果下载链接：;
+
+SubMenu:CNV检测及注释
+P:#,;#拷贝数目变异（Copy Number Variant，CNV），也称拷贝数目多态性（CNP），是指与参考序列相比，基因组中1 KB至几MB的DNA片段的变异，包括插入、缺失、扩增及其相互组合衍生出的复杂染色体结构变异。CNV在很多物种的基因组中均存在，且分布广泛。CNV涉及到DNA的片段通常比较大，故其覆盖的核苷酸总数远远超过SNPs的总数。CNV包含的信息量通常是SNPs的几倍，极大地丰富了基因组遗传变异的多样性。CNV对物种的选择和进化以及基因组某些特定区域基因的表达和调控可能具有非常重要的生物学意义。
+
+ThirdMenu:CNV检测及过滤
+P:#,;#我们利用CODEX（Jiang, Yuchao, et al., 2015）软件检测外显子数据的拷贝数变异，检测到的CNV统计如下：
+Table:upload/*_CNV/*.CNV.raw.xls,2,6,1000,,0,CNV检测统计（前两行前六列）
+PRE:,,75;
+（1） Chr：染色体；
+（2） Start：CNV的起始位置；
+（3） End：CNV的终止位置；
+（4） Type：为CNV类型，del和dup；
+（5） Copy_num：拷贝数；
+（6） Length(kb)：CNV的长度，以kb为单位；
+（7） st_exon：起始的外显子；
+（8） ed_exon：终止的外显子；
+（9） raw_cov：原始的覆盖度；
+（10） norm_cov：标准化后的覆盖度；
+（11） lratio：模型预测的值；
+（12） mBIC：模型预测的值。
+PRE
+P:#,;#CNV检测结果文件下载链接：
+Excel:upload/*_CNV/*.CNV.raw.xls,,,具体的结果文件请见：;
+
+ThirdMenu:CNV注释
+P:#,;#利用ANNOVAR软件对CNV检测结果进行注释，如下表所示：
+Table:upload/*_CNV/*.CNV.hg19_multianno.xls,2,5,1000,,0,CNV注释结果示例表（前两行前五列）
+PRE:,,50;
+（1） Chr：染色体号；
+（2） Start：突变起始位置；
+（3） End：突变终止位置；
+（4） Ref：参考基因型；
+（5） Alt：突变型；
+（6） 第六列之后为各数据库注释结果，详细说明见下方链接。
+PRE
+P:#,;#CNV检测结果注释文件下载链接：
+Excel:upload/*_CNV/*.CNV.hg19_multianno.xls,,,具体的结果文件请见：;
+P:#,;#结果文件说明下载链接：
+Excel:upload/common/sup1.xlsx,,,结果详见：;
+
+SubMenu:融合基因分析
+P:#,;#融合基因是指两个基因的全部或一部分序列相互融合为一个新的基因的过程，是染色体易位、中间缺失或染色体倒置所致的结果，通常具有致瘤性，存在于多种疾病中。融合基因可促进疾病的发生和发展，并可作为疾病的分子诊断和治疗靶标。融合基因的示意图如下：
+Image:upload/common/fusiongene.png,200,1,融合基因示意图
+P:#,;#利用过滤后的高质量的Clean Reads，基于DELLY2的检测结果，对结构变异进行基因注释并结合一系列过滤标准，最终得到高可信度融合基因，部分结果如下所示：
+Table:upload/*_FusionGene/*.FusionReport.xls,2,3,1000,,0,融合基因检测结果（前两行前三列）
+PRE:,,73;
+（1） SV_type：融合基因对应的结构变异类型；
+（2） fusion_gene1：融合基因1；
+（3） fusion_gene2：融合基因2；
+（4） fusion_break1：断点1信息；
+（5） fusion_break2：断点2信息；
+PRE
+P:#,;#融合基因检测下载链接：
+Excel:upload/*_FusionGene/*.FusionReport.xls,,,融合基因检测下载链接：;
+P:#,;#将所有样本检测得到的可信的融合基因个数进行统计，作如下柱状图：
+Image:upload/*_FusionGene/All.Fugene.num.png,,1,融合基因个数统计
+P:#,;#横坐标为样本名，纵坐标为检测得到的融合基因个数。
+P:#,;#融合基因个数统计图下载链接：
+Excel:upload/*_FusionGene/All.Fugene.num.p*,,,融合基因个数统计图下载链接：;
+
+SubMenu:变异总览
+P:#,;#对检测到的SNP、InDel、SV等变异的分布信息以CIRCOS展示出来，便于对整体情况的掌握及对不同样本的直观对比。下图所示为其中一个样本的结果，从最外层到最内层依次是：
+P:#17,18;#（1） 第一圈为染色体名称及对应核型；
+P:#17,18;#（2） 第二圈为SNP密度（1MB，曲线），并对密度进行了归一化；
+P:#17,18;#（3） 第三圈为测序深度，并进行归一化，小于0.25绿色，大于0.75红色，其他灰色；
+P:#17,18;#（4） 第四圈和第六圈为不同类型的SV，第四圈的深绿色代表插入，深蓝色代表缺失，深红色代表扩增（浅绿，浅蓝，浅红为对应的背景色），第六圈的红色代表倒位，褐色代表染色体间易位；
+P:#17,18;#（5） 第五圈为InDel插入（蓝色）和InDel缺失（黄色）。
+Image:upload/*_CIRCOS/*.png,600,1,变异全局总览
+P:#,;#CIRCOS详细的分布图下载链接：
+Excel:upload/*_CIRCOS/*.p*,,,详细的分布图见：;
+
+#高级分析----------------------------------------------
+
+MainMenu:高级分析
+
+SubMenu:突变位点过滤
+P:#,;#我们对上述检测到的SNP/InDel进行过滤，得到可能致病的突变位点。突变位点具体的过滤方式为：
+P:#17,18;#（1） 保留外显子区（exonic）或剪切位点区（splicing，剪切位点上下游2bp）的变异；
+P:#17,18;#（2） 过滤千人基因组数据库（人群中频率大于0.01）变异位点，去除个体间多样性位点，得到真正可能致病的罕见突变（rare）：保留1000 Genomes数据库中频率低于0.01的突变位点；
+P:#17,18;#（3） 去除同义突变（不导致氨基酸编码改变的突变），得到对基因表达产物有影响的突变（保留的突变包括InDel中的移码和非移码突变）。
+P:#,;#筛选出的突变位点所在的基因为候选分析基因。
+Table:upload/*_Rare/*.rare.stat.xls,,5,1000,,0,突变位点筛选
+PRE:,,60;
+（1） Total(SNP/InDel)：筛选前总变异位点数目；
+（2） Exonic/splicing：位于外显子区（exonic）或剪切位点区（splicing，剪切位点上下游2bp）的变异数目；
+（3） 1000Genomes(freq<=0.01)：过滤掉1000 Genomes数据库中频率大于0.01之后剩余的变异数目；
+（4） Nonsynonymous：过滤掉同义突变之后剩余的变异数目。
+PRE
+P:#,;#突变位点筛选统计结果下载链接：
+Excel:upload/*_Rare/*,,,结果下载链接：;
+
+SubMenu:安诺基因数据库过滤
+P:#,;#安诺优达依据多年的测序经验以及积累的丰富数据资源，构建了更适用于中国人的正常人单位点突变数据库。在上述突变位点过滤后的基础上，我们以该数据为背景对突变位点进行进一步的过滤：
+P:#17,18;#（1） 保留InDel突变（该数据库只针对单碱基突变）；
+P:#17,18;#（2） 保留在该数据库中未出现的SNP；
+P:#17,18;#（3） 保留在该数据库中出现但突变频率<=0.01的突变位点。
+P:#,;#筛选出的突变位点统计如下：
+Table:upload/*_Rare/Ano_Filter/*.filter.stat.xls,2,3,1000,,0,突变位点进一步筛选
+PRE:,,60;
+（1） Total：正常人数据库筛选前总变异位点数目；
+（2） ATCG_DB：过滤掉安诺优达正常人数据库中频率大于0.01之后剩余的变异数目；
+PRE
+P:#,;#安诺优达正常人数据库筛选结果下载链接：
+Excel:upload/*_Rare/Ano_Filter/*,,,结果下载链接：;
+
+SubMenu:靶向药物分析
+P:#,;#随着人类基因组学、药物基因组学以及疾病研究的进展，疾病治疗观念正在发生根本性的改变，即由经验科学向循证医学、由细胞攻击模式向靶向性治疗模式转变。所谓的靶向治疗是指在细胞分子水平上，针对已经明确的疾病相关位点来设计相应的治疗药物，药物进入体内会特意地选择相应位点来相结合发生作用，使突变细胞特异性死亡，而不会波及周围的正常组织细胞。这种治疗手段具有更强的针对性，且具有较低的副作用，已经成为药物研究领域的热点。我们利用多种药物相关基因的数据库对筛选后的突变基因进行注释，包括CTD（Comparative Toxicogenomics Databases）（Davis A P et al., 2013）、DrugBank（Law, Vivian et al., 2014）、My Cancer Genome（Micheel et al., 2014）、TTD （Therapeutic Target Database）（Yang, Hong, et al., 2016）数据库，注释出潜在的药物治疗靶点，注释结果如下：
+Table:upload/*Drug/Drug_Target/*DrugTarget.xls,2,4,1000,,0,药物靶点分析结果（前两行前四列）
+PRE:,,73;
+（1） Gene：基因名字（各个数据库基因名字均统一成大写）；
+（2） GeneInEachDataBase：存在各个数据库中基因的原始名字；
+（3） DrugName：药物名字；
+（4） Resources：关系的来源。
+PRE
+P:#,;#药物靶点分析结果下载链接：
+Excel:upload/*Drug/Drug_Target/*.xls,,,结果下载链接：;
+
+SubMenu:药物反应分析
+P:#,;#耐药性（Drug resistance）已成为世界抗感染治疗领域面临的严峻问题。耐药性是指药物治疗疾病或改善病人病症的效力降低。当投入药物浓度不足，不能杀死或抑制病原时，随着时间和次数的累积，残留的病原体可能会获得具有抵抗此种药物的能力。药物敏感（Drug sensitivity）是指病人对药物的药理反应低于正常的水平。与药物过敏不同，药物敏感一般与免疫系统无关。基因突变是产生耐药性和药物敏感的重要原因，一般是由于药物代谢相关的基因发生了突变。对突变基因进行药物反应分析，有助于对疾病进行个性化用药，大大提高疾病的治疗效果。我们利用GDSC（Genomics of Drug Sensitivity in Cancer）（Yang W, Soares J, Greninger P, et al. 2013）数据库对筛选后的突变基因进行药物反应分析。结果如下表所示：
+Table:upload/*Drug/Drug_Response/*DrugResponse.xls,2,4,1000,,0,药物反应分析结果（前两行前四列）
+PRE:,,73;
+（1） GENE: 基因名；
+（2） Abbreviation Disease: 疾病的简称，PANCAN是指在多种疾病中这对关系均被识别到；
+（3） Disease Type: 疾病类型；
+（4） Drug name: 药物名称。
+PRE
+P:#,;#药物反应分析结果下载链接：
+Excel:upload/*Drug/Drug_Response/*.xls,,,结果下载链接：;
+
+SubMenu:新生突变分析
+
+ThirdMenu:新生突变筛选
+P:#,;#新生突变（De novo mutation），是指父母生殖细胞形成时所发生的胚系de novo突变或者受精卵发育过程中发生的体细胞de novo突变，由于新产生的突变没有经过传代进化选择，在人类疾病中发挥着重要作用，尤其对于神经发育异常类疾病，高度外显的等位基因一般会受到强烈的负选择。
+P:#,;#新生突变的筛选是基于家系进行分析，选择亲本没有的而患病子代中存在的突变，并筛选对基因表达产物有影响的变异位点。根据以上模式检测到的突变位点，结果见下表：
+Table:upload/*_Family/DENOVO/*_denovo.multianno.all.xls,2,5,1000,,0,新生突变变异位点信息（前两行前五列）
+PRE:,,50;
+（1） Chr：染色体号；
+（2） Start：突变起始位置；
+（3） End：突变终止位置；
+（4） Ref：参考基因型；
+（5） Alt：突变型；
+（6） 第六列之后为各数据库注释结果，详细说明见下方链接。
+PRE
+P:#,;#新生突变变异位点结果下载链接：
+Excel:upload/*_Family/DENOVO/*_denovo.multianno.all.xls,,,结果下载链接：;
+P:#,;#结果文件说明下载链接：
+Excel:upload/common/sup1.xlsx,,,结果文件说明下载链接：;
+P:#,;#在筛选得到的新生突变位点中作进一步的筛选，得到罕见突变，具体的筛选方法如下：
+P:#17,18;#1. 保留外显子区（exonic）或剪切位点区（splicing，剪切位点上下游2bp）的变异；
+P:#17,18;#2. 过滤千人基因组数据库（人群中频率大于0.01）变异位点，去除个体间多样性位点，得到真正可能致病的罕见突变（rare）：保留1000 Genomes数据库中频率低于0.01的突变位点；
+P:#17,18;#3. 去除同义突变（不导致氨基酸编码改变的突变），得到对基因表达产物有影响的突变（保留的突变包括InDel中的移码和非移码突变）。
+P:#,;#筛选出的突变位点如下表所示：
+Table:upload/*_Family/DENOVO/*_denovo.rare.stat.xls,2,5,1000,,0,突变位点筛选
+PRE:,,60;
+（1） Total(SNP/InDel)：筛选前总变异位点数目；
+（2） Exonic/splicing：位于外显子区（exonic）或剪切位点区（splicing，剪切位点上下游2bp）的变异数目；
+（3） 1000Genomes(freq<=0.01)：过滤掉1000 Genomes数据库中频率大于0.01之后剩余的变异数目；
+（4） Rare_denovo：过滤掉同义突变之后剩余的变异数目。
+PRE
+P:#,;#新生突变位点筛选结果下载链接：
+Excel:upload/*_Family/DENOVO/*_denovo.rare.hg19_multianno.xls,,,结果下载链接：;
+P:#,;#新生突变位点筛选统计结果下载链接：
+Excel:upload/*_Family/DENOVO/*_denovo.rare.stat.xls,,,筛选统计结果下载链接：;
+
+ThirdMenu:新生突变功能富集分析
+P:#,;#Gene Ontology（Ashburner, M. et al, 2000）（简称GO）是一个国际标准化的基因功能分类体系，提供了一套动态更新的标准词汇表（Controlled Vocabulary）来全面描述生物体中基因和基因产物的属性。GO总共有三个Ontology，分别描述基因的分子功能（Molecular Function）、细胞组分（Cellular Component）、生物过程（Biological Process）。
+P:#,;#将得到的新生突变位点相关基因进行GO分析，并统计结果，绘制成柱状图：
+Image:upload/*_Family/DENOVO/GO/*.DENOVO.sort.png,600,1,新生突变位点相关基因GO统计柱状图
+P:#,;#横坐标为GO术语，纵坐标为各类GO中含有的基因个数占该通路总基因数的比例。
+P:#,;#新生突变位点相关基因GO统计结果下载链接：
+Excel:upload/*_Family/DENOVO/GO/*.DENOVO.sort.*,,,结果下载链接：;
+
+ThirdMenu:新生突变通路富集分析
+P:#,;#KEGG（Kanehisa, M. et al., 2000）（Kanehisa, M. et al., 2000）（Kyoto Encyclopedia of Genes and Genomes，京都基因与基因组百科全书）是基因组破译方面的数据库。在给出染色体中一套完整基因的情况下，它可以对蛋白质交互（互动）网络在各种各样的细胞活动过程起的作用做出预测。KEGG的PATHWAY数据库整合当前在分子互动网络（比如通路、联合体）的知识，GENES/SSDB/KO数据库提供关于在基因组计划中发现的基因和蛋白质的相关知识，COMPOUND/GLYCAN/REACTION数据库提供生化复合物及反应方面的知识。
+P:#,;#其中基因数据库（GENES Database）含有所有已知的完整基因组和不完整基因组。有细菌、蓝藻、真核生物等生物体的基因序列，如人、小鼠、果蝇、拟南芥等等；通路数据库（PATHWAY Database）储存了基因功能的相关信息，通过图形来表示细胞内的生物学过程，例如代谢、膜运输、信号传导和细胞的生长周期；配体数据库（LIGAND Database）包括了细胞内的化学复合物、酶分子和酶反应的信息。
+P:#,;#对新生突变位点相关基因的富集通路提取并集，并且根据在该通路的富集程度q值做出分布图，结果如下：
+Image:upload/*_Family/DENOVO/KEGG/*.DENOVO.kegg.enrich.png,600,1,新生突变位点相关基因通路富集分析图
+P:#,;#横坐标为富集程度，纵坐标为富集的通路名称，图中圆圈大小代表富集在该通路上基因数目，圆圈颜色深浅代表q_value值大小。
+P:#,;#新生突变位点相关基因通路富集结果下载链接：
+Excel:upload/*_Family/DENOVO/KEGG/*DENOVO.kegg.enrich.p*,,,结果下载链接：;
+
+SubMenu:显性遗传突变分析
+
+ThirdMenu:显性遗传变异位点筛选
+P:#,;#显性纯合突变位点一般表现为：父母为杂合位点，而在患病个体中为杂合或纯合突变位点，且与正常兄弟姐妹基因型不同（正常兄弟姐妹为纯合位点）。
+P:#,;#根据以上模式检测到的突变位点，结果见下表：
+Table:upload/*_Family/DOM/*_dom.multianno.all.xls,2,5,1000,,0,显性纯合突变位点信息（前两行前五列）
+PRE:,,50;
+（1） Chr：染色体号；
+（2） Start：突变起始位置；
+（3） End：突变终止位置；
+（4） Ref：参考基因型；
+（5） Alt：突变型；
+（6） 第六列之后为各数据库注释结果，详细说明见下方链接。
+PRE
+P:#,;#显性纯合突变结果下载链接：
+Excel:upload/*_Family/DOM/*_dom.multianno.all.xls,,,结果下载链接：;
+P:#,;#结果文件说明下载链接：
+Excel:upload/common/sup1.xlsx,,,结果文件说明下载链接：;
+P:#,;#在筛选得到的显性遗传突变位点中作进一步的筛选，得到罕见突变，具体的筛选方法如下：
+P:#17,18;#1. 保留外显子区（exonic）或剪切位点区（splicing，剪切位点上下游2bp）的变异；
+P:#17,18;#2. 过滤千人基因组数据库（人群中频率大于0.01）变异位点，去除个体间多样性位点，得到真正可能致病的罕见突变（rare）：保留1000 Genomes数据库中频率低于0.01的突变位点；
+P:#17,18;#3. 去除同义突变（不导致氨基酸编码改变的突变），得到对基因表达产物有影响的突变（保留的突变包括InDel中的移码和非移码突变）。
+P:#,;#筛选出的突变位点如下表所示：
+Table:upload/*_Family/DOM/*_dom.rare.stat.xls,2,5,1000,,0,突变位点筛选
+PRE:,,60;
+（1） Total(SNP/InDel)：筛选前总变异位点数目；
+（2） Exonic/splicing：位于外显子区（exonic）或剪切位点区（splicing，剪切位点上下游2bp）的变异数目；
+（3） 1000Genomes(freq<=0.01)：过滤掉1000 Genomes数据库中频率大于0.01之后剩余的变异数目；
+（4） Rare_dom：过滤掉同义突变之后剩余的变异数目。
+PRE
+P:#,;#显性突变位点筛选结果下载链接：
+Excel:upload/*_Family/DOM/*_dom.rare.hg19_multianno.xls,,,结果下载链接：;
+P:#,;#显性突变位点筛选统计结果下载链接：
+Excel:upload/*_Family/DOM/*_dom.rare.stat.xls,,,筛选统计结果下载链接：;
+
+ThirdMenu:显性遗传功能富集分析
+P:#,;#Gene Ontology（Ashburner, M. et al, 2000）（简称GO）是一个国际标准化的基因功能分类体系，提供了一套动态更新的标准词汇表（Controlled Vocabulary）来全面描述生物体中基因和基因产物的属性。GO总共有三个Ontology，分别描述基因的分子功能（Molecular Function）、细胞组分（Cellular Component）、生物过程（Biological Process）。
+P:#,;#将得到的显性遗传模式位点相关基因进行GO分析，并统计结果，绘制成柱状图：
+Image:upload/*_Family/DOM/GO/*.DOM.sort.png,600,1,显性遗传模式位点相关基因GO统计柱状图
+P:#,;#横坐标为GO术语，纵坐标为各类GO中含有的基因个数占该通路总基因数的比例。
+P:#,;#显性遗传模式位点相关基因GO统计结果下载链接：
+Excel:upload/*_Family/DOM/GO/*DOM.sort.*,,,结果下载链接：;
+
+ThirdMenu:显性遗传通路富集分析
+P:#,;#KEGG（Kanehisa, M. et al., 2000）（Kyoto Encyclopedia of Genes and Genomes，京都基因与基因组百科全书）是基因组破译方面的数据库。在给出染色体中一套完整基因的情况下，它可以对蛋白质交互（互动）网络在各种各样的细胞活动过程起的作用做出预测。KEGG的PATHWAY数据库整合当前在分子互动网络（比如通路、联合体）的知识，GENES/SSDB/KO数据库提供关于在基因组计划中发现的基因和蛋白质的相关知识，COMPOUND/GLYCAN/REACTION数据库提供生化复合物及反应方面的知识。
+P:#,;#其中基因数据库（GENES Database）含有所有已知的完整基因组和不完整基因组。有细菌、蓝藻、真核生物等生物体的基因序列，如人、小鼠、果蝇、拟南芥等等；通路数据库（PATHWAY Database）储存了基因功能的相关信息，通过图形来表示细胞内的生物学过程，例如代谢、膜运输、信号传导和细胞的生长周期；配体数据库（LIGAND Database）包括了细胞内的化学复合物、酶分子和酶反应的信息。
+P:#,;#对显性遗传模式位点相关基因的富集通路提取并集，并且根据在该通路的富集程度q值做出分布图，结果如下：
+Image:upload/*_Family/DOM/KEGG/*.DOM.kegg.enrich.png,600,1,显性遗传模式位点相关基因通路富集分析图
+P:#,;#横坐标为富集程度，纵坐标为富集的通路名称，图中圆圈大小代表富集在该通路上基因数目，圆圈颜色深浅代表q_value值大小。
+P:#,;#显性遗传模式位点相关基因通路富集结果下载链接：
+Excel:upload/*_Family/DOM/KEGG/*DOM.kegg.enrich.p*,,,结果下载链接：;
+
+SubMenu:隐性遗传突变分析
+
+ThirdMenu:隐性遗传变异位点筛选
+P:#,;#隐性纯合突变位点一般表现为：父母为杂合位点，而在患病个体中为纯合突变位点，且与正常兄弟姐妹基因型不同（正常兄弟姐妹可能为杂合位点，也可能为与患病突变基因型不同的纯合基因型）
+P:#,;#根据以上模式检测到的突变位点，结果见下表：
+Table:upload/*_Family/REC/*_rec.multianno.all.xls,2,5,1000,,0,隐性纯合突变位点信息（前两行前五列）
+PRE:,,50;
+（1） Chr：染色体号；
+（2） Start：突变起始位置；
+（3） End：突变终止位置；
+（4） Ref：参考基因型；
+（5） Alt：突变型；
+（6） 第六列之后为各数据库注释结果，详细说明见下方链接。
+PRE
+P:#,;#隐性纯合突变结果下载链接：
+Excel:upload/*_Family/REC/*_rec.multianno.all.xls,,,结果下载链接：;
+P:#,;#结果文件说明下载链接：
+Excel:upload/common/sup1.xlsx,,,结果文件说明下载链接：;
+P:#,;#在筛选得到的隐性遗传突变位点中作进一步的筛选，得到罕见突变，具体的筛选方法如下：
+P:#17,18;#1. 保留外显子区（exonic）或剪切位点区（splicing，剪切位点上下游2bp）的变异；
+P:#17,18;#2. 过滤千人基因组数据库（人群中频率大于0.01）变异位点，去除个体间多样性位点，得到真正可能致病的罕见突变（rare）：保留1000 Genomes数据库中频率低于0.01的突变位点；
+P:#17,18;#3. 去除同义突变（不导致氨基酸编码改变的突变），得到对基因表达产物有影响的突变（保留的突变包括InDel中的移码和非移码突变）。
+P:#,;#筛选出的突变位点如下表所示：
+Table:upload/*_Family/REC/*_rec.rare.stat.xls,2,5,1000,,0,突变位点筛选
+PRE:,,60;
+（1） Total(SNP/InDel)：筛选前总变异位点数目；
+（2） Exonic/splicing：位于外显子区（exonic）或剪切位点区（splicing，剪切位点上下游2bp）的变异数目；
+（3） 1000Genomes(freq<=0.01)：过滤掉1000 Genomes数据库中频率大于0.01之后剩余的变异数目；
+（4） Rare_rec：过滤掉同义突变之后剩余的变异数目。
+PRE
+P:#,;#隐性突变位点筛选结果下载链接：
+Excel:upload/*_Family/REC/*_rec.rare.hg19_multianno.xls,,,结果下载链接：;
+P:#,;#隐性突变位点筛选统计结果下载链接：
+Excel:upload/*_Family/REC/*_rec.rare.stat.xls,,,筛选统计结果下载链接：;
+
+ThirdMenu:隐性遗传功能富集分析
+P:#,;#Gene Ontology（Ashburner, M. et al, 2000）（简称GO）是一个国际标准化的基因功能分类体系，提供了一套动态更新的标准词汇表（Controlled Vocabulary）来全面描述生物体中基因和基因产物的属性。GO总共有三个Ontology，分别描述基因的分子功能（Molecular Function）、细胞组分（Cellular Component）、生物过程（Biological Process）。
+P:#,;#将得到的隐性遗传模式位点相关基因进行GO分析，并统计结果，绘制成柱状图：
+Image:upload/*_Family/REC/GO/*.REC.sort.png,600,1,隐性遗传模式位点相关基因GO统计柱状图
+P:#,;#横坐标为GO术语，纵坐标为各类GO中含有的基因个数占该通路总基因数的比例。
+P:#,;#隐性遗传模式位点相关基因GO统计结果下载链接：
+Excel:upload/*_Family/REC/GO/*REC.sort.*,,,结果下载链接：;
+
+ThirdMenu:隐性遗传通路富集分析
+P:#,;#KEGG（Kanehisa, M. et al., 2000）（Kyoto Encyclopedia of Genes and Genomes，京都基因与基因组百科全书）是基因组破译方面的数据库。在给出染色体中一套完整基因的情况下，它可以对蛋白质交互（互动）网络在各种各样的细胞活动过程起的作用做出预测。KEGG的PATHWAY数据库整合当前在分子互动网络（比如通路、联合体）的知识，GENES/SSDB/KO数据库提供关于在基因组计划中发现的基因和蛋白质的相关知识，COMPOUND/GLYCAN/REACTION数据库提供生化复合物及反应方面的知识。
+P:#,;#其中基因数据库（GENES Database）含有所有已知的完整基因组和不完整基因组。有细菌、蓝藻、真核生物等生物体的基因序列，如人、小鼠、果蝇、拟南芥等等；通路数据库（PATHWAY Database）储存了基因功能的相关信息，通过图形来表示细胞内的生物学过程，例如代谢、膜运输、信号传导和细胞的生长周期；配体数据库（LIGAND Database）包括了细胞内的化学复合物、酶分子和酶反应的信息。
+P:#,;#对隐性遗传模式位点相关基因的富集通路提取并集，并且根据在该通路的富集程度q值做出分布图，结果如下：
+Image:upload/*_Family/REC/KEGG/*.REC.kegg.enrich.png,600,1,隐性遗传模式位点相关基因通路富集分析图
+P:#,;#横坐标为富集程度，纵坐标为富集的通路名称，图中圆圈大小代表富集在该通路上基因数目，圆圈颜色深浅代表q_value值大小。
+P:#,;#隐性遗传模式位点相关基因通路富集结果下载链接：
+Excel:upload/*_Family/REC/KEGG/*REC.kegg.enrich.p*,,,结果下载链接：;
+
+SubMenu:复合杂合遗传突变分析
+
+ThirdMenu:复合杂合遗传突变筛选
+P:#,;#复合杂合遗传模式主要是指筛选患病个体为杂合的突变位点，每个基因中至少有两个此类型的突变位点，且患病个体的杂合突变不全部来自于同一个亲本，亲本的基因型不能为突变纯合型，亲本的基因型不能与患病个体一致（Wang, K., et al.，2013）。
+P:#,;#根据以上模式检测到的突变位点，结果见下表：
+Table:upload/*_Family/COM/*_com.multianno.all.xls,2,5,1000,,0,复合杂合遗传模式位点信息（前两行前五列）
+PRE:,,50;
+（1） Chr：染色体号；
+（2） Start：突变起始位置；
+（3） End：突变终止位置；
+（4） Ref：参考基因型；
+（5） Alt：突变型；
+（6） 第六列之后为各数据库注释结果，详细说明见下方链接。
+PRE
+P:#,;#复合杂合遗传结果下载链接：
+Excel:upload/*_Family/COM/*_com.multianno.all.xls,,,结果下载链接：;
+P:#,;#结果文件说明下载链接：
+Excel:upload/common/sup1.xlsx,,,结果文件说明下载链接：;
+P:#,;#在筛选得到的复合杂合突变位点中作进一步的筛选，得到罕见突变，具体的筛选方法如下：
+P:#17,18;#1. 保留外显子区（exonic）或剪切位点区（splicing，剪切位点上下游2bp）的变异；
+P:#17,18;#2. 过滤千人基因组数据库（人群中频率大于0.01）变异位点，去除个体间多样性位点，得到真正可能致病的罕见突变（rare）：保留1000 Genomes数据库中频率低于0.01的突变位点；
+P:#17,18;#3. 去除同义突变（不导致氨基酸编码改变的突变），得到对基因表达产物有影响的突变（保留的突变包括InDel中的移码和非移码突变）。
+P:#,;#筛选出的突变位点如下表所示：
+Table:upload/*_Family/COM/*_com.rare.stat.xls,2,5,1000,,0,突变位点筛选
+PRE:,,60;
+（1） Total(SNP/InDel)：筛选前总变异位点数目；
+（2） Exonic/splicing：位于外显子区（exonic）或剪切位点区（splicing，剪切位点上下游2bp）的变异数目；
+（3） 1000Genomes(freq<=0.01)：过滤掉1000 Genomes数据库中频率大于0.01之后剩余的变异数目；
+（4） Rare_com：过滤掉同义突变之后剩余的变异数目。
+PRE
+P:#,;#复合杂合突变位点筛选结果下载链接：
+Excel:upload/*_Family/COM/*_com.rare.hg19_multianno.xls,,,结果下载链接：;
+P:#,;#复合杂合突变位点筛选统计结果下载链接：
+Excel:upload/*_Family/COM/*_com.rare.stat.xls,,,筛选统计结果下载链接：;
+
+ThirdMenu:复合杂合功能富集分析
+P:#,;#Gene Ontology（Ashburner, M. et al, 2000）（简称GO）是一个国际标准化的基因功能分类体系，提供了一套动态更新的标准词汇表（Controlled Vocabulary）来全面描述生物体中基因和基因产物的属性。GO总共有三个Ontology，分别描述基因的分子功能（Molecular Function）、细胞组分（Cellular Component）、生物过程（Biological Process）。
+P:#,;#将得到的复合杂合遗传模式位点相关基因进行GO分析，并统计结果，绘制成柱状图：
+Image:upload/*_Family/COM/GO/*.COM.sort.png,600,1,复合杂合遗传模式位点相关基因GO统计柱状图
+P:#,;#横坐标为GO术语，纵坐标为各类GO中含有的基因个数占该通路总基因数的比例。
+P:#,;#复合杂合遗传模式位点相关基因GO统计结果下载链接：
+Excel:upload/*_Family/COM/GO/*.COM.sort.*,,,结果下载链接：;
+
+ThirdMenu:复合杂合通路富集分析
+P:#,;#KEGG（Kanehisa, M. et al., 2000）（Kyoto Encyclopedia of Genes and Genomes，京都基因与基因组百科全书）是基因组破译方面的数据库。在给出染色体中一套完整基因的情况下，它可以对蛋白质交互（互动）网络在各种各样的细胞活动过程起的作用做出预测。KEGG的PATHWAY数据库整合当前在分子互动网络（比如通路、联合体）的知识，GENES/SSDB/KO数据库提供关于在基因组计划中发现的基因和蛋白质的相关知识，COMPOUND/GLYCAN/REACTION数据库提供生化复合物及反应方面的知识。
+P:#,;#其中基因数据库（GENES Database）含有所有已知的完整基因组和不完整基因组。有细菌、蓝藻、真核生物等生物体的基因序列，如人、小鼠、果蝇、拟南芥等等；通路数据库（PATHWAY Database）储存了基因功能的相关信息，通过图形来表示细胞内的生物学过程，例如代谢、膜运输、信号传导和细胞的生长周期；配体数据库（LIGAND Database）包括了细胞内的化学复合物、酶分子和酶反应的信息。
+P:#,;#对复合杂合遗传模式位点相关基因的富集通路提取并集，并且根据在该通路的富集程度q值做出分布图，结果如下：
+Image:upload/*_Family/COM/KEGG/*.COM.kegg.enrich.png,600,1,复合杂合遗传模式位点相关基因通路富集分析图
+P:#,;#横坐标为富集程度，纵坐标为富集的通路名称，图中圆圈大小代表富集在该通路上基因数目，圆圈颜色深浅代表q_value值大小。
+P:#,;#复合杂合遗传模式位点相关基因通路富集结果下载链接：
+Excel:upload/*_Family/COM/KEGG/*COM.kegg.enrich.p*,,,结果下载链接：;
+
+SubMenu:驱动基因分析
+P:#,;#从大量样品中可以检测出高频突变基因，这些基因能够作为疾病发生发展规律的候选基因。驱动基因是与疾病发生发展相关的重要基因，找到驱动基因后可以针对性的对病人进行个性化精准医疗。
+P:#,;#安诺优达利用前期所有样本分析得到的SNP和InDel信息，通过驱动基因分析软件OncodriveCLUST从中提取潜在的驱动基因。
+P:#,;#利用OncodriveCLUST检测驱动基因病进行过滤，挑选出校正后的q_value<=0.05的驱动基因。驱动基因检测结果如下所示：
+Table:upload/*_Driver/Driver.CLUST.result.filter.xls,,6,1000,,0,驱动基因筛选（仅展示前六列，六列后为打分值）
+PRE:,,60;
+（1） Gene：基因名称；
+（2） CGC：该基因在提供的CGC文件中的具体信息；
+（3） Gene_LEN：基因长度；
+（4） GENE_NUM_MUTS：在所有样本中，该基因发生非同义突变的个数；
+（5） MUTS_IN_CLUST：能够聚簇的突变个数（在5bp范围内可以成一簇）；
+（6） NUM_CLUSTERS：成簇的个数。
+PRE
+P:#,;#驱动基因筛选结果下载链接：
+Excel:upload/*_Driver/Driver.CLUST.result.filter.xls,,,结果下载链接：;
+
+#附录--------------------------------------------------
+
+MainMenu:附录
+
+SubMenu:专业名称解释
+P:#S,;#名词1、外显子测序（Whole Exome Sequencing，WES）
+P:#,;#外显子测序是指利用序列探针捕获技术将全基因组外显子区域DNA捕获并富集后进行高通量测序的基因组分析方法。相比于全基因重测序，外显子测序更加经济高效：1）测序深度更深，能够高效的发现常见突变和罕见突变；2）针对外显子区测序，能够直接靶向蛋白质相关遗传突变；3）全外显子区约占全基因组的1-2%，能够大大减低测序费用。
+P:#S,;#名词2、Reads
+P:#,;#经过高通量测序获得的序列片段，由ATCG组成。
+P:#S,;#名词3、覆盖度
+P:#,;#测序获得的序列占整个基因组的比例，对外显子测序而言，覆盖度指测序获得的序列占整个外显子芯片目标区域的比例，即目标捕获区中有多大比例的区域至少测到了1次。由于基因组中的高GC、重复序列等复杂结构的存在，测序最终拼接组装获得的序列往往无法覆盖所有的区域。
+P:#S,;#名词4、测序深度
+P:#,;#测序获得的碱基数和参考基因组大小的比例，对外显子测序而言，测序深度指测序获得的碱基总数占整个外显子芯片目标区域的比例。如人的参考基因组大小为3G，测序获得90G数据，则测序深度为30X。
+P:#S,;#名词5、单核苷酸多态性（Single Nucleotide Polymorphism，SNP）
+P:#,;#单核苷酸多态性是指基因组上单个位点发生的改变，由单个碱基A,T,C,G的改变造成的。单核苷酸多态性与人类的多种疾病紧密相关。
+P:#S,;#名词6、插入缺失（insertion-deletion，InDel）
+P:#,;#插入缺失是一种重要的遗传突变，主要指与参考基因组相比，被测序列发生一定数量的核苷酸插入或缺失。
+P:#S,;#名词7、染色体结构变异（Structural variation，SV）
+P:#,;#染色体结构变异是染色体水平的一种变异类型，一般指基因组上1KB或以上的片段发生的插入、缺失、扩增、倒位以及染色体间的易位等。相较于插入缺失，染色体结构变异一般指1KB以上大范围的改变。
+P:#S,;#名词8、拷贝数目变异（Copy Number Variant，CNV）
+P:#,;#拷贝数目变异是指与参考序列相比，基因组中1KB至几MB的DNA片段发生缺失、扩增及其相互组合衍生出的复杂染色体结构变异。
+P:#S,;#名词9、新生突变（De novo mutation）
+P:#,;#新生突变是指父母生殖细胞形成时所发生的胚系de novo突变或者受精卵发育过程中发生的体细胞de novo突变。新生突变分析属于家系分析的一种，需要客户提供家系信息。
+P:#S,;#名词10、显隐性遗传突变
+P:#,;#显性突变位点一般表现为：父母为杂合位点，而在患病个体中为杂合或纯合突变位点，且与正常兄弟姐妹基因型不同；隐性突变位点一般表现为：父母为杂合位点，而在患病个体中为纯合突变位点，且与正常兄弟姐妹基因型不同。显隐性遗传突变分析属于家系分析的一种，需要客户提供家系信息。
+P:#S,;#名词11、复合杂合遗传突变
+P:#,;#复合杂合遗传模式主要是指筛选患病个体为杂合的突变位点，每个基因中至少有两个此类型的突变位点，且患病个体的杂合突变不全部来自于同一个亲本，亲本的基因型不能为突变纯合型，亲本的基因型不能与患病个体一致。复合杂合遗传突变分析属于家系分析的一种，需要客户提供家系信息。
+
+SubMenu:常见问题汇总
+P:#S,;#问题1、如何从SNP注释文件中获得突变位点的纯合杂合信息？
+P:#,;#XXX_hg19_multianno.xls为样品的突变注释文件，注释文件中每一行展示一个SNP突变信息，Hom对应的列与Hem对应的列用于展示突变位点的纯合杂合情况。Hom列：纯合为1，杂合为0；Hem列：杂合为1，纯合为0。另外，每行的最后两列为该SNP的基本信息，比如：GT:AD:DP:GQ:PL  1/1:0,13:13:39:421,39,0（“:”分割），GT代表该位点的基因型信息，对应的1/1代表纯合突变，0/1代表杂合突变。
+P:#S,;#问题2、突变注释文件中的unknown和“.”分别代表什么含义？
+P:#,;#unknown代表该位点在相应数据库注释结果为unknown，是数据库自身的信息完整性造成的；“.”代表突变位点在相应的数据库中没有被注释到，是位点和数据库信息没有匹配造成的，说明该位点的相关信息在该数据库中还没有记载。
+P:#S,;#问题3、注释文件中AAChange.refGene列信息如何解读？
+P:#,;#发生在外显子区的突变的碱基型以及造成的氨基酸的变化，如GLYMA2269S00200:GLYMA2269S00200.1:exon1:c.C298A:p.Q100K表示突变位于基因GLYMA2269S00200，转录本GLYMA2269S00200.1的第一个外显子区，第298个碱基由C突变为A，第100个氨基酸由Q变为K。这一列信息能够明确表明突变位点对氨基酸序列造成的影响。
+P:#S,;#问题4、如何获得突变相关的基因列表？
+P:#,;#在XXX_hg19_multianno.xls突变注释文件，Gene.refGene列即为突变位点所在的基因，如果该位点位于基因间区，则注释到的基因为该位点上下游距离最近的基因。
+P:#S,;#问题5、运用哪一项或几项指标对SNP位点致病性或保守性进行预测比较准确？
+P:#,;#安诺优达外显子数据分析过程中运用了多个主流的突变位点致病性预测数据库对突变位点进行注释，比如：SIFT、Polyphen2_HVAR、Polyphen2_HDIV、MCAP、REVEL、MutationTaster、CADD等。目前比较常用的筛选数据库为SIFT和Polyphen2，SIFT：分值<=0.05为有害；Polyphen2_HVAR：分值>=0.909为有害。我们分析过程中筛选二者都预测为有害的位点作预测致病性突变位点。
+P:#S,;#问题6、外显子测序捕获效率偏低有何影响？如何进行改善？
+P:#,;#捕获效率是指在测序得到的Clean数据中可以比对到目标区域的数据比例。该比例偏低会导致最终用于分析的有效数据量减少，覆盖度及深度都会受影响，主要是深度不够。改进方法有两种：一种是重新进行洗脱建库测序；第二种是通过增加测序数据量来提高有效数据量。
+P:#S,;#问题7、为什么有一些突变位点一代测序能检测到而二代测序反而检测不到 / 感兴趣的突变位点不在结果文件中？
+P:#,;#sample.SNP/INDEL.hg19_multianno.xls是过滤后的突变位点过滤结果，因此在过滤标准以外的突变位点会过滤掉。未过滤的原始突变位点的注释结果（只进行refGene注释）可以查看sample.raw.SNP/INDEL.hg19_multianno.xls文件。突变过滤标准：--filterExpression "QD < 2.0" --filterName LowQD --filterExpression "ReadPosRankSum < -8.0" --filterName LowRPRS --filterExpression "FS >60.0(100.0)" --filterName HighFS --filterExpression "QUAL <30" --filterName LowQUAL  --filterExpression "DP<4"  --filterName LowDP
+#
+SubMenu:软件列表
+Table:upload/common/soft.txt,,,950,,0,主要分析软件列表
+#
+SubMenu:参考文献
+P:#,;#[1] Li, H. & Durbin, R. Fast and accurate short read alignment with Burrows–Wheeler transform. Bioinformatics 25, 1754-1760 (2009).
+P:#,;#[2] BAM. http://samtools.github.io/hts-specs/SAMv1.pdf
+P:#,;#[3] Li, H. et al. The sequence alignment/map format and SAMtools. Bioinformatics 25, 2078-2079 （2009).
+P:#,;#[4] Picard. http://broadinstitute.github.io/picard/
+P:#,;#[5] McKenna, A. et al. The Genome Analysis Toolkit: a MapReduce framework for analyzing next-generation DNA sequencing data. Genome research 20, 1297-1303 (2010).
+P:#,;#[6] Wang, K., Li, M. & Hakonarson, H. ANNOVAR: functional annotation of genetic variants from high-throughput sequencing data. Nucleic acids research 38, e164-e164 (2010).
+P:#,;#[7] Liu, X., Jian, X. & Boerwinkle, E. dbNSFP: a lightweight database of human nonsynonymous SNPs and their functional predictions. Human mutation 32, 894-899 (2011).
+P:#,;#[8] http://omim.org/.
+P:#,;#[9] Rausch, T. et al. DELLY: structural variant discovery by integrated paired-end and split-read analysis. Bioinformatics 28, i333–i339 (2012).
+P:#,;#[10] Jiang, Yuchao, et al. CODEX: a normalization and copy number variation detection method for whole exome sequencing. Nucleic acids research 43.6 : e39-e39.(2015).
+P:#,;#[11] Ashburner, M. et al. Gene Ontology: tool for the unification of biology. Nature genetics 25, 25-29 (2000).
+P:#,;#[12] Kanehisa, M. & Goto, S. KEGG: kyoto encyclopedia of genes and genomes. Nucleic acids research 28, 27-30 (2000).
+P:#,;#[123] Tamborero D, Gonzalez-Perez A, Lopez-Bigas N. OncodriveCLUST: exploiting the positional clustering of somatic mutations to identify cancer genes. Bioinformatics, 29(18): 2238-2244 (2013).
+P:#,;#[14] Ge, H. et al. FusionMap: detecting fusion genes from next-generation sequencing data at base-pair resolution. Bioinformatics 27, 1922-1928 (2011).
+P:#,;#[15] Yang W, Soares J, Greninger P, et al. Genomics of Drug Sensitivity in Cancer (GDSC): a resource for therapeutic biomarker discovery in cancer cells[J]. Nucleic acids research, 2013, 41(D1): D955-D961.
+P:#,;#[16] Davis A P, Murphy C G, Johnson R, et al. The comparative toxicogenomics database: update 2013[J]. Nucleic acids research, 41(D1): D1104-D1114 (2013).
+P:#,;#[17] Law, Vivian, et al. "DrugBank 4.0: shedding new light on drug metabolism." Nucleic acids research 42.D1:D1091-D1097 (2014).
+P:#,;#[18] Micheel, Christine M., Christine M. Lovly, and Mia A. Levy. "My Cancer Genome." Cancer Genetics 207.6:289 (2014).
+P:#,;#[19] Yang, Hong, et al. "Therapeutic target database update 2016: enriched resource for bench to clinical drug target and targeted pathway information." Nucleic acids research 44.D1 (2016): D1069-D1074.
+
+SubMenu:结果目录
+ShowDir:$(REPORT_DIR)

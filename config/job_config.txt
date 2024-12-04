@@ -1,0 +1,183 @@
+[Job Start]
+Name	Ln_Fq
+Memory	1G
+Queue	"pag.q,sci.q,nassci.q,mid.q"
+CPU	N
+Major	T
+Order	1
+Thread	1
+Qsub	False
+Command	make -f BIN/mk_filter config=Para_config filter=Para_fqdir samplelist=Para_samplelist outdir=OUTDIR/Filter/ project=Para_project Clean
+[Job End]
+
+[Job Start]
+Name	Local_Sention_Map
+Memory	24G
+Queue	"pag.q,sci.q,nassci.q,pag.q,mid.q"
+CPU	N
+Major	T
+Order	2
+Thread	16
+Qsub	True
+Command	make -f BIN/local_sentieon/sentieon.mk config=Para_config REF=Para_ref R1=OUTDIR/Filter/Cleandata/$(sample)[0]/$(sample)[0]_R1.fq.gz R2=OUTDIR/Filter/Cleandata/$(sample)[0]/$(sample)[0]_R2.fq.gz outdir=OUTDIR/Alignment/$(sample)[0] prefix=$(sample)[0] sequencing_platform=Para_platform bwa
+[Job End]
+
+[Job Start]
+Name	Local_Sention_uniq
+Memory	3G
+Queue	"pag.q,sci.q,nassci.q"
+CPU	N
+Major	T
+Order	2
+Thread	16
+Qsub	True
+Depend	Local_Sention_Map
+Command	make -f BIN/local_sentieon/sentieon.mk config=Para_config sort_bam=OUTDIR/Alignment/$(sample)[0]/$(sample)[0].sorted.bam outdir=OUTDIR/Alignment/$(sample)[0] prefix=$(sample)[0] thread=16 uniq 
+[Job End]
+
+[Job Start]
+Name	Local_Sention_rmdup
+Memory	26G
+Queue	"pag.q,sci.q,nassci.q"
+CPU	N
+Major	T
+Order	2
+Thread	16
+Qsub	True
+Depend	Local_Sention_uniq
+Command	make -f BIN/local_sentieon/sentieon.mk config=Para_config uniq_bam=OUTDIR/Alignment/$(sample)[0]/$(sample)[0].uniq.bam outdir=OUTDIR/Alignment/$(sample)[0] REF=Para_ref prefix=$(sample)[0] rmdup
+[Job End]
+
+[Job Start]
+Name	Sention_Stat
+Memory	26G
+Queue	"pag.q,sci.q,nassci.q"
+CPU	N
+Major	T
+Order	2
+Thread	16
+Qsub	True
+Depend	Local_Sention_uniq
+Command	make -f BIN/local_sentieon/sentieon.mk config=Para_config outdir=OUTDIR/Alignment/$(sample)[0] Datatype=WES prefix=$(sample)[0] REF=Para_ref exonbed=Para_bed sample=$(sample)[0] fqstat=OUTDIR/Filter/STAT_result.xls STAT
+[Job End]
+
+[Job Start]
+Name	MapStat
+Memory	1G
+Queue	pag.q,sci.q,nassci.q
+CPU	N
+Major	T
+Order	2
+Thread	1
+Qsub	True
+Depend	Sentieon_Stat
+Command	make -f BIN/Common_STAT/Common_MAP_Stat.mk config=Para_config samplelist=Para_samplelist indir=OUTDIR/ outdir=OUTDIR/Stat MAP_STAT_QC
+
+
+[Job Start]
+Name	Local_Sention_call 
+Memory	26G
+Queue	"pag.q,sci.q,nassci.q"
+CPU	N
+Major	T
+Order	2
+Thread	16
+Qsub	True
+Depend	Local_Sention_rmdup
+Command	make -f BIN/local_sentieon/sentieon.mk config=Para_config thread=16 rmdup_bam=OUTDIR/Alignment/$(sample)[0]/$(sample)[0].rmdup.bam outdir=OUTDIR/SNP_INDEL/$(sample)[0] prefix=$(sample)[0]  exonbed=Para_bed REF=Para_ref Call
+[Job End]
+
+[Job Start]
+Name	SNP_INDEL
+Memory	20G
+Queue	sci.q,nassci.q
+CPU	4
+Major	T
+Order	3
+Thread	4
+Qsub	True
+Depend	Sention_Stat
+Command	make -f BIN/local_sentieon/sentieon.mk config=Para_config sample=$(sample)[0] outdir=OUTDIR/SNP_INDEL/$(sample)[0] ref=Para_ref SELECT Filter extract
+[Job End]
+
+[Job Start]
+Name	SNP_ANNO
+Memory	60G
+Queue	sci.q
+CPU	N
+Major	T
+Order	4
+Thread	4
+Qsub	True
+Command	make -f BIN/Annovar_anno/mk_annovar config=Para_config outdir=OUTDIR/SNP_INDEL_ANNO/$(sample)[0]/SNP/ sample=$(sample)[0] ploidy=2 vcf=OUTDIR/SNP_INDEL/$(sample)[0]/$(sample)[0].snp.filter.vcf dbname=Mus_musculus type=SNP variation=snp ANNO STAT
+make -f /annoroad/data1/bioinfo/PROJECT/RD/Cooperation/RD_Group/renxue/Pipeline/Medical_pipeline_MonoDisease_v4.2.0/bin/makefile/Common_SNP_Stat.mk config=Para_config vcf=OUTDIR/SNP_INDEL/$(sample)[0]/$(sample)[0].snp.filter.vcf infile=OUTDIR/SNP_INDEL_ANNO/$(sample)[0]/SNP/$(sample)[0].anno.Mus_musculus_multianno.txt sampleID=$(sample)[0] outdir=OUTDIR/SNP_INDEL_ANNO/ SNP_COUNT SNP_DISTRIBUTION SNP_EXON SNP_TS_TV SNP_MUT CP
+[Job End]
+
+[Job Start]
+Name	INDEL_ANNO
+Memory	60G
+Queue	sci.q
+CPU	N
+Major	T
+Order	4
+Thread	4
+Qsub	True
+Command	make -f BIN/Annovar_anno/mk_annovar config=Para_config outdir=OUTDIR/SNP_INDEL_ANNO/$(sample)[0]/INDEL sample=$(sample)[0] ploidy=2 vcf=OUTDIR/SNP_INDEL/$(sample)[0]/$(sample)[0].indel.filter.vcf dbname=Mus_musculus type=INDEL variation=indel ANNO STAT
+make -f /annoroad/data1/bioinfo/PROJECT/RD/Cooperation/RD_Group/renxue/Pipeline/Medical_pipeline_MonoDisease_v4.2.0/bin/makefile/Common_INDEL_Stat.mk config=Para_config vcf=OUTDIR/SNP_INDEL/$(sample)[0]/$(sample)[0].indel.filter.vcf infile=OUTDIR/SNP_INDEL_ANNO/$(sample)[0]/INDEL/$(sample)[0].anno.Mus_musculus_multianno.txt sampleID=$(sample)[0] outdir=OUTDIR/SNP_INDEL_ANNO/ INDEL_COUNT INDEL_DISTRIBUTION INDEL_EXON INDEL_LEN CP
+[Job End]
+
+[Job Start]
+Name	SV_DELLY2
+Memory	15G
+Queue	sci.q
+CPU	N
+Major	T
+Order	5
+Thread	5
+Qsub	True
+Command	make -f BIN/SV/nonPair_SV_Delly2.mk config=Para_config REF=Para_ref type=Para_pipetype bam=OUTDIR/Alignment/$(sample)[0]/Recal/$(sample)[0].rmdup.bam outdir=OUTDIR/SV/$(sample)[0] sample=$(sample)[0] DELLY2_SV
+make -f BIN/SV/nonPair_SV_Delly2.mk config=Para_config genome=Para_ref type=Para_pipetype bam=OUTDIR/Alignment/$(sample)[0]/Recal/$(sample)[0].rmdup.bam outdir=OUTDIR/SV/$(sample)[0] sample=$(sample)[0] gene_bed=Para_bed Filter
+[Job End]
+
+[Job Start]
+Name	SV_ANNO
+Memory	15G
+Queue	sci.q
+CPU	N
+Major	T
+Order	6
+Thread	5
+Qsub	True
+Command	make -f BIN/Annovar_anno/Common_ANNO_Annovar.mk config=Para_config genome=Para_ref vcf=OUTDIR/SV/$(sample)[0]/$(sample)[0].SV.pass.vcf sample=$(sample)[0] type=SV outdir=OUTDIR/SV_ANNO/ genome=Para_genome ANNOVAR_VCF ANNOVAR_CytoBand SV_CP
+make -f BIN/SV_Stat/Common_SV_Stat.mk config=Para_config infile=OUTDIR/SV/$(sample)[0]/$(sample)[0].SV.pass.vcf genome=Para_genome sampleID=$(sample)[0] outdir=OUTDIR/SV_ANNO/Result/Stat genome=Para_genome SV_COUNT
+make -f BIN/SV_Stat/Common_SV_Stat.mk config=Para_config infile=OUTDIR/SV_ANNO/Middle/$(sample)[0].SV.Mus_musculus_multianno.txt genome=Para_genome sampleID=$(sample)[0] outdir=OUTDIR/SV_ANNO/Result/Stat genome=Para_genome SV_DISTRIBUTION
+make -f BIN/SV_Stat/Common_SV_Stat.mk config=Para_config infile=OUTDIR/SV/$(sample)[0]/$(sample)[0].SV.pass.vcf sampleID=$(sample)[0] outdir=OUTDIR/SV_ANNO/Result/Stat genome=Para_genome SV_TYPE
+make -f BIN/Common_ANNO_Format/Common_ANNO_Format.mk config=Para_config infile=OUTDIR/SV_ANNO/Middle/$(sample)[0] type=SV genome=Mus_musculus.UCSC chr_all
+[Job End]
+
+#CNV检测及注释以及下面部分都没整好
+
+[Job Start]
+Name	Total_Stat
+Memory	1G
+Queue	sci.q
+CPU	N
+Major	T
+Order	9
+Thread	1
+Qsub	True
+Command	make -f BIN/Common_STAT/Common_STAT.mk config=Para_config joblist=Para_joblist indir=OUTDIR outdir=OUTDIR/Stat project_id=Para_projectID project_name=Para_project type=wes genome=Para_genome STAT QC
+[Job End]
+
+[Job Start]
+Name	Web_Report
+Memory	5G
+Queue	sci.q
+CPU	N
+Major	T
+Order	10
+Thread	1
+Qsub	True
+Command	make -f BIN/Report/Common_REPORT.mk config=Para_config pipetype=Para_pipetype datatype=Para_datatype indir=OUTDIR outdir=OUTDIR/Web_Report project_id=Para_projectID project=Para_project platform=Para_platform genome=Para_ref pipe_conf=Para_pipeconf classtype=Para_classtype UPLOAD WEB
+[Job End]
+

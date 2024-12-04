@@ -1,0 +1,41 @@
+#sentieon比对,calling模块
+sentieon=/opt/sentieon-genomics-202308.03/bin/sentieon
+samtools=/annoroad/data1/software/bin/miniconda/envs/Transcriptome_pipeline_2023_v1/bin/samtools
+#JAVA=/annoroad/data1/software/bin/miniconda/envs/TGS_16s_pbtools/bin/java
+#JAVA=/annoroad/share/software/install/jdk1.8.0_101/bin/java
+JAVA=/annoroad/data1/software/install/Java/jdk1.8.0_101/bin/java
+java_command=-XX:ParallelGCThreads=4 -Xms30g -Xmx45g
+GATK_3.5=/annoroad/data1/bioinfo/PROJECT/RD/Cooperation/RD_Group/renxue/Pipeline/AP_Resequencing_saile/v1.0/AP_Resequence_saile/script/GATK/GenomeAnalysisTK.jar
+#GAKT_3.5=/annoroad/data1/share/software/install/GenomeAnalysisTK-3.5/GenomeAnalysisTK.jar
+fqtools=/annogene/data1/bioinfo/Seq/software/fqtools-0.1.12/fqtools
+#GATK_3.5=/annogene/data2/share/software/PAG/install/GenomeAnalysisTK-3.5/GenomeAnalysisTK.jar
+
+#--- MAP STAT ---#
+stop=2000
+nBins=1999
+flank=100
+tar_len=37679879
+
+TRANSPOSE=/annoroad/data1/software/bin/transpose-2.0/src/transpose
+itools=/annoroad/share/software/install/common_bin/iTools
+
+#select参数
+snp_filter=-T VariantFiltration --filterExpression "QD < 2.0" --filterName LowQD --filterExpression "ReadPosRankSum < -8.0" --filterName LowRPRS --filterExpression "FS >60.0" --filterName HighFS --filterExpression "QUAL <30" --filterName LowQUAL --filterExpression "DP<4.0" --filterName LowDP --missingValuesInExpressionsShouldEvaluateAsFailing --logging_level ERROR
+
+indel_filter=-T VariantFiltration --filterExpression "QD < 2.0" --filterName LowQD --filterExpression "ReadPosRankSum < -20.0" --filterName LowRPRS --filterExpression "FS >200.0" --filterName HighFS --filterExpression "QUAL <30" --filterName LowQUAL --filterExpression "DP<4.0" --filterName LowDP --missingValuesInExpressionsShouldEvaluateAsFailing --logging_level ERROR
+
+#统计模块
+PYTHON3=/annoroad/data1/software/bin/miniconda/envs/Transcriptome_pipeline_2023_Python3.5.5/bin/python
+Rscript=/annoroad/data1/software/bin/miniconda/envs/Transcriptome_pipeline_2023_R3.4.1/bin/Rscript
+perl=/annoroad/data1/software/bin/miniconda/envs/python3_base/bin/perl
+PERL=/annoroad/data1/software/bin/miniconda/envs/python3_base/bin/perl
+SAMTOOLS=/annoroad/data1/software/bin/miniconda/envs/Transcriptome_pipeline_2023_v1/bin/samtools
+
+#ANNOVAR
+annovar_opt=-protocol  ensGene  -operation  g   --otherinfo  -nastring  .  -vcfinput
+annovardb=/annoroad/data1/bioinfo/PROJECT/Commercial/Cooperation/Public/Database/GenomeDatabase/animal/Mus_musculus/Mus_musculus.UCSC.mm39/DNA/annotation/
+gff=/annoroad/data1/bioinfo/PROJECT/Commercial/Cooperation/Public/Database/GenomeDatabase/animal/Mus_musculus/Mus_musculus.UCSC.mm39/DNA/annotation/Mus_musculus.gff3
+dbname=Mus_musculus
+
+##SV-DELLY2
+DELLY2_238=export OMP_NUM_THREADS=5 && /annoroad/data1/software/bin/miniconda/envs/WES_circos/bin/delly

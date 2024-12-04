@@ -1,0 +1,630 @@
+#####Project_Info
+EmptyLine:5
+Title:$(PROJECT_NAME)
+#EmptyLine:10
+MainMenu:项目信息
+SubMenu:背景介绍
+P:#,;#DNA是生物体内重要的遗传物质，作为基因复制和转录的模板，它在细胞的生长分化，生物个体的发育、代谢及疾病发生等过程中发挥着重要作用。细胞或生物体内一套完整的单倍体的遗传物质合称基因组。
+P:#,;#安诺优达全基因组重测序，基于$(PLATFORM)测序平台，对已有参考基因组序列的物种进行个体或群体的全基因组测序，利用高性能计算平台和生物信息学方法，检测单核苷酸多态性位点（SNP）、插入缺失（InDel）等变异信息，获得其生物学遗传特征，从而进行后续的遗传进化分析以及开展与重要性状相关的候选基因预测研究，对该物种的分子育种，种质资源保护等研究具有重要的指导意义。 
+SubMenu:实验流程
+P:#,;#样品接收后，首先，对提供的DNA或者从提供的样本中抽提的DNA进行纯度、浓度和体积等方面的检测。其次，对检测合格后的样品进行文库制备和文库质检。文库制备即通过提取样品的基因组DNA并随机打断，电泳回收所需长度的DNA片断，并加上接头引物，制备得到所需文库。最后，对质检合格的文库进行上机测序。实验流程如下图：
+Image:upload/config_plot/experiment.png,400,1,实验流程图
+SubMenu:信息分析流程
+P:#,;#安诺优达重测序信息分析流程主要分为以下四部分（视分析内容的不同，可能会有调整）： 
+P:#,;#（1）数据处理及质控：将原始下机数据进行过滤并评估测序质量；
+P:#,;#（2）比对及质控：将过滤后的数据比对到参考基因组上并进行对相应指标质控； 
+P:#,;#（3）变异检测及注释：对单核苷酸变异（SNP）、小片段插入缺失变异（InDel）、染色体结构变异（SV），拷贝数变异（CNV）进行检测，并进行注释（视分析内容而定）；
+P:#,;#（4）个性化分析：根据项目特殊需求进行分析。
+P:#,;#具体技术流程如下图（视分析内容的不同，流程会有所变化）：
+Image:upload/config_plot/technology.png,500,1,重测序信息分析流程图
+SubMenu:样本信息
+P:#,;#为了更加清楚报告中所使用的样本名和最初的样本信息之间的关系，列出样本信息收集表（如果样本太多，则显示部分样本），如下：
+Table:upload/1_Sample_info/sample_info.xls,,,600,,0,样本信息收集表
+PRE:,,67;
+（1）Sample ID：客户提供的原始样本名称；
+（2）Sample Name：分析结果中使用的样本名称；
+（3）Sample Description：客户提供的原始样本描述信息。
+PRE
+P:#,;#样本信息下载链接：
+Excel:upload/1_Sample_info/sample_info.xls,,,样本信息下载：;
+
+MainMenu:数据过滤
+SubMenu:原始测序数据
+P:#,;#$(PLATFORM)高通量测序结果最初以原始图像数据文件存在，经$(PLATFORM_SOFT)软件进行序列碱基识别后转化为原始测序序列（Sequenced Reads），我们称之为Raw Data或Raw Reads，其结果以FASTQ（简称为fq）文件格式存储。FASTQ文件包含每条测序序列（Read）的名称、碱基序列以及其对应的测序质量信息。在FASTQ格式文件中，每个碱基对应一个碱基质量字符，每个碱基质量字符对应的ASCII码值减去33（Sanger质量值体系），即为该碱基的测序质量得分（Phred Quality Score）。不同Phred Quality Score代表不同的碱基测序错误率，如Phred Quality Score值为20和30分别表示碱基测序错误率为1%和0.1%。其中FASTQ格式示例如下：
+Image:upload/config_plot/fastq-eg.png,100,1,FASTQ文件格式示例图
+FastqPRE:
+（1）第一行以“@”开头，随后为测序标识别符（Sequence Identifiers）和描述文字（选择性部分）；
+（2）第二行是碱基序列；
+（3）第三行以“+”开头，随后为测序标识别符（选择性部分）；
+（4）第四行是对应碱基的测序质量，该行中每个字符对应的ASCII值减去33，即为对应第二行碱基的测序质量值。
+FastqPRE
+P:#,;#测序得到的某些原始测序序列含有带接头的、低质量的序列，为了保证信息分析质量，必须对原始序列进行过滤，从而得到Clean Reads，后续分析都基于Clean Reads。
+P:#,;#数据处理步骤如下：
+FilterPRE:
+（1）去除接头污染的Reads（Reads中接头污染的碱基数大于5bp。对于双端测序，若一端受到接头污染，则去掉两端的Reads）；
+（2）去除低质量的Reads（Reads中质量值Q≤19的碱基占总碱基的50%以上，对于双端测序，若一端为低质量Reads，则会去掉两端Reads）；
+（3）去除含N比例大于5%的Reads（对于双端测序，若一端含N比例大于5%，则会去掉两端Reads）。
+FilterPRE
+P:#,;#数据过滤统计结果见下表：
+Table:upload/*_Filter/STAT_result.xls,,,600,,0,数据过滤统计分析表
+PRE:,,67;
+（1）Raw Reads Number：原始的未过滤测序的序列数；
+（2）Raw Bases Number：原始的未过滤的碱基数；
+（3）Clean Reads Number：过滤后的剩余的序列数；
+（4）Clean Reads Rate(%)：过滤后剩余的序列数的比例，这个值越大，说明测序质量或者文库质量越好；
+（5）Clean Bases Number：过滤后的剩余的碱基数；
+（6）Low-quality Reads Number：被低质量过滤标准去掉的序列数；
+（7）Low-quality Reads Rate(%)：被低质量过滤标准去掉的序列的比例；
+（8）Ns Reads Number：含碱基N的比例大于5%的Reads数；
+（9）Ns Reads Rate(%)：含碱基N的比例大于5%的Reads占Raw Reads数的比例；
+（10）Adapter polluted Reads Number：含有接头污染被去掉的序列数；
+（11）Adapter polluted Reads Rate(%)：含有接头污染去掉的序列的比例；
+（12）Raw Q30 Bases Rate(%)：在过滤前，原始序列中质量值大于30（错误率小于0.1%）的碱基占总碱基（Raw Reads）的比例；
+（13）Clean Q30 Bases Rate(%)：过滤后，总序列中质量值大于30（错误率小于0.1%）的碱基占总碱基（Clean Reads）的比例;
+（14）Raw GC percent(%)：过滤前序列中GC碱基所占比例;
+（15）Clean GC percent(%)：过滤后序列中GC碱基所占比例。
+PRE
+P:#,;#过滤统计表下载链接：
+Excel:upload/*_Filter/STAT_result.xls,,,过滤统计表下载：;
+
+SubMenu:数据的质量分布
+P:#,;#测序错误率与碱基质量有关，受测序仪本身、测序试剂、样品等多个因素共同影响。每个碱基测序错误率是通过测序Phred数值（Phred score，Qphred）通过公式转化得到，而Phred数值是在碱基识别（Base Calling）过程中通过一种预测碱基判别发生错误概率模型计算得到的，对应关系如下表所示：
+Table:upload/config_plot/phred_score.xls,,,600,,0,碱基识别与Phred分值之间的简明对应关系表
+P:#,;#为了反映测序过程中测序质量的稳定性，以Clean Reads的碱基位置作为横坐标，每个位置的平均测序质量值作为纵坐标，得到每个样本测序质量分布图。
+Image:upload/*_Filter/*/*.quality.png,,1,样品质量值分布图
+P:#,;#红线大部分都在Q30以上，可知数据质量比较高；Reads前半段质量往往偏低是由于测序延后性导致，到后半段质量往往偏低是由于测序原料的损耗导致。
+P:#,;#质量值分布图下载链接：
+Excel:upload/*_Filter/*/*.quality.p*,,,质量值分布图：;
+SubMenu:数据的碱基分布
+P:#,;#碱基含量分布图用以检查有无AT、GC分离现象，而这种现象可能是测序或者建库所带来的，它会影响后续的定量分析。理论上G碱基和C碱基及A碱基和T碱基含量每个测序循环上应分别相等，且整个测序过程稳定不变，呈水平线。以Clean Reads中的碱基位置作为横坐标，以每个位置的ATCGN碱基的比例作为纵坐标，得到相应的分布图，如下：
+Image:upload/*_Filter/*/*.base.png,,1,样品碱基分布图
+P:#,;#横坐标为Reads的碱基位置，纵坐标为单碱基的所占的比例，不同颜色代表不同的碱基类型。每个Cycle代表测序的每个碱基，如第一个Cycle即表示该样品所有测序Reads在第一个碱基的A、T、G、C、N的分布情况。
+P:#,;#样品碱基分布图下载：
+Excel:upload/*_Filter/*/*.base.p*,,,样品碱基分布图下载链接：;
+
+MainMenu:比对及质控
+SubMenu:比对信息统计
+P:#,;#利用基因组常用比对软件BWA（Li, et al., 2009），采用BWA-MEM模式（Li, 2013），将过滤后的Clean Reads比对到参考基因组上，并去掉未比对上，低质量（MQ<4），重复的Reads。剩余的高质量Reads用于后续分析。具体比对统计结果见下表：
+Table:upload/*Map/map.stat.xls,,6,700,,0,比对数据统计表
+PRE:
+（1）Sample：样本名称；
+（2）Genome Length：参考基因组大小（不含N）；
+（3）Clean Reads：过滤后的Reads的个数；
+（4）Clean Bases：过滤后的Bases数；
+（5）Mapped Bases：比对到参考基因组上的Bases个数；
+（6）Mapping Rate (%)：比对到参考基因组上的Bases数的百分比；
+（7）Duplication Rate (%)：PCR重复所占百分比；
+（8）Uniq Rate (%)：高质量的Bases所占的百分比；
+（9）Mean depth：比对到参考基因组上Bases的平均深度；
+（10）Coverage Rate (%) (>=YX)：比对到参考基因组上的Bases覆盖度，即参考序列（不含N）中有多大比例的区域至少测到了Y次。
+PRE
+P:#,;#详细的统计表请见：
+Excel:upload/*Map/map.stat.xls,,,详细的统计表请见：;
+SubMenu:测序深度分布
+P:#,;#测序深度的分布可以反映建库测序的均一性，展现对基因组的覆盖情况。
+P:#,;#单碱基深度分布图以测序深度为横坐标，相应深度的碱基位点比例为纵坐标，此处Fraction of bases=（特定深度对应的碱基位点数/基因组长度），它反映了特定深度下对应的基因组覆盖情况。下图为测序深度分布图：
+Image:upload/*Map/*/*_histPlot.png,,1,单碱基深度分布图
+P:#,;#横坐标表示测序深度，纵坐标表示相应深度的Fraction of bases。
+P:#,;#单碱基深度分布图下载链接：
+Excel:upload/*Map/*/*_histPlot.p*,,,单碱基深度分布图下载：;
+P:#,;#累积深度分布图以测序深度为横坐标，大于相应深度的碱基位点比例为纵坐标，此处Fraction of bases=（大于此深度的碱基位点数/基因组长度），它反映了大于特定深度下的基因组覆盖度。下图为累积深度分布图：
+Image:upload/*Map/*/*_cumuPlot.png,,1,累积深度分布图
+P:#,;#横坐标表示测序深度，纵坐标表示累积深度的Fraction of bases。
+P:#,;#累计深度分布图下载链接：
+Excel:upload/*Map/*/*_cumuPlot.p*,,,累计深度分布图下载：;
+
+MainMenu:变异检测
+SubMenu:SNP变异检测及注释
+P:#,;#在比对到参考基因组序列的基础上，通过突变分析软件GATK（McKenna, et al., 2010）从中提取全基因组中所有的潜在的SNP位点，再根据质量值、深度、重复性等因素做进一步的过滤筛选，最终得到高可信度的SNP数据集，并对其进行注释。
+ThirdMenu: SNP检测及注释
+P:#,;#利用GATK软件采用HaplotypeCaller模式和GVCF形式分别进行个体SNP检测，过滤得到SNP的VCF文件，使用ANNOVAR（Wang, et al., 2010）软件及已有的基因组注释文件（gff）对每个样本检测到的SNP进行相应的注释，注释结果格式如下：
+Table:upload/config_plot/All.SNP.anno.multianno.example.xls,,,600,,0,SNP注释格式表
+PRE:,,67;
+（1）Chr：染色体名称；
+（2）Start：变异起始位置；
+（3）End：变异的末端位置；
+（4）Ref：参考序列基因型；
+（5）Alt：突变基因型；
+（6）Ref_Depth：与参考基因组碱基型一致的测序深度；
+（7）Alt_Depth：与突变型碱基一致的测序深度；
+（8）Genotype：基因型，0表示与参考基因组一致，1表示与突变型一致（如果有多个变异，则2表示与第2个突变型一致，依此类推）。对于2倍体生物0/0和1/1均表示纯合，0/1表示杂合，对于单倍体生物0表示未突变，1或者其他数字表示突变。
+（9）Func.ensGene：变异所在基因组结构的位置，如内含子，外显子，基因间区；
+（10）Gene.ensGene：SNP所在基因，如变异在基因间区，给出两侧基因名；
+（11）GeneName.ensGene：SNP所在基因通用名称，如果注释文件（gff）中不存在该名称，则同Gene.ensGene；
+（12）GeneDetail.ensGene： 基因信息，如变异在基因间区，给出两侧基因的距离；
+（13）ExonicFunc.ensGene：变异位于外显子上，引起同义突变或非同义突变；
+（14）AAChange.ensGene：变异所在位置的详细突变信息，如在外显子区域给出详细信息，非外显子区域，以.表示，如gene47230:rna66804:exon3:c.A841G:p.T281A表示空变位于基因gene47230上，转录本rna66804，第三个外显子第841碱基由A突变为G，氨基酸序列上的第281个氨基由T突变为A。
+PRE
+P:#,;#具体的结果文件请见：
+Excel:upload/*Variation/*SNP/*/*.SNP.anno.*_multianno.xls,,,具体的结果文件请见：;
+
+ThirdMenu: SNP位置分布统计
+P:#,;#注释后的SNP，统计其在基因组各区间的分布情况，以其中一个样本为例：
+Table:upload/*Variation/*SNP/*/*.SNP.genome.region.stat.xls,,,600,,0,SNP分布统计
+PRE:,,67;
+（1）Total：基因组中全部的SNP数目；
+（2）UTR5：发生在基因的UTR5的SNP数目；
+（3）UTR3：发生在基因的UTR3的SNP数目； 
+（4）UTR5;UTR3：发生在基因的UTR5与另一个基因UTR3的共有区间的SNP数目；
+（5）exonic：发生在外显子区域的SNP数目；
+（6）splicing：发生在基因剪切区域内（剪切位点上游2bp，即非Exonic区）的SNP数目；
+（7）exonic;splicing：发生在基因的Exonic邻近剪切位点2bp（剪切位点下游）的SNP数目；
+（8）upstream：发生在基因上游（1000bp）内的SNP数目； 
+（9）downstream：发生在基因下游（1000bp）内的SNP数目；
+（10）upstream;downstream：发生在基因上游或者下游（1000bp）内的SNP数目；
+（11）intronic：发生在内含子区域的SNP数目；
+（12）intergenic：发生在基因间区的SNP数目；
+（13）ncRNA_*：发生在没有相关编码注释的RNA上的SNP数目；
+（14）other：位于其他位置SNP的数目。
+PRE
+P:#,;#各个样品详细的统计表见：
+Excel:upload/*Variation/*SNP/*/*.SNP.genome.region.stat.xls,,,各个样品详细的统计表见：;
+
+P:#,;#将样本的SNP在基因组上的分布作图如下：
+Image:upload/*Variation/*SNP/*/*.SNP.genome.region.stat.png,350,1,SNP位置分布图
+P:#,;#括号内表示各功能区SNP数量所占百分比，作图时将相同功能区的合并，如UTR5;UTR3归入UTR5分类。
+P:#,;#SNP位置分布图下载链接：
+Excel:upload/*Variation/*SNP/*/*.SNP.genome.region.stat.p*,,,SNP位置分布图下载：;
+
+ThirdMenu: SNP杂合比分析
+P:#,;#经GATK检测并过滤得到的SNP分为杂合和纯合SNP，分析基因组中SNP的杂合比例，有助于对该物种有更多的了解，以进行后续分析。样本的纯合和杂合SNP的比例如下表，以其中一个样本为例：
+Table:upload/*Variation/*SNP/*/*.SNP.homo_hete.stat.xls,,,700,,0,纯合和杂合SNP比例表
+PRE:,,67;
+（1）Hom_genome：基因组中纯合的SNP；
+（2）Het_genome：基因组中杂合的SNP；
+（3）Hom_exonic：外显子中纯合的SNP；
+（4）Het_exonic：外显子中杂合的SNP。
+PRE
+P:#,;#各个样品SNP纯杂合统计表见：
+Excel:upload/*Variation/*SNP/*/*.SNP.homo_hete.stat.xls,,,各个样品SNP纯杂合统计表见：;
+
+ThirdMenu: SNP突变模式分布统计
+P:#,;#不同物种、不同环境等因素会导致SNP突变模式不同，通过统计SNP突变模式的分布情况，可以得到特定物种、特定类型样本的特有突变模式，从而对该物种或样本有更为全面的了解和分析。下表为SNP突变模式的统计，以其中一个样本为例：
+Table:upload/*Variation/*SNP/*/*.SNP.mutation.pattern.stat.xls,,,600,,0,SNP突变模式分布统计
+PRE:,,67;
+（1）T-A：即T到A的突变（包含反链的A到T的突变）；
+（2）T-C：即T到C的突变（包含反链的A到G的突变）；
+（3）T-G：即T到G的突变（包含反链的A到C的突变）；
+（4）C-A：即C到A的突变（包含反链的G到T的突变）；
+（5）C-T：即C到T的突变（包含反链的G到A的突变）；
+（6）C-G：即C到G的突变（包含反链的G到C的突变）。
+PRE
+P:#,;#各个样品SNP突变模式分布统计表见：
+Excel:upload/*Variation/*SNP/*/*.SNP.mutation.pattern.stat.xls,,,各个样品SNP突变模式分布统计表见：;
+P:#,;#对样本的各突变模式的比例作图如下：
+Image:upload/*Variation/*SNP/*/*.SNP.mutation.pattern.stat.png,,1,SNP突变模式分布图
+P:#,;#括号内表示各突变模式所占百分比。
+P:#,;#SNP突变模式分布图下载链接：
+Excel:upload/*Variation/*SNP/*/*.SNP.mutation.pattern.stat.p*,,,SNP突变模式分布图下载：;
+
+ThirdMenu: 编码区SNP功能注释及统计
+P:#,;#编码区域的SNP突变可能会影响到氨基酸的编码，进而影响基因功能。将位于编码区域的突变根据其是否引起氨基酸的改变进行分类注释，如非同义突变、同义突变等，通常非同义突变导致相应氨基酸改变从而使得基因功能发生改变，而Stopgain和Stoploss可以导致终止子的提前出现或缺失。下表给出了SNP的功能分布统计，以其中一个样本为例：
+Table:upload/*Variation/*SNP/*/*.SNP.ExonicFunc.stat.xls,,,600,,0,SNP功能分布统计
+PRE:,,60;
+（1）Total：所有突变总和；
+（2）nonsynonymous SNP：非同义突变，密码子的改变导致编码的氨基酸改变；
+（3）synonymous SNP：同义突变，密码子变异为编码同一氨基酸的密码子，核苷酸的改变不引起氨基酸的改变，即不引起基因产物的突变；
+（4）stopgain：密码子的改变导致终止子的出现；
+（5）stoploss：密码子的改变导致终止子的缺失；
+（6）unknown：未知类型。
+PRE
+P:#,;#各个样品SNP功能分布统计表见：
+Excel:upload/*Variation/*SNP/*/*.SNP.ExonicFunc.stat.xls,,,各个样品SNP功能分布统计表见：;
+P:#,;#将样本编码区的SNP功能统计结果作图如下，得到其分布情况：
+Image:upload/*Variation/*SNP/*/*.SNP.ExonicFunc.stat.png,350,1,SNP功能分布图
+P:#,;#括号内表示各功能区SNP数量所占百分比。
+P:#,;#SNP功能分布图下载链接：
+Excel:upload/*Variation/*SNP/*/*.SNP.ExonicFunc.stat.p*,,,SNP功能分布图下载：;
+
+SubMenu:InDel变异检测及注释
+P:#,;#在比对到参考基因组序列的基础上，通过突变分析软件GATK从中提取全基因组中所有的潜在多态性InDel（Insertion和Deletion）位点，再根据质量值、深度、重复性等因素做进一步的过滤筛选，最终得到高可信度的InDel数据集，并对其进行注释。
+ThirdMenu: InDel检测及注释
+P:#,;#利用GATK软件采用HaplotypeCaller模式和GVCF文件进行个体InDel检测，过滤得到InDel的VCF文件，使用ANNOVAR软件及已有的基因组注释文件（gff）对每个样本检测到的InDel进行相应的注释，注释结果格式如下：
+Table:upload/config_plot/All.INDEL.anno.multianno.example.xls,,,600,,0,InDel注释格式表
+PRE:,,67;
+（1）Chr：染色体名称；
+（2）Start：变异起始位置；
+（3）End：变异的末端位置；
+（4）Ref：参考序列基因型；
+（5）Alt：突变基因型；
+（6）Ref_Depth：与参考基因组碱基型一致的测序深度；
+（7）Alt_Depth：与突变型碱基一致的测序深度；
+（8）Genotype：基因型，0表示与参考基因组一致，1表示与突变型一致（如果有多个变异，则2表示与第2个突变型一致，依此类推），对于2倍体生物0/0和1/1均表示纯合，0/1表示杂合，对于单倍体生物0表示未突变，1或者其他数字表示突变。
+（9）Func.ensGene：变异所在基因组结构的位置，如内含子，外显子，基因间区；
+（10）Gene.ensGene：InDel所在基因，如变异在基因间区，给出两侧基因名；
+（11）GeneName.ensGene：InDel所在基因通用名称，如果注释文件（gff）中不存在该名称，则同Gene.ensGene；
+（12）GeneDetail.ensGene： 基因信息，如变异在基因间区，给出两侧基因的距离；
+（13）ExonicFunc.ensGene：变异位于外显子上，引起移码插入（frameshift insertion）、移码缺失（frameshift deletion）、非移码插入（nonframeshift insertion）、非移码缺失（nonframeshift deletion）、终止获得（stopgain）及终止缺失（stoploss）；
+（14）AAChange.ensGene：变异所在位置的详细突变信息，如在外显子区域给出详细信息，非外显子区域，以.表示，如gene47230:rna66804:exon3:c.1128_1129del:p.E376fs表示突变位于基因gene47230上，转录本rna66804，第三个外显子第1128-1129个碱基缺失，氨基酸序列上第376个氨基酸发生了移码突变。
+PRE
+P:#,;#具体的结果文件请见：
+Excel:upload/*Variation/*INDEL/*/*.INDEL.anno.*_multianno.xls,,,具体的结果文件请见：;
+
+ThirdMenu: InDel位置分布统计
+P:#,;#利用GATK检测并过滤得到InDel后，使用ANNOVAR软件及已有的基因组注释文件（gff）对检测到的InDel进行相应的注释，统计其在基因组各区间的分布情况，以其中一个样本为例：
+Table:upload/*Variation/*INDEL/*/*.INDEL.genome.region.stat.xls,,,600,,0,InDel分布统计
+PRE:,,67;
+（1）Total：基因组中全部的InDel数目；
+（2）UTR5：发生在基因的UTR5的InDel数目；
+（3）UTR3：发生在基因的UTR3的InDel数目； 
+（4）UTR5;UTR3：发生在基因的UTR5与另一个基因UTR3的共有区间的InDel数目；
+（5）exonic：发生在外显子区域的InDel数目；
+（6）splicing：发生在基因剪切区域内（剪切位点上游2bp，即非Exonic区）的InDel数目；
+（7）exonic;splicing：发生在基因的Exonic邻近剪切位点2bp（剪切位点下游）的InDel数目；
+（8）upstream：发生在基因上游（1000bp）内的InDel数目； 
+（9）downstream：发生在基因下游（1000bp）内的InDel数目；
+（10）upstream;downstream：发生在基因上游或者下游（1000bp）内的InDel数目；
+（11）intronic：发生在内含子区域的InDel数目；
+（12）intergenic：发生在基因间区的InDel数目；
+（13）ncRNA_*：发生在没有相关编码注释的RNA上的InDel数目；
+（14）other：位于其他位置InDel的数目。
+PRE
+P:#,;#各个样品InDel分布统计表见：
+Excel:upload/*Variation/*INDEL/*/*.INDEL.genome.region.stat.xls,,,各个样品InDel分布统计表见：;
+P:#,;#将样本的InDel在基因组上的分布作图如下：
+Image:upload/*Variation/*INDEL/*/*.INDEL.genome.region.stat.png,350,1,InDel位置分布图
+P:#,;#括号内表示各功能区InDel数量所占百分比，作图时将相同功能区的合并，如UTR5;UTR3归入UTR5分类。
+P:#,;#InDel位置分布图下载链接：
+Excel:upload/*Variation/*INDEL/*/*.INDEL.genome.region.stat.p*,,,InDel位置分布图下载：;
+
+ThirdMenu: InDel突变长度分布统计
+P:#,;#InDel长度的不同会对基因组造成不同程度的影响。在全基因组水平上或者在编码区内，其不同长度的InDel的分布有着明显的差异。一般情况下，编码区因其所需的特有的保守性，3个碱基的InDel的数量比例较2碱基及4碱基多（3碱基InDel不容易引起移码）。下表为InDel突变模式的统计，以一个样本为例：
+Table:upload/*Variation/*INDEL/*/*.INDEL.length.pattern.stat.xls,,,600,,0,InDel突变模式统计
+PRE:,,67;
+（1）第一列表示InDel的长度，即Insertion或是Deletion的长度；
+（2）Genome：全基因组中长度为n的InDel的个数；
+（3）Exonic：编码区中长度为n的InDel的个数。
+PRE
+P:#,;#各个样品InDel突变长度统计表见：
+Excel:upload/*Variation/*INDEL/*/*.INDEL.length.pattern.stat.xls,,,各个样品InDel突变模式统计表见：;
+P:#,;#将基因组及编码区不同长度的InDel的个数作图：
+Image:upload/*Variation/*INDEL/*/*.INDEL.length.pattern.stat.png,,1,InDel突变模式分布图
+P:#,;#横坐标为InDel长度，左侧图纵坐标为分布在全基因组上的InDel个数，右侧图纵坐标为分布在外显子区域中的InDel个数。
+P:#,;#突变模式分布图下载链接：
+Excel:upload/*Variation/*INDEL/*/*.INDEL.length.pattern.stat.p*,,,突变模式分布图下载：;
+
+ThirdMenu: 编码区InDel功能注释及统计
+P:#,;#编码区域的InDel突变可能会影响到氨基酸的编码进而影响基因功能，将位于编码区域的突变根据其是否引起氨基酸的改变进行分类注释，如移码突变、非移码突变等，通常移码突变较非移码突变更有害，而Stopgain和Stoploss可以导致终止子的提前出现或缺失。下表给出了InDel的功能注释统计，以其中一个样本为例：
+
+Table:upload/*Variation/*INDEL/*/*.INDEL.ExonicFunc.stat.xls,,,600,,0,InDel功能统计
+PRE:,,67;
+（1）Total：所有突变总和；
+（2）frameshift *：移码突变，碱基缺失或增加非3的倍数，造成这位置之后的一系列编码发生移位错误的改变；
+（3）nonframeshift *：非移码突变，碱基缺失或增加为3的倍数；
+（4）stopgain：密码子的改变导致终止子的出现；
+（5）stoploss：密码子的改变导致终止子的缺失；
+（6）unknown：未知类型。
+PRE
+P:#,;#各个样品InDel功能统计表见：
+Excel:upload/*Variation/*INDEL/*/*.INDEL.ExonicFunc.stat.xls,,,各个样品InDel功能统计表见：;
+P:#,;#将样本编码区的InDel功能统计结果作图如下，得到其分布情况：
+Image:upload/*Variation/*INDEL/*/*.INDEL.ExonicFunc.stat.png,340,1,InDel功能分布图
+P:#,;#括号内表示各功能区InDel数量所占百分比。
+P:#,;#InDel功能分布图下载链接：
+Excel:upload/*Variation/*INDEL/*/*.INDEL.ExonicFunc.stat.p*,,,InDel功能分布图下载：;
+
+SubMenu:群体SNP检测及注释
+P:#,;#在比对到参考基因组序列的基础上，通过突变分析软件GATK在所有样本中提取全基因组中所有的潜在的SNP位点，再根据质量值、深度、重复性等因素做进一步的过滤筛选，最终得到高可信度的SNP数据集，并对其进行注释。
+P:#,;#利用GATK软件采用HaplotypeCaller模式进行群体SNP检测，得到每个样本的GVCF文件然后合并成最后的群体VCF文件，提取各样本的SNP位点信息，结果文件请见下载链接：
+Excel:upload/*Variation/*SNP/All.SNP.variants.list.xls,,,具体的SNP位点信息文件：;
+P:#,;#利用GATK检测并过滤得到SNP后，使用ANNOVAR软件及已有的基因组注释文件（gff）对每个样本检测到的SNP进行相应的注释，注释结果格式如下：
+Table:upload/config_plot/POP.SNP.anno.multianno.example.xls,,,600,,0,SNP注释格式表
+PRE:,,67;
+（1）Chr：染色体名称；
+（2）Start：变异起始位置；
+（3）End：变异的末端位置；
+（4）Ref：参考序列基因型；
+（5）Alt：突变基因型；
+（6）Func.ensGene：变异所在基因组结构的位置，如内含子，外显子，基因间区；
+（7）Gene.ensGene：SNP所在基因，如变异在基因间区，给出两侧基因名；
+（8）GeneName.ensGene：SNP所在基因通用名称，如果注释文件（gff）中不存在该名称，则同Gene.ensGene；
+（9）GeneDetail.ensGene： 基因信息，如变异在基因间区，给出两侧基因的距离；
+（10）ExonicFunc.ensGene：变异位于外显子上，引起同义突变或非同义突变；
+（11）AAChange.ensGene：变异所在位置的详细突变信息，如在外显子区域给出详细信息，非外显子区域，以.表示，如gene47230:rna66804:exon3:c.A841G:p.T281A表示空变位于基因gene47230上，转录本rna66804，第三个外显子第841碱基由A突变为G，氨基酸序列上的第281个氨基由T突变为A。
+PRE
+P:#,;#注释后的SNP，统计其在基因组各区间的分布情况：
+Table:upload/*Variation/*SNP/*.SNP.genome.region.stat.xls,,,600,,0,SNP分布统计
+PRE:,,67;
+（1）Total：基因组中全部的SNP数目；
+（2）UTR5：发生在基因的UTR5的SNP数目；
+（3）UTR3：发生在基因的UTR3的SNP数目； 
+（4）UTR5;UTR3：发生在基因的UTR5与另一个基因UTR3的共有区间的SNP数目；
+（5）exonic：发生在外显子区域的SNP数目；
+（6）splicing：发生在基因剪切区域内（剪切位点上游2bp，即非Exonic区）的SNP数目；
+（7）exonic;splicing：发生在基因的Exonic邻近剪切位点2bp（剪切位点下游）的SNP数目；
+（8）upstream：发生在基因上游（1000bp）内的SNP数目； 
+（9）downstream：发生在基因下游（1000bp）内的SNP数目；
+（10）upstream;downstream:发生在基因上游或者下游（1000bp）内的SNP数目；
+（11）intronic：发生在内含子区域的SNP数目；
+（12）intergenic：发生在基因间区的SNP数目；
+（13）ncRNA_*：发生在没有相关编码注释的RNA上的SNP数目；
+（14）other：位于其他位置SNP的数目。
+PRE
+P:#,;#SNP分布统计表下载链接：
+Excel:upload/*Variation/*SNP/*.SNP.genome.region.stat.xls,,,SNP分布统计表;
+P:#,;#将SNP在基因组上的分布作图如下：
+Image:upload/*Variation/*SNP/*.SNP.genome.region.stat.png,350,1,SNP位置分布图
+P:#,;#括号内表示各功能区SNP数量所占百分比，作图时将相同功能区的合并，如UTR5;UTR3归入UTR5分类。
+P:#,;#SNP位置分布图下载链接：
+Excel:upload/*Variation/*SNP/*.SNP.genome.region.stat.p*,,,SNP位置分布图下载：;
+
+SubMenu:群体InDel检测及注释
+P:#,;#在比对到参考基因组序列的基础上，通过突变分析软件GATK从所有样本中中提取全基因组中所有的潜在的InDel位点，再根据质量值、深度、重复性等因素做进一步的过滤筛选，最终得到高可信度的InDel数据集，并对其进行注释。
+P:#,;#利用GATK软件采用HaplotypeCaller模式进行群体InDel检测，得到每个样本的GVCF文件然后合并成最后的群体VCF文件，提取各样本的InDel位点信息，结果文件请见下载链接：
+Excel:upload/*Variation/*INDEL/All.INDEL.variants.list.xls,,,具体的SNP位点信息文件：;
+P:#,;#利用GATK检测并过滤得到SNP后，使用软件及已有的基因组注释文件（gff）对群体检测到的InDel进行相应的注释，注释结果格式如下：
+Table:upload/config_plot/POP.INDEL.anno.multianno.example.xls,,,600,,0,InDel注释格式表
+PRE:,,67;
+（1）Chr：染色体名称；
+（2）Start：变异起始位置；
+（3）End：变异的末端位置；
+（4）Ref：参考序列基因型；
+（5）Alt：突变基因型；
+（6）Func.ensGene：变异所在基因组结构的位置，如内含子，外显子，基因间区；
+（7）Gene.ensGene：InDel所在基因，如变异在基因间区，给出两侧基因名；
+（8）GeneName.ensGene：InDel所在基因通用名称，如果注释文件（gff）中不存在该名称，则同Gene.ensGene；
+（9）GeneDetail.ensGene： 基因信息，如变异在基因间区，给出两侧基因的距离；
+（10）ExonicFunc.ensGene：变异位于外显子上，引起移码插入（frameshift insertion）、移码缺失（frameshift deletion）、非移码插入（nonframeshift insertion）、非移码缺失（nonframeshift deletion）、终止获得（stopgain）及终止缺失（stoploss）；
+（11）AAChange.ensGene：变异所在位置的详细突变信息，如在外显子区域给出详细信息，非外显子区域，以.表示，如gene47230:rna66804:exon3:c.1128_1129del:p.E376fs表示突变位于基因gene47230上，转录本rna66804，第三个外显子第1128-1129个碱基缺失，氨基酸序列上第376个氨基酸发生了移码突变。
+PRE
+P:#,;#注释后的InDel，统计其在基因组各区间的分布情况：
+Table:upload/*Variation/*INDEL/*.INDEL.genome.region.stat.xls,,,600,,0,InDel分布统计
+PRE:,,67;
+（1）Total：基因组中全部的InDel数目；
+（2）UTR5：发生在基因的UTR5的InDel数目；
+（3）UTR3：发生在基因的UTR3的InDel数目； 
+（4）UTR5;UTR3：发生在基因的UTR5与另一个基因UTR3的共有区间的InDel数目；
+（5）exonic：发生在外显子区域的InDel数目；
+（6）splicing：发生在基因剪切区域内（剪切位点上游2bp，即非Exonic区）的InDel数目；
+（7）exonic;splicing：发生在基因的Exonic邻近剪切位点2bp（剪切位点下游）的InDel数目；
+（8）upstream：发生在基因上游（1000bp）内的InDel数目； 
+（9）downstream：发生在基因下游（1000bp）内的InDel数目；
+（10）upstream;downstream:发生在基因上游或者下游（1000bp）内的InDel数目；
+（11）intronic：发生在内含子区域的InDel数目；
+（12）intergenic：发生在基因间区的InDel数目；
+（13）ncRNA_*：发生在没有相关编码注释的RNA上的InDel数目；
+（14）other：位于其他位置InDel的数目。
+PRE
+P:#,;#InDel分布统计表下载链接：
+Excel:upload/*Variation/*INDEL/*.INDEL.genome.region.stat.xls,,,InDel分布统计表;
+P:#,;#将InDel在基因组上的分布作图如下：
+Image:upload/*Variation/*INDEL/*.INDEL.genome.region.stat.png,350,1,InDel位置分布图
+P:#,;#括号内表示各功能区InDel数量所占百分比，作图时将相同功能区的合并，如UTR5;UTR3归入UTR5分类。
+P:#,;#InDel位置分布图下载链接：
+Excel:upload/*Variation/*INDEL/*.INDEL.genome.region.stat.p*,,,InDel位置分布图下载：;
+
+SubMenu:群体SNP和InDel检测
+P:#,;#利用GATK软件采用HaplotypeCaller模式进行群体变异位点检测，得到每个样本的GVCF文件然后合并成最后的群体vcf文件，再根据质量值、深度、重复性等因素做进一步的过滤筛选，最终得到高可信度的SNP和InDel数据集。考虑到文件可能太大，请见额外交付的VCF文件夹。
+
+SubMenu:SV检测及注释
+P:#,;#染色体结构变异（SV）是基因组变异的重要组成，其主要突变类型有：插入、缺失、倒位等。在比对到参考基因组序列的基础上，通过染色体结构变异分析软件DELLY（Tobias, et al., 2012）检测全基因组所有潜在的SV位点，再根据质量值、支持的Reads数等因素做进一步过滤，最终得到高可信度的SV数据集，并对其注释。
+
+ThirdMenu: SV变异检测与注释
+P:#,;#利用DELLY检测并过滤得到SV后，使用ANNOVAR软件及已有的基因注释文件（gff）对检测到的SV进行相应的注释，注释文件格式如下：
+Table:upload/config_plot/All.SV.anno.multianno.example.xls,,,600,,0,SV注释格式表
+PRE:,,67;
+（1）Chr：染色体名称；
+（2）Start：变异起始位置；
+（3）End：变异的末端位置；
+（4）Ref：参考序列基因型；
+（5）Alt：突变基因型；
+（6）Type：SV类型；
+（7）Genotype：基因型，0表示与参考基因组一致，1表示与突变型一致（如果有多个变异，则2表示与第2个突变型一致，依此类推），对于2倍体生物0/0和1/1均表示纯合，0/1表示杂合，对于单倍体生物0表示未突变，1或者其他数字表示突变。
+（8）Func.ensGene：变异所在基因组结构的位置，如内含子，外显子，基因间区；
+（9）Gene.ensGene：SV所在基因，如变异在基因间区，给出两侧基因名；
+（10）GeneName.ensGene：SV所在基因通用名称，如果注释文件（gff）中不存在该名称，则同Gene.ensGene；
+（11）GeneDetail.ensGene： 基因信息，如变异在基因间区，给出两侧基因的距离；
+（12）ExonicFunc.ensGene：变异位于外显子上，引起移码插入（frameshift insertion）、移码缺失（frameshift deletion）、非移码插入（nonframeshift insertion）、非移码缺失（nonframeshift deletion）、终止获得（stopgain）及终止缺失（stoploss）；
+（13）AAChange.ensGene：变异所在位置的详细突变信息，如在外显子区域给出详细信息，非外显子区域，以.表示，如gene47230:rna66804:exon3:c.1128_1129del:p.E376fs表示突变位于基因gene47230上，转录本rna66804，第三个外显子第1128-1129个碱基缺失，氨基酸序列上第376个氨基酸发生了移码突变。
+PRE
+P:#,;#具体的结果文件请见：
+Excel:upload/*Variation/*SV/*/*.SV.*_multianno.xls,,,具体的结果文件请见：;
+
+ThirdMenu: SV变异类型统计
+P:#,;#将检测到的染色体插入、染色体缺失、染色体倒位等不同类型的SV的个数进行统计，结果如下表，以其中一个样本为例：
+Table:upload/*Variation/*SV/*/*.SV.type.stat.xls,,,600,,0,SV变异类型统计表
+PRE:,,67;
+（1）DEL：染色体缺失；
+（2）TRA：染色体易位；
+（3）DUP：染色体加倍；
+（4）INV：染色体倒位；
+（5）INS：染色体插入。
+PRE
+P:#,;#各个样品SV变异类型统计表见：
+Excel:upload/*Variation/*SV/*/*.SV.type.stat.xls,,,各个样品SV变异类型统计表见：;
+P:#,;#统计各类型的SV的比例，做如下图：
+Image:upload/*Variation/*SV/*/*.SV.type.stat.png,,1,SV类型统计图
+P:#,;#括号内表示各类型SV数量所占百分比。
+P:#,;#SV类型统计图下载链接：
+Excel:upload/*Variation/*SV/*/*.SV.type.stat.p*,,,SV类型统计图下载：;
+
+ThirdMenu: SV位置分布统计
+P:#,;#利用DELLY检测并过滤得到SV后，利用已有的基因组注释文件（gff）对检测到的SV进行相应的注释，统计SV覆盖的各种元件的分布情况，以其中一个样本为例：
+Table:upload/*Variation/*SV/*/*.SV.genome.region.stat.xls,,,600,,0,SV位置分布表
+PRE:,,67;
+（1）Total：基因组中全部的SV数目；
+（2）UTR5：发生在基因的UTR5的SV数目；
+（3）UTR3：发生在基因的UTR3的SV数目； 
+（4）UTR5;UTR3：发生在基因的UTR5与另一个基因UTR3的共有区间的SV数目；
+（5）exonic：发生在外显子区域的SV数目；
+（6）splicing：发生在基因剪切区域内（剪切位点上游2bp，即非Exonic区）的SV数目；
+（7）exonic;splicing：发生在基因的Exonic邻近剪切位点2bp（剪切位点下游）的SV数目；
+（8）upstream：发生在基因上游（1000bp）内的SV数目； 
+（9）downstream：发生在基因下游（1000bp）内的SV数目；
+（10）upstream;downstream：发生在基因上游或者下游（1000bp）内的SV数目；
+（11）intronic：发生在内含子区域的SV数目；
+（12）intergenic：发生在基因间区的SV数目；
+（13）ncRNA_*：发生在没有相关编码注释的RNA上的SV数目；
+（14）other：位于其他位置SV的数目。
+PRE
+P:#,;#各个样品SV位置分布表见：
+Excel:upload/*Variation/*SV/*/*.SV.genome.region.stat.xls,,,各个样品SV位置分布表见：;
+P:#,;#将样本的SV在基因组上的分布作图如下：
+Image:upload/*Variation/*SV/*/*.SV.genome.region.stat.png,350,1,SV位置分布图
+P:#,;#括号内表示各功能区SV数量所占百分比，作图时将相同功能区的合并，如UTR5;UTR3归入UTR5分类。
+P:#,;#
+Excel:upload/*Variation/*SV/*/*.SV.genome.region.stat.p*,,,SV位置分布图下载链接：;
+
+ThirdMenu: SV长度分布统计
+P:#,;#对SV长度特征的研究，有助于了解该物种基因组的复杂度及变异程度。对样本SV长度分布统计如下图：
+Image:upload/*Variation/*SV/*/*.SV.length.stat.png,,1,SV长度分布图
+P:#,;#横坐标表示SV长度以10为底的对数值，纵坐标表示SV数量。
+P:#,;#SV长度分布图下载：
+Excel:upload/*Variation/*SV/*/*.SV.length.stat.p*,,,;
+
+SubMenu:CNV检测及注释
+P:#,;#拷贝数目变异（Copy Number Variant, CNV），是指与参考序列相比，基因组中1 KB至几MB的DNA片段的变异，包括插入、缺失、扩增及其相互组合衍生出的复杂染色体结构变异。
+
+ThirdMenu: CNV变异检测与注释
+P:#,;#在比对到参考基因组序列的基础上，通过突变分析软件Control-FREEC（Boeva, et al., 2012）检测拷贝数变异，并将CNV的基因组位置、数量、类型等信息进行整理，结果格式如下：
+Table:upload/*Variation/*CNV/*/*.CNV.xls,5,,600,,0,CNV结果文件
+PRE:,,67;
+（1）Chr：染色体信息；
+（2）Start：CNV的起始位置；
+（3）End：CNV的终止位置；
+（4）CopyNum：拷贝数数量，0-1对应loss，2表示正常（2倍体），>2对应gain；
+（5）State：loss表示缺失（Deletion），gain表示复制（Duplication）。
+PRE
+P:#,;#具体的检测结果文件请见：
+Excel:upload/*Variation/*CNV/*/*.CNV.xls,,,具体的检测结果文件请见：;
+P:#,;#使用ANNOVAR软件及已有的基因组注释文件（gff）对检测到的CNV进行相应的注释，注释结果格式如下：
+Table:upload/config_plot/All.CNV.anno.multianno.example.xls,,,600,,0,CNV结果注释格式表
+PRE:,,67;
+（1）Chr：染色体名称；
+（2）Start：变异起始位置；
+（3）End：变异的末端位置；
+（4）Func.ensGene：变异所在基因组结构的位置，如内含子，外显子，基因间区等；
+（5）Gene.ensGene：CNV所在基因，如变异在基因间区，给出两侧基因名；
+（6）GeneName.ensGene：CNV所在基因通用名称，如果注释文件（gff）中不存在该名称，则同Gene.ensGene；
+（7）GeneDetail.ensGene： 基因信息，如变异在基因间区，给出两侧基因的距离。
+PRE
+P:#,;#具体的注释结果文件请见：
+Excel:upload/*Variation/*CNV/*/*.CNV.*_multianno.xls,,,具体的注释结果文件请见：;
+
+ThirdMenu: CNV变异类型统计
+P:#,;#经Control-FREEC检测得到CNV变异分为Duplication（gain）和Deletion（loss）两种类型，分析各样品中不同类型的CNV的比例，有助于对该物种有更多的分析和了解，以进行后续分析。
+Table:upload/*Variation/*CNV/*/*.CNV.type.stat.xls,,,600,,0,CNV变异类型统计表
+PRE:,,67;
+（1）Sample：样本名称；
+（2）Total：基因组中全部的CNV数目；
+（3）Deletion：缺失类型的CNV数目；
+（4）Deletion rate(%)：缺失类型的CNV所占百分比；
+（5）Duplication：重复类型的CNV数目；
+（6）Duplication rate(%)：重复类型的CNV所占百分比。
+PRE
+P:#,;#CNV变异类型统计表下载链接：
+Excel:upload/*Variation/*CNV/*/*.CNV.type.stat.xls,,,CNV变异类型统计表见：;
+P:#,;#拷贝数数量统计如下：
+Image:upload/*Variation/*CNV/*/*.CNV.copynum.stat.png,600,1,CNV拷贝数数量统计图
+P:#,;#横坐标表示拷贝数量，在其中0-1表示loss（缺失，Deletion）；一般情况下2是正常的拷贝数，不做统计，但对于单倍体，2表示gain（复制，Duplication）；大于2的拷贝数量表示gain（复制，Duplicaton），纵坐标表示每种拷贝数类型对应的变异数量。
+Excel:upload/*Variation/*CNV/*/*.CNV.copynum.stat.p*,,,CNV拷贝数数量统计图;
+
+ThirdMenu: CNV位置分布统计
+P:#,;#利用GATK检测并过滤得到CNV后，使用ANNOVAR软件及已有的基因组注释文件（gff）对检测到的InDel进行相应的注释，统计其在基因组各区间的分布情况，以其中一个样本为例：
+Table:upload/*Variation/*CNV/*/*.CNV.genome.region.stat.xls,,,600,,0,CNV分布统计
+PRE:,,67;
+（1）Total：基因组中全部的CNV数目；
+（2）UTR5：发生在基因的UTR5的CNV数目；
+（3）UTR3：发生在基因的UTR3的CNV数目； 
+（4）UTR5;UTR3：发生在基因的UTR5与另一个基因UTR3的共有区间的CNV数目；
+（5）exonic：发生在外显子区域的CNV数目；
+（6）splicing：发生在基因剪切区域内（剪切位点上游2bp，即非Exonic区）的CNV数目；
+（7）exonic;splicing：发生在基因的Exonic邻近剪切位点2bp（剪切位点下游）的CNV数目；
+（8）upstream：发生在基因上游（1000bp）内的CNV数目； 
+（9）downstream：发生在基因下游（1000bp）内的CNV数目；
+（10）upstream;downstream：发生在基因上游或者下游（1000bp）内的CNV数目；
+（11）intronic：发生在内含子区域的CNV数目；
+（12）intergenic：发生在基因间区的CNV数目；
+（13）ncRNA_*：发生在没有相关编码注释的RNA上的CNV数目；
+（14）other：位于其他位置CNV的数目。
+PRE
+P:#,;#各个样品CNV分布统计表下载链接：
+Excel:upload/*Variation/*CNV/*/*.CNV.genome.region.stat.xls,,,各个样品CNV分布统计表见：;
+P:#,;#将样本的CNV在基因组上的分布作图如下：
+Image:upload/*Variation/*CNV/*/*.CNV.genome.region.stat.png,350,1,CNV位置分布图
+P:#,;#括号内表示各功能区间内CNV数量所占百分比。
+P:#,;#CNV位置分布图下载链接：
+Excel:upload/*Variation/*CNV/*/*.CNV.genome.region.stat.p??,,,CNV位置分布图下载：
+
+
+SubMenu:CNV检测和注释
+P:#,;#拷贝数目变异（Copy Number Variant, CNV）-- 也称拷贝数目多态性（CNP），是指与参考序列相比，基因组中1 KB至几MB的DNA片段的变异，包括插入、缺失、扩增及其相互组合衍生出的复杂染色体结构变异（Redon R et al., 2006）
+
+ThirdMenu:CNV变异检测与注释
+P:#,;#在比对到参考基因组序列的基础上，通过突变分析软件CNVnator检测拷贝数变异，并将CNV的基因组位置、大小、类型等信息进行整理及注释，注释后的结果存放于Excel文件中。
+P:#,;#具体的检测结果文件请见：
+Excel:upload/*Variation/*CNV/*/*.CNV.xls,,,具体的检测结果文件请见：;
+P:#,;#具体的注释结果文件请见：
+Excel:upload/*Variation/*CNV/*/*.CNV.*_multianno.xls,,,具体的注释结果文件请见：;
+
+ThirdMenu:CNV变异类型统计
+P:#,;#经CNVnator检测得到CNV变异分为duplication和deletion两种类型，分析各样品中不同类型的CNV的比例，有助于对该物种有更多的分析和了解，以进行后续分析。
+Table:upload/*Variation/*CNV/*/*.CNV.stat.xls,,,600,,0,CNV变异类型统计表
+PRE:,,67;
+（1）Sample：样本名称；
+（2）Total：基因组中全部的CNV数目；
+（3）Deletion：缺失类型的CNV数目；
+（4）Deletion rate(%)：缺失类型的CNV所占百分比；
+（5）Duplication：重复类型的CNV数目；
+（6）Duplication rate(%)：重复类型的CNV所占百分比。
+PRE
+P:#,;#CNV变异类型统计表下载链接：
+Excel:upload/*Variation/*CNV/*/*.CNV.stat.xls,,,CNV变异类型统计表见：;
+
+ThirdMenu:CNV位置分布统计
+P:#,;#利用CNVnator得到CNV后，使用ANNOVAR(Wang,et al.,2010)软件及已有的基因组注释文件（gff/gtf）对检测到的CNV进行相应的注释，统计其在基因组各区间的分布情况，以其中一个样本为例：
+Table:upload/*Variation/*CNV/*/*.CNV.genome.region.stat.xls,,,600,,0,InDel分布统计
+PRE:,,67;
+（1）Total：基因组中全部的CNV数目；
+（2）UTR5：发生在基因的UTR5的CNV数目；
+（3）UTR3：发生在基因的UTR3的CNV数目；
+（4）UTR5;UTR3：发生在基因的UTR5与另一个基因UTR3的共有区间的CNV数目；其它类似；
+（5）exonic：发生在外显子区域的CNV数目；
+（6）splicing：发生在基因剪切区域内（剪切位点上游2bp，即非Exonic区）的CNV数目；
+（7）exonic;splicing：发生在基因的Exonic邻近剪切位点2bp（剪切位点下游）的CNV数目；
+（8）upstream：发生在基因上游（1000bp）内的CNV数目；
+（9）downstream：发生在基因下游（1000bp）内的CNV数目；
+（10）upstream;downstream：发生在基因上游或者下游（1000bp）内的CNV数目；
+（11）intronic：发生在内含子区域的CNV数目；
+（12）intergenic：发生在基因间区的CNV数目；
+（13）ncRNA：没有相关编码注释的RNA，并非不翻译的RNA，参见ANNOVAR的Gene注释说明；子区间注释同上；
+（14）other：位于其他位置CNV的数目。
+PRE
+P:#,;#各个样品CNV分布统计表下载链接：
+Excel:upload/*Variation/*CNV/*/*.CNV.genome.region.stat.xls,,,各个样品CNV分布统计表见：;
+P:#,;#将样本的CNV在基因组上的分布作如下图：
+Image:upload/*Variation/*CNV/*/*.CNV.genome.region.stat.png,350,1,CNV位置分布图
+P:#,;#横坐标为样本名，纵坐标为各区间CNV个数百分比。
+P:#,;#CNV位置分布图下载链接：
+Excel:upload/*Variation/*CNV/*/*.CNV.genome.region.stat.p??,,,CNV位置分布图下载：
+
+
+MainMenu:基因功能注释
+SubMenu:基因功能注释
+P:#,;#对SNP和InDel变异所在全部基因进行功能注释，注释文件格式说明如下：
+Table:upload/config_plot/gene_anno_describe.xls,,,600,,0,基因功能注释文件格式说明
+P:#,;#基因功能注释结果文件下载链接：
+Excel:upload/*KO_GO/*/*gene.anno.xls,,,;
+
+P:#,;#注：报告结果仅对本次接收到的样本所产生的数据负责。
+MainMenu:附录
+SubMenu:参考文献
+P:#,;#Abyzov, A., Urban, A. E., Snyder, M., & Gerstein, M. CNVnator: an approach to discover, genotype, and characterize typical and atypical CNVs from family and population genome sequencing[J]. Genome research, 2011, 21(6):974-984.
+P:#,;#Boeva V, Popova T, Bleakley K, et al. Control-FREEC: a tool for assessing copy number and allelic content using next-generation sequencing data[J]. Bioinformatics, 2012, 28(3):423-425.
+P:#,;#Li H, Durbin R. Fast and accurate short read alignment with Burrows–Wheeler transform[M]. 2009.
+P:#,;#Li H. Aligning sequence reads, clone sequences and assembly contigs with BWA-MEM[J]. arXiv preprint arXiv:1303.3997, 2013.
+P:#,;#Mckenna A , Hanna M , Banks E , et al. The Genome Analysis Toolkit : A MapReduce framework for analyzing next-generation DNA sequencing data[J]. GENOME RESEARCH, 2010, 20(9):1297-1303.
+P:#,;#Rausch T , Zichner T , Schlattl A , et al. DELLY: structural variant discovery by integrated paired-end and split-read analysis[J]. Bioinformatics, 2012, 28(18):i333.
+P:#,;#Wang K , Li M , Hakonarson H . ANNOVAR: functional annotation of genetic variants from high-throughput sequencing data[J]. Nucleic Acids Research, 2010, 38(16):e164-e164.
+SubMenu:补充文件
+P:#,;#使用软件的中英文说明详见下载链接:
+Excel:upload/appendix/Software.pdf,,,;
+P:#,;#过程方法的中英文说明详见下载链接：
+Excel:upload/appendix/Methods*.pdf,,,;
+P:#,;#常见问题详见下载链接：
+Excel:upload/appendix/Questions.pdf,,,;
+P:#,;#Version：$(VERSION) 
+
+SubMenu:结果目录
+ShowDir:$(REPORT_DIR)
+First2Menu:2

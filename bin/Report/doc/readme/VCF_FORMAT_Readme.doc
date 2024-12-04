@@ -1,0 +1,20 @@
+1.VCF格式：Variant Call Format ，用于记录variants的文件格式。
+2.VCF文件包含两部分内容，以“#”开头的头文件和无“#”的主体部分。其中，头文件是对VCF的介绍信息，包括INFO，Format中的标签含义说明；主体部分记录variant的信息，每行代表一个variant信息，一般至少包含10列。
+
+vcf格式文件主体部分说明：
+列号	标签名	意义
+1	CHROM	染色体信息
+2	POS	突变位置
+3	ID	突变ID
+4	REF	参考基因型
+5	ALT	突变基因型，如有多个用逗号分隔
+6	QUAL	表示突变可靠性，值越大，标明该点的突变可能性越大
+7	FILTER	表示是否通过过滤，PASS表示该位点通过
+8	INFO	变异的描述信息，以key=value的格式展示，并使用分号分隔，每个key的含义可以在头文件中查询
+9	FORMAT	基因型信息的多个标签，并使用冒号分隔，其值位于samples列，其含义可以在头文件中查询
+10	samples	表示样本信息，对应第9列FORMAT值，多个sample则对应多列
+
+Vcf格式文件头文件说明（示例）：
+##FORMAT=<ID=DP,Number=1,Type=Integer,Description="Read depth"> ：为主体部分的FORMAT中DP标签的说明；
+##INFO=<ID=AC,Number=A,Type=Integer,Description="Allele count in genotypes, for each ALT allele, in the same order as listed"> ：为主体部分INFO中AC标签的说明。
+

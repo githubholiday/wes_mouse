@@ -1,0 +1,25 @@
+说明此文件夹中所有文件中的内容所代表的含义。
+
+*OMIM
+|-- sample.OMIM.anno.xls                  OMIM数据库注释结果
+
+
+*.OMIM.anno.xls       格式说明(详细说明见结题报告说明文档下载链接)
+Chr                   变异所在染色体
+Start                 变异起始位点
+End                   变异终止位点
+Ref                   参考基因组碱基型
+Alt                   样品变异碱基型
+RefDepth              参考基因组的reads数目
+AltDepth              突变的reads数目
+AltFre                突变的reads数目/(参考基因组的reads数目+突变的reads数目)
+Hom                   纯合（纯合为1，杂合为0）
+Hem                   杂合（杂合为1，纯合为0）
+Quality               变异的比对质量值
+Func.refGene          基于refGene数据库对变异位点所在区域进行注释
+Gene.refGene          基于refGene数据库对变异位点相关转录本的注释
+GeneDetail.refGene    基于refGene数据库对UTR、splicing等区域的注释，如为间区，则为突变位点距上下游基因的距离，如为外显子区，则为发生突变的基因，以及所发生的碱基突变类型，GLYMA20G31580.1:c.-130A>T,表示突变在转录本GLYMA20G31580.1的第UTR5区域，第130个碱基A变为T
+ExonicFunc.refGene    基于refGene数据库对外显子区域的变异位点注释
+AAChange.refGene      基于refGene数据库对变异位点处的氨基酸改变注释，如GLYMA2269S00200:GLYMA2269S00200.1:exon1:c.C298A:p.Q100K表示突变位于基因GLYMA2269S00200，转录本GLYMA2269S00200.1的第一个外显子区，第298个碱基由C突变为A，第100个氨基酸由Q变为K
+OMIM Number           OMIM数据库中的编号
+OMIM Disorder         对应的疾病

@@ -1,4 +1,4 @@
-bindir=$(dir $(firstword $(MAKEFILE_LIST)))/../
+bindir=$(dir $(firstword $(MAKEFILE_LIST)))/
 name=$(notdir $(firstword $(MAKEFILE_LIST)))
 script=$(bindir)/script/
 database=$(bindir)../database
@@ -47,7 +47,7 @@ ANNOVAR_VCF:
 	@echo `date "+%Y-%m-%d %H:%M:%S"` "-SNP_INDEL Annotation-INFO- ####### Annotation SNP_INDEL by ANNOVAR Start"
 	@echo
 	mkdir -p $(outdir)/Middle
-	$(PERL) $(ANNOVAR) $(vcf) $(ANNODB) $(annovar_command) --outfile $(outdir)/Middle/$(sample).$(type)
+	$(PERL) $(bindir)/script/table_annovar.pl $(vcf) $(annovardb) $(annovar_opt) --outfile $(outdir)/Middle/$(sample).$(type) --buildver Mus_musculus
 	@echo
 	@echo `date "+%Y-%m-%d %H:%M:%S"` "-SNP_INDEL Annotation-INFO- ####### Annotation SNP_INDEL by ANNOVAR End"
 	@echo

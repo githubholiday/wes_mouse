@@ -1,0 +1,108 @@
+说明此文件夹中所有文件中的内容所代表的含义。
+
+*InDel
+|-- sample.INDEL.*_multianno.xls                  INDEL的Annovar注释结果
+|-- sample.raw.INDEL.*_multianno.xls              所有INDEL的refGene注释结果
+|-- Stat                                             相关统计结果目录
+|---|-- All.indel.genome.png/pdf/xls                 基因组不同区域的INDEL分布结果
+|---|-- All.indel.exonic.png/pdf/xls                 外显子区的INDEL突变类型分布结果
+|---|-- All.indel.num.png/pdf/xls                    INDEL个数统计结果
+|---|-- *.length.pattern.stat.png/pdf/xls            INDEL的长度分布结果
+|---Samples
+    |-- sample.Format.chr*.INDEL.*_multianno.xls  INDEL的Annovar注释结果(按染色体分割)
+
+
+*INDEL.*_multianno.xls 格式说明(详细说明见结题报告说明文档下载链接)
+Chr                   变异所在染色体
+Start                 变异起始位点
+End                   变异终止位点
+Ref                   参考基因组碱基型
+Alt                   样品变异碱基型
+RefDepth              支持参考基因组的reads数目
+AltDepth              支持突变的reads数目
+AltFre                支持突变的reads数目/(支持参考基因组的reads数目+支持突变的reads数目)
+Hom                   纯合（纯合为1，杂合为0）
+Hem                   杂合（杂合为1，纯合为0）
+Quality               变异的比对质量值
+Func.refGene          基于refGene数据库对变异位点所在区域进行注释
+Gene.refGene          基于refGene数据库对变异位点相关转录本的注释
+GeneDetail.refGene    基于refGene数据库对UTR、splicing等区域的注释，如为间区，则为突变位点距上下游基因的距离，如为外显子区，则为发生突变的基因，以及所发生的碱基突变类型，GLYMA20G31580.1:c.-130A>T,表示突变在转录本GLYMA20G31580.1的第UTR5区域，第130个碱基A变为T
+ExonicFunc.refGene    基于refGene数据库对外显子区域的变异位点注释
+AAChange.refGene      基于refGene数据库对变异位点处的氨基酸改变注释，如GLYMA2269S00200:GLYMA2269S00200.1:exon1:c.C298A:p.Q100K表示突变位于基因GLYMA2269S00200，转录本GLYMA2269S00200.1的第一个外显子区，第298个碱基由C突变为A，第100个氨基酸由Q变为K
+other                 数据库注释结果
+
+*.Format.chr*.INDEL.*_multianno.xls 格式说明（详细说明见每个xls表格的第二个sheet）
+Chr                   变异所在染色体
+Start                 变异起始位点
+End                   变异终止位点
+Ref                   参考基因组碱基型
+Alt                   样品变异碱基型
+RefDepth              参考基因组的reads数目
+AltDepth              突变的reads数目
+AltFre                突变的reads数目/(参考基因组的reads数目+突变的reads数目)
+Hom                   纯合（纯合为1，杂合为0）
+Hem                   杂合（杂合为1，纯合为0）
+Quality               变异的比对质量值
+snp138                dbsnp138数据库中变异位点对应的等位基因频率
+avsnp147              dbSNP147数据库注释结果,有提供rs编号，无.表示
+Func.refGene          基于refGene数据库对变异位点所在区域进行注释
+Gene.refGene          基于refGene数据库对变异位点相关转录本的注释
+GeneDetail.refGene    基于refGene数据库对UTR、splicing等区域的注释，如为间区，则为突变位点距上下游基因的距离，如为外显子区，则为发生突变的基因，以及所发生的碱基突变类型，GLYMA20G31580.1:c.-130A>T,表示突变在转录本GLYMA20G31580.1的第UTR5区域，第130个碱基A变为T
+ExonicFunc.refGene    基于refGene数据库对外显子区域的变异位点注释
+AAChange.refGene      基于refGene数据库对变异位点处的氨基酸改变注释，如GLYMA2269S00200:GLYMA2269S00200.1:exon1:c.C298A:p.Q100K表示突变位于基因GLYMA2269S00200，转录本GLYMA2269S00200.1的第一个外显子区，第298个碱基由C突变为A，第100个氨基酸由Q变为K
+other                 数据库注释结果
+
+sample.raw.INDEL.*_multianno.xls    格式说明
+Chr                   变异所在染色体
+Start                 变异起始位点
+End                   变异终止位点
+Ref                   参考基因组碱基型
+Alt                   样品变异碱基型
+Func.refGene          基于refGene数据库对变异位点所在区域进行注释
+Gene.refGene          基于refGene数据库对变异位点相关转录本的注释
+GeneDetail.refGene    基于refGene数据库对UTR、splicing等区域的注释，如为间区，则为突变位点距上下游基因的距离，如为外显子区，则为发生突变的基因，以及所发生的碱基突变类型，GLYMA20G31580.1:c.-130A>T,表示突变在转录本GLYMA20G31580.1的第UTR5区域，第130个碱基A变为T
+ExonicFunc.refGene    基于refGene数据库对外显子区域的变异位点注释
+AAChange.refGene      基于refGene数据库对变异位点处的氨基酸改变注释，如GLYMA2269S00200:GLYMA2269S00200.1:exon1:c.C298A:p.Q100K表示突变位于基因GLYMA2269S00200，转录本GLYMA2269S00200.1的第一个外显子区，第298个碱基由C突变为A，第100个氨基酸由Q变为K
+Otherinfo             位点的突变检测信息，详见VCF格式说明
+
+All.indel.genome.png/pdf 格式说明
+柱状图，横坐标为样本名，纵坐标为各区间的INDEL个数百分比。
+
+All.indel.genome.xls 格式说明
+Type: 基因组不同的功能元件；
+UTR3：发生在基因的UTR3的INDEL数目；
+UTR5：发生在基因的UTR5的INDEL数目；
+downstream：发生在基因下游（1000bp）内的INDEL数目；
+exonic：发生在外显子区域的INDEL数目；
+intergenic：发生在基因间区的INDEL数目；
+intronic：发生在内含子区域的INDEL数目；
+ncRNA：没有相关编码注释的RNA，并非不翻译的RNA，参见ANNOVAR的Gene注释说明；
+splicing：发生在基因剪切区域内（剪切位点上游2bp，即非Exonic区）的INDEL数目；
+upstream：发生在基因上游（1000bp）内的INDEL数目；
+other：是指杂合的INDEL，与参考基因组不一致，所以Annovar未得到注释，注释结果中为“.”。
+
+All.indel.exonic.png/pdf 格式说明
+柱状图，横坐标为样本名，纵坐标为各类型的INDEL个数百分比。
+
+All.indel.exonic.xls 格式说明
+Type: 基因组不同的功能元件；
+frameshift deletion：缺失移码突变，碱基缺失为非3的倍数，造成这位置之后的一系列编码发生移位错误的改变；
+frameshift insertion：插入移码突变，碱基插入为非3的倍数，造成这位置之后的一系列编码发生移位错误的改变；
+nonframeshift deletion：非移码突变，碱基缺失为3的倍数；
+nonframeshift insertion：非移码突变，碱基插入为3的倍数；
+stopgain：密码子的改变导致终止子的出现；
+stoploss：密码子的改变导致终止子的缺失；
+unknown：未知类型。
+
+All.indel.num.png/pdf 格式说明
+柱状图，横坐标为样本名，纵坐标为INDEL个数。
+
+All.indel.num.xls 格式说明
+Sample：样品名；
+InDel：每个样本INDEL数量。
+
+*.length.pattern.stat.png/pdf 格式说明
+柱状图，外显子和全基因组不同长度的INDEL分布。
+
+*.length.pattern.stat.xls 格式说明
+外显子和全基因组不同长度的INDEL分布数量统计。

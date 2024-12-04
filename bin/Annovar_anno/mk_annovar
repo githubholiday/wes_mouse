@@ -1,0 +1,54 @@
+tmpdir=$(dir  $(abspath $(firstword $(MAKEFILE_LIST))))/
+Bin=$(shell dirname $(abspath $(firstword $(MAKEFILE_LIST))))/
+ifeq ($(strip $(config)),)
+Bconfig=$(Bin)/../../config/config.txt
+else
+Bconfig=$(config)
+endif
+include $(Bconfig)
+thread?=4
+
+#annotxt?=$(wildcard $(outdir)/*anno*multianno.txt)
+#annonewtxt?=$(basename $(annotxt)).new.txt
+#annoxls?=$(basename $(annotxt)).xls
+
+HELP:
+	@echo Description:
+	@echo ANNOVAR注释
+	@echo Usage:
+	@echo make -f $(tmpdir)/mk_annovar sample= vcf= variation= outdir= annovardb= dbname= type= ANNO STAT
+	@echo "type 为 SNP or INDEL "
+ANNO:
+	@echo "################### Annotation Begin:" `date`
+	@mkdir -p $(outdir)
+	$(PERL) $(Bin)/script/table_annovar.pl $(vcf) $(annovardb) -outfile $(outdir)/$(sample).anno -buildver $(dbname) $(annovar_opt)
+	@echo "################### Annotation Middle:" `date`
+	$(PERL) $(Bin)/script/reseq_snp_indel_format.pl $(outdir)/$(sample).*_multianno.txt $(outdir)
+	$(PERL) $(Bin)/script/genome.region.stat.pl -annovar $(outdir)/$(sample).*_multianno.txt -key $(sample) -od $(outdir)/Stat/ -type ind -v $(variation) -rscript $(Rscript)
+	mv $(outdir)/$(sample).anno.$(dbname)_multianno.xls $(outdir)/$(sample).anno.$(type)_multianno.raw.xls
+	$(PYTHON3) $(Bin)/script/get_gene_name.py -i $(outdir)/$(sample).anno.$(type)_multianno.raw.xls -g Gene.ensGene -n GeneName.ensGene -a $(gff) -id ID -name Name -o $(outdir)/$(sample).anno.$(type)_multianno.xls
+	@echo "################### Annotation End:" `date`
+
+POP_ANNO_PRE:
+	@echo "################### Population Annotation Begin:" `date`
+	@mkdir -p $(outdir)
+	$(perl) $(Bin)/script/annovar/table_annovar.pl $(vcf) $(annovardb) -outfile $(outdir)/$(sample).anno -buildver $(dbname) $(annovar_opt)
+
+annotxt?=$(wildcard $(outdir)/*anno*multianno.txt)
+annonewtxt?=$(basename $(annotxt)).new.txt
+annoxls?=$(basename $(annotxt)).xls
+
+POPANNO:POP_ANNO_PRE
+	@echo "################### Annotation Middle:" `date`
+	awk '{if($$5!=0) print $$0}' $(annotxt) >$(annonewtxt)
+	cut -f 1-10 $(annonewtxt) >$(annoxls)
+	mv $(annoxls) $(annoxls).raw
+	$(python3) $(Bin)/script/get_gene_name.py -i $(annoxls).raw -g Gene.ensGene -n GeneName.ensGene -a $(gff) -id ID -name Name -o $(annoxls)
+	$(perl) $(Bin)/script/snp_indel/genome.region.stat.pl -annovar $(annonewtxt) -key $(sample) -od $(outdir)/Stat/ -type pop -v $(variation) -rscript $(Rscript)
+	@echo "################### Population Annotation End:" `date`
+
+STAT:
+	@echo "################### 2stat Begin:" `date` 
+	$(perl) $(Bin)/script/qc.stat.pl -i  $(outdir)/Stat/ -t $(type) -s $(sample)
+	@echo "################### 2stat End:" `date`
+

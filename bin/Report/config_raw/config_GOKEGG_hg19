@@ -1,0 +1,10 @@
+
+
+##### hg19 GRCh37.68  ref information 
+gene_anno=$(Bindir)/../../../database/KOGO/hg19/Homo_sapiens.GRCh37.68.normal.chr.anno.txt
+go_list=$(Bindir)/../../../database/KOGO/hg19/hg19.go.list
+ko_list=$(Bindir)/../../../database/KOGO/hg19/hg19.ko.list
+ref_ppi=$(Bindir)/../../../database/KOGO/hg19/hg19.pro.txt
+all_list=$(Bindir)/../../../database/KOGO/hg19/all_hg19.list
+
+

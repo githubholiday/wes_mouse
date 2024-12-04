@@ -1,0 +1,427 @@
+#------------------------------------ 流程配置文件 ----------------------------------#
+
+
+
+##-------------------------------------- 参数 --------------------------------------##
+
+###--- Alignment ---###
+bwa_par=mem -t $(thread) -R '@RG\tID:lib_lane\tPL:Illumina\tLB:lib\tSM:$(sample)' -M -k 30
+sort_command=-@ 4 -m 5G
+len_noN=2861343702
+len=2861343702
+len_noY=2835690136
+len_noN_noY=2835690136
+#len=3137161264
+len_XY=2861343702
+len_XX=2835690136
+MinBaseQ=20
+thread=4
+
+###--- GATK ---###
+java_command= -XX:ParallelGCThreads=$(java_thread) -Xms15g -Xmx15g
+java_thread=4
+java_command_ABRA=-XX:ParallelGCThreads=$(java_thread) -Xms16g -Xmx16g
+
+
+
+###--- Strelka ---###
+Strelka_par=-m local -j 4 -g 30 --quiet
+Strelka_filter_wes=-f 0.01 -d 100
+Strelka_filter_wgs=-f 0.01 -d 30
+Strelka_filter_target=-f 0.002 -d 500
+
+
+gatk_opt=-T HaplotypeCaller --genotyping_mode DISCOVERY --read_filter BadCigar -stand_call_conf 20.0 -stand_emit_conf 10.0 -nct 4 --dbsnp $(DBSNP) --emitRefConfidence GVCF
+
+snp_filter=-T VariantFiltration --filterExpression "QD < 2.0" --filterName LowQD --filterExpression "ReadPosRankSum < -8.0" --filterName LowRPRS --filterExpression "FS >60.0" --filterName HighFS --filterExpression "QUAL <30" --filterName LowQUAL --filterExpression "DP<4.0" --filterName LowDP --missingValuesInExpressionsShouldEvaluateAsFailing --logging_level ERROR
+
+indel_filter=-T VariantFiltration --filterExpression "QD < 2.0" --filterName LowQD --filterExpression "ReadPosRankSum < -20.0" --filterName LowRPRS --filterExpression "FS >200.0" --filterName HighFS --filterExpression "QUAL <30" --filterName LowQUAL --filterExpression "DP<4.0" --filterName LowDP --missingValuesInExpressionsShouldEvaluateAsFailing --logging_level ERROR
+
+GT_filter=1,0/1,1/0,1/1
+DP_filter=4
+
+#--- MAP STAT ---#
+stop=2000
+nBins=1999
+flank=100
+
+###--- ANNOVAR ---###
+## dbscsnv11,dbnsfp31a_interpro,rmsk
+annovar_command=--buildver hg19 --protocol refGene,ensGene,knownGene,snp138,avsnp147,cosmic68wgs,cosmic70,clinvar_20170130,gwasCatalog,1000g2016apr_all,1000g2016apr_eas,1000g2016apr_sas,exac03,ATCG_freq,esp6500siv2_all,cg46,cg69,kaviar_20150923,revel,dbnsfp33a,phastConsElements46way,tfbsConsSites,gerp++elem,gerp++gt2,dgvMerged,cpgIslandExt,cytoBand,wgRna,genomicSuperDups,gwava,spidex,targetScanS,dbscsnv11,rmsk,ljb23_metasvm,BIC_20180417 --operation g,g,g,f,f,f,f,f,r,f,f,f,f,f,f,f,f,f,f,f,r,r,r,f,r,r,r,r,r,f,f,r,f,r,f,r --vcfinput --nastring . --remove --thread 4 --maxgenethread 4
+
+# chenpengyan 20190711
+annovar_command_cytoBand=--buildver hg19 --protocol cytoBand --operation r --vcfinput --nastring . --remove --thread 4 --maxgenethread 4
+
+annovar_command_novcf=--buildver hg19 --protocol refGene,ensGene,knownGene,snp138,avsnp147,cosmic68wgs,cosmic70,clinvar_20170130,gwasCatalog,1000g2016apr_all,1000g2016apr_eas,1000g2016apr_sas,exac03,ATCG_freq,esp6500siv2_all,cg46,cg69,kaviar_20150923,revel,dbnsfp33a,phastConsElements46way,tfbsConsSites,gerp++elem,gerp++gt2,dgvMerged,cpgIslandExt,cytoBand,wgRna,genomicSuperDups,gwava,spidex,targetScanS,dbscsnv11,rmsk,ljb23_metasvm --operation g,g,g,f,f,f,f,f,r,f,f,f,f,f,f,f,f,f,f,f,r,r,r,f,r,r,r,r,r,f,f,r,f,r,f --nastring . --remove --thread 4 --maxgenethread 4
+
+annovar_command_lite=--buildver hg19 --protocol refGene --operation g --vcfinput --nastring . --remove --thread 4 --maxgenethread 4
+
+annovar_command_fast=--buildver hg19 --protocol refGene,ensGene,avsnp147,cosmic70,1000g2016apr_all,clinvar_20170130,exac03 --operation g,g,f,f,f,f,f --vcfinput --nastring . --remove --thread 4 --maxgenethread 4
+
+annovar_command_germline=--buildver hg19 --protocol refGene,ClinVar_20171203,BIC_20170505,HGMD_201503,ALL.sites.2016_04,EAS.sites.2016_04,exac03 --operation g,f,f,f,f,f,f --vcfinput --nastring . --remove --thread 4 --maxgenethread 4
+
+###--- Monovar ---###
+monovar_mpileup_par=-BQ0 -d10000 -q 40
+monovar_par=-p 0.002 -a 0.2 -t 0.05 -m 4
+
+###--- OncodriveCLUST ---###
+CLUST_command=-m 5 -d 5 -p 0.05
+CLUST_qvalue=0.05
+
+###--- oncodriveFM ---###
+para_oncofm=-j 1 -e median
+oncoFM_qvalue=0.05
+
+###--- FusionMap ---###
+FusionCommand= -PairedEnd True -ThreadNumber 4 -FileFormat FASTQ -MinimalFusionSpan 5000 -RealignToGenome True -OutputFusionReads True -MinimalFusionAlignmentLength 0 -MinimalRescuedReadNumber 1
+SP=Human.hg19 RefGene
+
+###--- Mutation Signature ---###
+var_contrib=0.9
+sim_threshold=0.9
+
+###--- Mutsig ---###
+prefix=somatic.hg19_multianno.txt
+q_value=0.1
+gene_number=10
+size=30
+
+###--- Music Mutation Relation ---###
+permutations=1000
+
+###--- GISTIC ---###
+control_freec_para_genome_window=10000
+gistic2_command= -genegistic 1 -smallmem 1 -broad 1 -brlen 0.5 -conf 0.90 -armpeel 1 -savegene 1 -gcm extreme
+
+###--- PCA ---###
+PCAP=-k 4
+
+###--- CNV_ControlFreec ---###
+CNV_ControlfreeC_single=-ploidy 2 -minCNAlength 1 -minMappabilityPerWindow 0.85 -maxThreads 4 -degree 3,4 -inputFormat BAM -mateOrientation FR -breakPointThreshold 0.8 -breakPointType 2
+CNV_ControlfreeC_pair_e=-ploidy 2 -minCNAlength 3 -minMappabilityPerWindow 0.85 -maxThreads 4 -readCountThreshold 10 -minimalCoveragePerPosition 5 -shiftInQuality 33 -minimalQualityPerPosition 0 -mateOrientation FR -inputFormat pileup -window 0 -bedtools $(bedtools) -chrFiles $(CHRD) -chrLenFile $(CHRLEN) -SNPfile $(SNPDATABASE)
+CNV_ControlfreeC_pair_g=-ploidy 2 -minCNAlength 1 -minMappabilityPerWindow 0.85 -maxThreads 4 -readCountThreshold 10 -minimalCoveragePerPosition 4 -shiftInQuality 33 -minimalQualityPerPosition 0 -mateOrientation FR -inputFormat pileup -window 2000 -bedtools $(bedtools) -chrFiles $(CHRD) -chrLenFile $(CHRLEN) -SNPfile $(SNPDATABASE)
+CNV_ControlfreeC_genome_window=2000
+ploidy=2
+
+###--- CNV by CODEX ---###
+codex_par='20' '20,4000' '20, 2000' '0.9' '20, 80' '1000' 'integer'
+
+###--- CIRCOS ---###
+window=1000000
+mutation=SNP;INDEL;SV;LOH;CNV;FusionGene
+#mutation_5_radius=r0:0.88,r1:0.97;r0:0.84,r1:0.87;r0:0.80,r1:0.83;r0:0.76,r1:0.79;r0:0.73,r1:0.76
+mutation_2_radius=r0:0.85,r1:0.95;r0:0.74,r1:0.84
+
+###--- oncoNEM ---###
+FPR=0.03
+FNR=0.2
+
+###--- Conservation ---###
+Conservation_db_pair=SIFT_score,Polyphen2_HDIV_score
+Conservation_db_score_pair=0.05,0.957
+Conservation_db_single=SIFT_score,Polyphen2_HVAR_score
+Conservation_db_score_single=0.05,0.909
+
+###--- Phylip ---###
+para_newick=-sr -S -w 800 -W 8 -b 'opacity:0'
+
+###--- MANTIS ---###
+MANTIS_WES=--min-read-quality 20 --min-locus-quality 25 --min-read-length 35 --min-locus-coverage 20 --min-repeat-reads 1
+MANTIS_TARGET=--min-read-quality 25.0 --min-locus-quality 30.0 --min-read-length 35 --min-locus-coverage 30 --min-repeat-reads 3
+
+###--- Rare ---###
+rare_commond=-qianG 0.01
+
+###--- pvactools ---###
+pvactools_method=NNalign NetMHC NetMHCIIpan NetMHCcons NetMHCpan PickPocket SMM SMMPMBEC SMMalign
+peptide_length=8
+
+
+
+##------------------------------------- 软件&脚本 -----------------------------------##
+
+###--- Public ---###
+sentieon=/opt/sentieon-genomics-202308.03/bin/sentieon
+Java=/annoroad/share/software/install/jre1.7.0_25/bin/java
+JAVA=/annoroad/share/software/install/jre1.7.0_25/bin/java
+JAVA_8.0=/annoroad/share/software/install/jdk1.8.0_101/bin/java
+perl=/annoroad/share/software/install/perl-5.16.2/bin/perl
+PERL=/annoroad/share/software/install/perl-5.16.2/bin/perl
+python=/annoroad/share/software/install/Python-2.7.8/bin/python
+PYTHON=/annoroad/share/software/install/Python-2.7.8/bin/python
+python3=/annoroad/share/software/install/Python-3.3.2/bin/python3
+Python3=/annoroad/share/software/install/Python-3.3.2/bin/python3
+PYTHON3=/annoroad/share/software/install/Python-3.3.2/bin/python3
+Rscript=export LD_LIBRARY_PATH=/opt/glibc-2.14/lib:$$LD_LIBRARY_PATH && /annoroad/share/software/install/R-3.1.1/bin/Rscript
+RSCRIPT=export LD_LIBRARY_PATH=/opt/glibc-2.14/lib:$LD_LIBRARY_PATH && /annoroad/share/software/install/R-3.1.1/bin/Rscript
+Rscript_3.3.2=export LD_LIBRARY_PATH=/opt/glibc-2.14/lib:$LD_LIBRARY_PATH && /annoroad/share/software/install/R-3.3.2/bin/Rscript
+RSCRIPT_3.3.2=export LD_LIBRARY_PATH=/opt/glibc-2.14/lib:$LD_LIBRARY_PATH && /annoroad/share/software/install/R-3.3.2/bin/Rscript
+#MUTATION_SIGNATURE：加上前面的export报错
+RSCRIPT332=/annoroad/share/software/install/R-3.3.2/bin/Rscript
+Rcript32=export LD_LIBRARY_PATH=/opt/glibc-2.14/lib:$LD_LIBRARY_PATH && /annoroad/share/software/install/R-3.2.2/bin/Rscript
+R=export LD_LIBRARY_PATH=/opt/glibc-2.14/lib:$LD_LIBRARY_PATH && /annoroad/share/software/install/R-3.1.1/bin/R
+TRANSPOSE=/annoroad/share/software/install/transpose-2.0/src/transpose
+itools=/annoroad/share/software/install/common_bin/iTools
+CONVERT=/usr/bin/convert
+bedtools=/annoroad/share/software/install/bedtools2-2.20.1/bin/bedtools
+bgzip=/annoroad/share/software/package/genome/VEP/vep/htslib/bgzip
+tabix=/annoroad/share/software/package/genome/VEP/vep/htslib/tabix
+bcftools=/annoroad/share/software/install/bcftools/bcftools-1.5/bin/bcftools
+
+###--- Alignment ---###
+BWA=/annoroad/share/software/install/bwa-0.7.9a/bwa
+SAMTOOLS=/annoroad/share/software/install/samtools-0.1.19/samtools
+samtools=/annoroad/data1/software/install/Miniconda/Anaconda3-2022.10/envs/samtools/bin/samtools
+PICARD=/annoroad/share/software/install/picard-tools-1.115
+
+###--- GATK ---###
+GATK_3.5=/annoroad/share/software/install/GenomeAnalysisTK-3.5/GenomeAnalysisTK.jar
+GATK_3.8=/annoroad/data1/bioinfo/PMO/Public/share/admin-sci/every-group/DNA-Medicine/Pipeline/Software/GenomeAnalysisTK-3.8/GenomeAnalysisTK-3.8-0-ge9d806836/GenomeAnalysisTK.jar
+
+###--- ABRA_v1.0 ---###
+ABRA_v1.0=/annoroad/data1/bioinfo/PMO/Public/share/admin-sci/every-group/DNA-Medicine/05.pipeline_sop/software/abra_v1.0/abra-0.97b-SNAPSHOT-jar-with-dependencies.jar
+
+###--- Strelka ---###
+configureStrelkaSomaticWorkflow=/annoroad/share/software/install/strelka/bin/configureStrelkaSomaticWorkflow.py
+configureStrelkaGermlineWorkflow=/annoroad/share/software/install/strelka/bin/configureStrelkaGermlineWorkflow.py
+
+###--- ANNOVAR ---###
+ANNOVAR=/annoroad/data1/bioinfo/PMO/Public/share/admin-sci/every-group/DNA-Medicine/Pipeline/Software/Annovar_201602/table_annovar.pl
+
+###--- SV by DELLY2---###
+DELLY2=/annoroad/share/software/install/delly/delly_v0.7.5/delly_v0.7.5_linux_x86_64bit
+
+###--- Monovar ---###
+monovar=/annoroad/share/software/install/monovar/hamimzafar-monovar-7b47571d85a3/src/monovar.py
+monovar_samtools=/annoroad/share/software/install/monovar/hamimzafar-monovar-7b47571d85a3/external/samtools/samtools
+
+###--- Oncodrive* ---###
+oncodrivCLUST=/annoroad/share/software/install/Python-3.3.2/bin/oncodriveclust
+oncodriveFM=/annoroad/share/software/install/Python-3.3.2/bin/oncodrivefm
+
+###--- FusionMap ---###
+MONO=/annoroad/share/software/install/mono-2109/bin/mono
+FUSIONMAP=/annoroad/data1/bioinfo/PMO/Public/share/admin-sci/every-group/DNA-Medicine/Pipeline/Software/FusionMap_2015-03-31/bin/FusionMap.exe
+
+###--- Mutsig ---###
+MUCV=/annoroad/data1/bioinfo/PMO/Public/share/admin-sci/every-group/DNA-Medicine/05.pipeline_sop/databases/Cancer/mutsigCV/MutSigCV_1.4/run_MutSigCV.sh
+MCR=/annoroad/share/software/install/matlab/2013a/
+TRANSPOSE=/annoroad/share/software/install/transpose-2.0/src/transpose
+
+###--- GO_KEGG_PPI ---###
+RSCRIPT_opt=/opt/blc/genome/biosoft/R-3.1.1/bin/Rscript
+wkhtmltoimage=/annoroad/share/software/install/wkhtmltoimage-amd64/wkhtmltoimage-amd64-master/bin/wkhtmltoimage-amd64
+
+###--- PCA ---###
+EIGENSOFT=/annoroad/share/software/install/EIG/EIG-master/bin
+gnuplot=/annoroad/share/software/install/gnuplot-4.0.0/bin
+
+###--- GISTIC ---###
+GISTIC=/annoroad/share/software/install/GISTIC
+
+###--- Music Mutation Relation ---###
+GENOME=/annoroad/share/software/install/perl-5.16.2/bin/genome
+env_R=export PATH=/annoroad/share/software/install/R-3.2.2/bin:$(PATH)
+exports=export PATH=/annoroad/share/software/install/perl-5.16.2/bin/:/annoroad/share/software/install/perl-5.16.2/lib/site_perl/5.16.2:/annoroad/share/software/install/perl-5.16.2/lib/5.16.2/:/annoroad/share/software/install/R-3.2.2/bin:$$PATH
+
+###--- Preseq ---###
+PRESEQ=/annoroad/share/software/install/preseq/preseq
+BAM2MR=/annoroad/share/software/install/preseq/bam2mr
+
+###--- ControlFeec ---###
+freec=/annoroad/share/software/install/Control-FREEC/freec
+FREEC=/annoroad/share/software/install/Control-FREEC/freec
+
+###--- CIRCOS ---###
+#circos=/annoroad/data1/bioinfo/PROJECT/RD/Cooperation/DNA/Bin/Resequence/v1.0/bin/makefile/../subscript/circos/circos-0.67-6/bin/circos
+circos=/annoroad/share/software/install/circos/circos-0.69-6/bin/circos
+
+###--- Phylip ---###
+phylip=/annoroad/share/software/install/phylip/phylip-3.696/exe
+NEWICK=/annoroad/data1/bioinfo/PMO/yangym/mysoftware/newick_utils-master/src/nw_display
+
+###--- MANTIS ---###
+MANTIS=/annoroad/share/software/install/MANTIS/mantis.py
+RepeatFinder=/annoroad/share/software/install/MANTIS/tools/RepeatFinder
+hg19_MS_loci=/annoroad/data1/bioinfo/PMO/Public/share/admin-sci/every-group/DNA-Medicine/05.pipeline_sop/databases/hg19_MS_region/ucsc.hg19.MS.bed
+
+###--- VEP ---###
+VEP_PATH=/annoroad/share/software/package/genome/VEP/vep
+VEP_DATA=/annoroad/share/software/package/genome/VEP/.vep
+VEP_Plugin=/annoroad/data1/bioinfo/PMO/Public/share/admin-sci/every-group/DNA-Medicine/05.pipeline_sop/software/VEP/plugin
+
+###--- Target Drug ---###
+FILTER_VCF=/annoroad/share/software/package/genome/VEP/.vep/ExAC.r0.3.sites.minus_somatic.vcf.gz
+ONCOKB=/annoroad/share/software/install/oncokb-annotator/MafAnnotator.py
+vcf2maf=/annoroad/share/software/install/vcf2maf/vcf2maf.pl
+
+###--- HLAminer ---###
+HLAminer_v1.3.1_HPRAwgs_classI=/annoroad/data1/bioinfo/PMO/Public/share/admin-sci/every-group/DNA-Medicine/05.pipeline_sop/software/HLAminer-1.3.1/HLAminer_v1.3.1/bin/HPRAwgs_classI.sh
+
+###--- pvactools ---###
+pvacseq=/annoroad/data1/bioinfo/PMO/Public/share/admin-sci/every-group/DNA-Medicine/05.pipeline_sop/software/pvactools/bin/pvacseq
+mhc_i=/annoroad/data1/bioinfo/PMO/zhaoyi/software/
+
+
+##-------------------------------------- 数据库 -------------------------------------##
+
+###--- Public ---###
+#ref_hg19=/annoroad/data1/bioinfo/PMO/Public/share/admin-sci/every-group/DNA-Medicine/05.pipeline_sop/databases/Ref/ucsc.hg19.fasta
+#REF_hg19=/annoroad/data1/bioinfo/PMO/Public/share/admin-sci/every-group/DNA-Medicine/05.pipeline_sop/databases/Ref/ucsc.hg19.fasta
+#samindex=/annoroad/data1/bioinfo/PMO/Public/share/admin-sci/every-group/DNA-Medicine/05.pipeline_sop/databases/Ref/ucsc.hg19.fasta.fai
+ref_hg19=/annoroad/data1/bioinfo/PMO/Public/share/admin-sci/every-group/DNA-Medicine/05.pipeline_sop/databases/Ref/ucsc.hg19.normalChr.fasta
+REF_hg19=/annoroad/data1/bioinfo/PMO/Public/share/admin-sci/every-group/DNA-Medicine/05.pipeline_sop/databases/Ref/ucsc.hg19.normalChr.fasta
+REF_hg19_XY=/annoroad/data1/bioinfo/PMO/Public/share/admin-sci/every-group/DNA-Medicine/05.pipeline_sop/databases/Ref/ucsc.hg19.normalChr.fasta
+samindex=/annoroad/data1/bioinfo/PMO/Public/share/admin-sci/every-group/DNA-Medicine/05.pipeline_sop/databases/Ref/ucsc.hg19.normalChr.fasta.fai
+chr_len=/annoroad/data1/bioinfo/PMO/Public/share/admin-sci/every-group/DNA-Medicine/05.pipeline_sop/databases/hg19_chr.len
+ref_hg19_noY=/annoroad/data1/bioinfo/PMO/Public/share/admin-sci/every-group/DNA-Medicine/05.pipeline_sop/databases/Ref/ucsc.hg19.noY.normalChr.fasta
+REF_hg19_XX=/annoroad/data1/bioinfo/PMO/Public/share/admin-sci/every-group/DNA-Medicine/05.pipeline_sop/databases/Ref/ucsc.hg19.noY.normalChr.fasta
+samindex_noY=/annoroad/data1/bioinfo/PMO/Public/share/admin-sci/every-group/DNA-Medicine/05.pipeline_sop/databases/Ref/ucsc.hg19.noY.normalChr.fasta.fai
+#--- target ---###
+target_exome60=/annoroad/data1/bioinfo/PMO/Public/share/admin-sci/every-group/DNA-Medicine/05.pipeline_sop/databases/intervals/hg19/S07604514_AllTracks_V6_60.bed
+target_exome60_noY=/annoroad/data1/bioinfo/PMO/Public/share/admin-sci/every-group/DNA-Medicine/05.pipeline_sop/databases/intervals/hg19/S07604514_AllTracks_V6_60.noY.bed
+#target_exome60=/annoroad/bioinfo/PMO/database/human/MonoDisease/Exome_Bed/60M_intervals/S07604514_AllTracks_V6_60.bed
+#target_exome60_noY=/annoroad/bioinfo/PMO/database/human/MonoDisease/Exome_Bed/60M_intervals/S07604514_AllTracks_V6_60.noY.bed
+#target_exome60_sentieon=/nas/sentieon/suyanxun/Database/Konwn/S07604514_AllTracks_V6_60.bed
+#target_exome60_noY_sentieon=/nas/sentieon/suyanxun/Database/Konwn/S07604514_AllTracks_V6_60.noY.bed
+target_exome60_sentieon=/annoroad/bioinfo/PMO/database/human/MonoDisease/Exome_Bed/60M_intervals/S07604514_AllTracks_V6_60.bed
+target_exome60_hg19=/annoroad/bioinfo/PMO/database/human/MonoDisease/Exome_Bed/60M_intervals/S07604514_AllTracks_V6_60.bed
+target_exome60_noY_sentieon=/annoroad/bioinfo/PMO/database/human/MonoDisease/Exome_Bed/60M_intervals/S07604514_AllTracks_V6_60.noY.bed
+
+
+###--- GATK ---###
+MILL=/annoroad/data1/bioinfo/PMO/Public/share/admin-sci/every-group/DNA-Medicine/05.pipeline_sop/databases/Konwn/Mills_and_1000G_gold_standard.indels.hg19.sites.vcf
+PHASE=/annoroad/data1/bioinfo/PMO/Public/share/admin-sci/every-group/DNA-Medicine/05.pipeline_sop/databases/Konwn/1000G_phase1.indels.hg19.sites.vcf
+DBSNP=/annoroad/data1/bioinfo/PMO/Public/share/admin-sci/every-group/DNA-Medicine/05.pipeline_sop/databases/Konwn/dbsnp_138.hg19.vcf
+MILL_hg19=/annoroad/data1/bioinfo/PMO/Public/share/admin-sci/every-group/DNA-Medicine/05.pipeline_sop/databases/Konwn/Mills_and_1000G_gold_standard.indels.hg19.sites.vcf
+PHASE_hg19=/annoroad/data1/bioinfo/PMO/Public/share/admin-sci/every-group/DNA-Medicine/05.pipeline_sop/databases/Konwn/1000G_phase1.indels.hg19.sites.vcf
+DBSNP_hg19=/annoroad/data1/bioinfo/PMO/Public/share/admin-sci/every-group/DNA-Medicine/05.pipeline_sop/databases/Konwn/dbsnp_138.hg19.vcf
+KNOWN_realn=-known $(MILL) -known $(PHASE)
+KNOWN_recall=-knownSites $(MILL) -knownSites $(PHASE) -knownSites $(DBSNP)
+GATK_L_ALL=/annoroad/data1/bioinfo/PMO/Public/share/admin-sci/every-group/DNA-Medicine/05.pipeline_sop/databases/hg19_intervals/human.all.intervals
+GATK_L_XY=/annoroad/data1/bioinfo/PMO/Public/share/admin-sci/every-group/DNA-Medicine/05.pipeline_sop/databases/hg19_intervals/human.XY.intervals
+GATK_L_NoY=/annoroad/data1/bioinfo/PMO/Public/share/admin-sci/every-group/DNA-Medicine/05.pipeline_sop/databases/hg19_intervals/human.noY.intervals
+GATK_L_NoXY=/annoroad/data1/bioinfo/PMO/Public/share/admin-sci/every-group/DNA-Medicine/05.pipeline_sop/databases/hg19_intervals/human.noXY.intervals
+
+###--- sentieon 版本参数文件 ---####
+#sention_config_XX=/nas/sentieon/suyanxun/Database/config/nas_config_XX
+#sention_config_XY=/nas/sentieon/suyanxun/Database/config/nas_config_XY
+#sentieon=/annoroad/data1/bioinfo/PMO/wanghong02/client/client.py
+sentieon=/opt/sentieon-genomics-202308.03/bin/sentieon
+sentieon_config_wes_XX=/annoroad/data1/bioinfo/PMO/Public/share/admin-sci/every-group/DNA-Medicine/05.pipeline_sop/databases/sentieon_config/single_wes_XX_config
+sentieon_config_wes_XY=/annoroad/data1/bioinfo/PMO/Public/share/admin-sci/every-group/DNA-Medicine/05.pipeline_sop/databases/sentieon_config/single_wes_XY_config
+sentieon_config_wgs_XX=/annoroad/data1/bioinfo/PMO/Public/share/admin-sci/every-group/DNA-Medicine/05.pipeline_sop/databases/sentieon_config/single_wgs_XX_config
+sentieon_config_wgs_XY=/annoroad/data1/bioinfo/PMO/Public/share/admin-sci/every-group/DNA-Medicine/05.pipeline_sop/databases/sentieon_config/single_wgs_XY_config
+sentieon_output_wes=/annoroad/data1/bioinfo/PMO/Public/share/admin-sci/every-group/DNA-Medicine/05.pipeline_sop/databases/sentieon_config/single_wes_output.list.new
+sentieon_output_wgs=/annoroad/data1/bioinfo/PMO/Public/share/admin-sci/every-group/DNA-Medicine/05.pipeline_sop/databases/sentieon_config/single_wgs_output.list.new
+
+###--- ANNOVAR ---###
+ANNODB=/annoroad/bioinfo/PMO/database/Annovar/humandb
+OMIM=/annoroad/bioinfo/PMO/database/Annovar/humandb/OMIM/format.genemap3
+UNIPROT=/annoroad/bioinfo/PMO/database/Annovar/humandb/UniProt_Reactome_KOGO/format.human.sprot.anno
+HGMD=/annoroad/bioinfo/PMO/database/Annovar/humandb/HGMD/HGMD.2011.2.SNP-hg19.database
+#ENCODE_DNase=/annoroad/data1/bioinfo/PROJECT/RD/Cooperation/DNA/Bin/Homo_sapiens/hg19_GRCh37/encode/wgEncodeRegDnaseClusteredV3.bed
+#ENCODE_Txn=/annoroad/data1/bioinfo/PROJECT/RD/Cooperation/DNA/Bin/Homo_sapiens/hg19_GRCh37/encode/wgEncodeRegTfbsClusteredV3.bed
+#miRBase=/annoroad/data1/bioinfo/PROJECT/RD/Cooperation/DNA/Bin/Homo_sapiens/hg19_GRCh37/miRBase/hsa.gff3
+
+title_document=/annoroad/data1/bioinfo/PMO/Public/share/admin-sci/every-group/DNA-Medicine/05.pipeline_sop/databases/MonoDisease/Anno_color/title_document.txt
+
+###--- OncodriveCLUST ---###
+transcripts=/annoroad/data1/bioinfo/PMO/Public/share/admin-sci/every-group/DNA-Medicine/05.pipeline_sop/databases/Cancer/oncodriverclust/gene_transcripts_refseq.tsv
+cgc=/annoroad/data1/bioinfo/PMO/Public/share/admin-sci/every-group/DNA-Medicine/05.pipeline_sop/databases/Cancer/oncodriverclust/CGC_phenotype.tsv
+
+###--- oncodriveFM ---###
+knowndriver=/annoroad/data1/bioinfo/PMO/Public/share/admin-sci/every-group/DNA-Medicine/05.pipeline_sop/databases/Cancer/oncodriverclust/KnownDriver.genelist
+
+###--- FusionMap ---###
+FUSION_db=/annoroad/data1/bioinfo/PMO/Public/share/admin-sci/every-group/DNA-Medicine/05.pipeline_sop/databases/Cancer/Fusion/02Fusion_Map_Base_Dir
+
+###--- Mutation Signature ---###
+ref_cosmic=/annoroad/data1/bioinfo/PMO/Public/share/admin-sci/every-group/DNA-Medicine/05.pipeline_sop/databases/Cancer/MutationSignature/cosmic_30_refsignature.txt
+ref_cosmic_desp=/annoroad/data1/bioinfo/PMO/Public/share/admin-sci/every-group/DNA-Medicine/05.pipeline_sop/databases/Cancer/MutationSignature/cosmic_30_descrip.txt
+
+###--- Mutsig ---###
+ref-fasta=/annoroad/data1/bioinfo/PMO/Public/share/admin-sci/every-group/DNA-Medicine/05.pipeline_sop/databases/Ref/ucsc.hg19.fasta
+CONVERAGE=/annoroad/data1/bioinfo/PMO/Public/share/admin-sci/every-group/DNA-Medicine/05.pipeline_sop/databases/Cancer/mutsigCV/exome_full192.coverage.txt
+covariates=/annoroad/data1/bioinfo/PMO/Public/share/admin-sci/every-group/DNA-Medicine/05.pipeline_sop/databases/Cancer/mutsigCV/gene.covariates.txt
+mutation_type=/annoroad/data1/bioinfo/PMO/Public/share/admin-sci/every-group/DNA-Medicine/05.pipeline_sop/databases/Cancer/mutsigCV/mutation_type_dictionary_file.txt
+ChrFile=/annoroad/data1/bioinfo/PMO/Public/share/admin-sci/every-group/DNA-Medicine/05.pipeline_sop/databases/Cancer/mutsigCV/ChrFile
+
+###--- GO_KEGG_PPI ---###
+go_father=/annoroad/data1/bioinfo/PMO/Public/share/admin-sci/every-group/DNA-Medicine/05.pipeline_sop/databases/Cancer/GO_KEGG_PPI/go.father
+go_class=/annoroad/data1/bioinfo/PMO/Public/share/admin-sci/every-group/DNA-Medicine/05.pipeline_sop/databases/Cancer/GO_KEGG_PPI/go.class
+gene_id_kegg=/annoroad/data1/bioinfo/PMO/Public/share/admin-sci/every-group/DNA-Medicine/05.pipeline_sop/databases/Cancer/GO_KEGG_PPI/ncbi_gene_id_kegg.20151217.gz
+map_kegg=/annoroad/data1/bioinfo/PMO/Public/share/admin-sci/every-group/DNA-Medicine/05.pipeline_sop/databases/Cancer/GO_KEGG_PPI/pathway.list
+kegg_level=/annoroad/data1/bioinfo/PMO/Public/share/admin-sci/every-group/DNA-Medicine/05.pipeline_sop/databases/Cancer/GO_KEGG_PPI/kegg.level.xls
+mapdb=/annoroad/data1/bioinfo/PMO/Public/share/admin-sci/every-group/DNA-Medicine/05.pipeline_sop/databases/Cancer/GO_KEGG_PPI/kegg_local/kegg_map/
+
+###--- GISTIC ---###
+refgene_gistic=/annoroad/share/software/install/GISTIC/refgenefiles/hg19.mat
+chrfile=/annoroad/data1/bioinfo/PMO/Public/share/admin-sci/every-group/DNA-Medicine/05.pipeline_sop/databases/MonoDisease/chr.txt
+
+###--- CIRCOS ---###
+ref_circos=/annoroad/bioinfo/PMO/database/human/hg19/bwa_index/hg19_pure.fa
+fai_circos=/annoroad/bioinfo/PMO/database/human/hg19/bwa_index/hg19_pure.fa.fai
+karyotype=/annoroad/bioinfo/PMO/database/human/MonoDisease/circos/karyotype.human.hg19.txt
+
+###--- Drug_Target ---###
+Drugbank=/annoroad/bioinfo/PMO/database/human/DrugTarget/drugbank/Final_Drugbank_results_human.xls
+CTD=/annoroad/bioinfo/PMO/database/human/DrugTarget/CTD/CTD_results_human.xls
+TTD=/annoroad/bioinfo/PMO/database/human/DrugTarget/TTD/TTD_results.txt
+MyCancerGenome=/annoroad/bioinfo/PMO/database/human/DrugTarget/MyCancerGenome/MyCancerGenome.txt
+
+###--- Drug_Response ---###
+GDSC=/annoroad/bioinfo/PMO/database/human/DrugResponce/GDSC_Mutation_Associations.xls
+
+###--- Color ---###
+classify=/annoroad/bioinfo/PMO/database/Annovar/humandb/Format_Annovar/AnnovarTitleClassV4.xls
+colors=/annoroad/bioinfo/PMO/database/Annovar/humandb/Format_Annovar/colors_v5.txt
+color_document=/annoroad/bioinfo/PMO/database/Annovar/humandb/Format_Annovar/title_document.txt
+title_document=/annoroad/data1/bioinfo/PMO/Public/share/admin-sci/every-group/DNA-Medicine/05.pipeline_sop/databases/MonoDisease/Anno_color/title_document.txt
+
+###--- SV ---###
+hg19excl=/annoroad/data1/bioinfo/PMO/Public/share/admin-sci/every-group/DNA-Medicine/05.pipeline_sop/databases/Cancer/Delly2/human.hg19.excl.tsv
+
+###--- fusion gene ---###
+gene_bed=/annoroad/data1/bioinfo/PMO/Public/share/admin-sci/every-group/DNA-Medicine/05.pipeline_sop/databases/GTF/Homo_sapiens.GRCh37.87.gene.bed
+
+###--- CNV ---###
+chrdir=/annoroad/data1/bioinfo/PMO/Public/share/admin-sci/every-group/DNA-Medicine/05.pipeline_sop/databases/MonoDisease/chr_fa
+CHRDIR=/annoroad/data1/bioinfo/PMO/Public/share/admin-sci/every-group/DNA-Medicine/05.pipeline_sop/databases/hg19_chr
+chr_len=/annoroad/data1/bioinfo/PMO/Public/share/admin-sci/every-group/DNA-Medicine/05.pipeline_sop/databases/hg19_chr.len
+gff=/annoroad/data1/bioinfo/PMO/Public/share/admin-sci/every-group/DNA-Medicine/05.pipeline_sop/databases/MonoDisease/ref_GRCh37.p5_top_level.gff3
+
+CHRD=/annoroad/data1/bioinfo/PMO/Public/share/admin-sci/every-group/DNA-Medicine/05.pipeline_sop/databases/Cancer/hg19_chr/
+CHRLEN=/annoroad/data1/bioinfo/PMO/Public/share/admin-sci/every-group/DNA-Medicine/05.pipeline_sop/databases/Cancer/hg19_chr.len
+SNPDATABASE=/annoroad/data1/bioinfo/PMO/Public/share/admin-sci/every-group/DNA-Medicine/05.pipeline_sop/databases/Cancer/hg19_snp142.SingleDiNucl.1based.txt
+makePileup=/annoroad/data1/bioinfo/PMO/Public/share/admin-sci/every-group/DNA-Medicine/05.pipeline_sop/databases/Cancer/hg19_snp142.SingleDiNucl.1based.bed
+
+###-- Clinical_ANNO ---###
+Intervar=/annoroad/data1/bioinfo/PMO/zhouyang/bin/InterVar/InterVar-master/Intervar.py
+#Intervardb=/annoroad/data1/bioinfo/PMO/zhouyang/bin/InterVar/bin/database/intervardb
+Intervardb=/annoroad/data1/bioinfo/PMO/zhouyang/bin/InterVar/InterVar-master/intervardb
+Intervar_commond=-b hg19 --input_type=AVinput --table_annovar /annoroad/data1/bioinfo/PMO/Public/share/admin-sci/every-group/DNA-Medicine/Pipeline/Software/Annovar_201602/table_annovar.pl --convert2annovar /annoroad/data1/bioinfo/PMO/Public/share/admin-sci/every-group/DNA-Medicine/Pipeline/Software/Annovar_201602/convert2annovar.pl --annotate_variation /annoroad/data1/bioinfo/PMO/Public/share/admin-sci/every-group/DNA-Medicine/Pipeline/Software/Annovar_201602/annotate_variation.pl --skip_annova
+Phenolyzer=/annoroad/data1/bioinfo/PMO/zhouyang/bin/Phenolyzer/bin/software/phenolyzer-master/
+#Phenolyzer_commond= -p -ph --buildver hg19 -logistic -addon_gg DB_MENTHA_GENE_GENE_INTERACTION -addon_gg_weight 0.05 
+Phenolyzer_commond= -p -ph --buildver hg19 -logistic -addon_gg DB_MENTHA_GENE_GENE_INTERACTION -addon_gg_weight 0.05 -addon DB_DISGENET_GENE_DISEASE_SCORE,DB_GAD_GENE_DISEASE_SCORE -addon_weight 0.25
+#Phenolyzer_commond= -p -ph --buildver hg19 -logistic 
+symbols_file=/annoroad/data1/bioinfo/PMO/suyanxun/pipeline/Medical_pipeline/Medical_pipeline_MonoDisease/database/ncbi2symbols_19.txt
+##-------------------------------------- 环境变量 -----------------------------------##
+
+###--- Monovar ---###
+monovar_env=export PATH=/annoroad/share/software/install/monovar/hamimzafar-monovar-7b47571d85a3/src:$PATH
+
+###--- Preseq ---###
+preseq_env=export LD_LIBRARY_PATH=/annoroad/share/software/install/gsl-2.1/lib/
+
+###--- ControlFreec ---###
+freec_env= export PATH=/annoroad/share/software/package/genome/VEP/samtools-1.3/:
+
+###--- CIRCOS ---###
+circos_env=export PERL5LIB=/home/hougy/src/perl/lib/site_perl/5.16.2/x86_64-linux-thread-multi:/annoroad/share/software/install/perl-5.16.2/lib/site_perl/5.16.2
+
+###--- BWA for ABRA ---###
+bwa_env=export PATH=/annoroad/share/software/install/bwa-0.7.9a/:$$PATH
+
+###--- pvactools ---###
+pvactools_env=export PYTHONPATH=/annoroad/data1/bioinfo/PMO/Public/share/admin-sci/every-group/DNA-Medicine/05.pipeline_sop/software/pvactools/lib/python3.5/site-packages:$PYTHONPATH

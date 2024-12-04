@@ -1,20 +1,15 @@
-bindir=$(dir $(firstword $(MAKEFILE_LIST)))/../
+bindir=$(dir $(firstword $(MAKEFILE_LIST)))
 name=$(notdir $(firstword $(MAKEFILE_LIST)))
 script=$(bindir)/script/
 database=$(bindir)../database
 software=$(bindir)../software
-ifeq ($(strip $(config)),)
-Bconfig=$(bindir)/config/config_$(genome).txt
-else
-Bconfig=$(config)
-endif
-include $(Bconfig)
+#ifeq ($(strip $(config)),)
+#Bconfig=$(bindir)/config/config_$(genome).txt
+#else
+#Bconfig=$(config)
+#endif
+include $(config)
 
-ifeq ($(genome),hg19)
-	REF=$(REF_hg19)
-else ifeq ($(genome),hg38)
-	REF=$(REF_hg38)
-endif
 
 HELP:
 	@echo
@@ -82,16 +77,15 @@ DELLY2_SV:
 	@echo `date "+%Y-%m-%d %H:%M:%S"` "-SV-INFO- ### DELLY2 Start"
 	@echo
 	mkdir -p $(outdir)/Middle
-	$(DELLY2_238) call -g $(REF) -x $($(genome)excl) -o $(outdir)/Middle/$(sample).all_SV.bcf $(bam)
-
+	$(DELLY2_238) call -g $(REF) -o $(outdir)/Middle/$(sample).all_SV.bcf $(bam)
+	@echo `date "+%Y-%m-%d %H:%M:%S"` "-SV-INFO- ### DELLY2 End"
 
 Filter:
 	@echo
 	@echo `date "+%Y-%m-%d %H:%M:%S"` "-SV-INFO- ### Filter Start"
 	@echo
 	mkdir -p $(outdir)/Middle
-	$(python) $(script)/Common_SV_Delly2/sv_fusion_filter_238.py --input_list "$(outdir)/Middle/$(sample).all_SV.bcf" --input_BED $(gene_bed) --sample_class $(type) --output_dir $(outdir)/Middle
-	#$(python) $(script)/Common_SV_Delly2/sv_fusion_filter.py --input_list "$(outdir)/Middle/$(sample).del.raw.bcf $(outdir)/Middle/$(sample).dup.raw.bcf $(outdir)/Middle/$(sample).ins.raw.bcf $(outdir)/Middle/$(sample).inv.raw.bcf $(outdir)/Middle/$(sample).tra.raw.bcf" --input_BED $(gene_bed) --sample_class $(type) --output_dir $(outdir)/Middle
+	$(PYTHON3) $(script)/sv_fusion_filter_238.py --input_list "$(outdir)/Middle/$(sample).all_SV.bcf" --input_BED $(gene_bed) --sample_class $(type) --output_dir $(outdir)/Middle
 	mv $(outdir)/Middle/all_SV_filtered.vcf $(outdir)/$(sample).SV.pass.vcf
 	mv $(outdir)/Middle/all_SV.vcf $(outdir)/$(sample).SV.raw.vcf
 	mv $(outdir)/Middle/all_SV_filtered.bed $(outdir)/$(sample).SV.pass.bed

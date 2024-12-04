@@ -1,0 +1,34 @@
+说明此文件夹中所有文件中的内容所代表的含义。
+
+*CNV
+|-- sample.CNV.raw.xls                CNV检测结果
+|-- sample.CNV.*_multianno.xls     CNV的Annovar注释结果
+
+
+sample.CNV.raw.xls       CNV结果文件
+Chr              染色体
+Start            CNV起始位置
+End              CNV终止位置
+Type             扩增或者缺失
+Copy_num         拷贝数
+Length(kb)       CNV长度
+st_exon           起始的外显子
+ed_exon           终止的外显子
+raw_cov           原始的覆盖度
+norm_cov          标准化后的覆盖度
+lratio	          模型预测的值
+mBIC              模型预测的值
+
+
+*.CNV.*_multianno.xls  格式说明
+Chr                                 染色体号
+Start                               突变起始位置
+End                                 突变终止位置
+Ref                                 参考基因型
+Alt                                 突变型
+Func.refGene                        突变所在基因组的区域，分为intergenic,URT3,等信息，downstream和upstream分别表示基因所上下游1000bp以内的位置；
+Gene.refGene                        突变所在的基因，如为间区intergenic则提供上下游的基因名；如下游没有基因则“.”表示；
+GeneDetail.refGene                  碱基突变类型，如为间区，则为突变位点距上下游基因的距离，如为外显子区，则为发生突变的基因，以及所发生的碱基突变类型，GLYMA20G31580.1:c.-130A>T,表示突变在转录本GLYMA20G31580.1的第UTR5区域，第130个碱基A变为T
+ExonicFunc.refGene                  突变发生在外显子区是否是同义突变或非同义突变，其他区域用“.”表示
+AAChange.refGene                    发生在外显子区的突变的碱基型以及氨基酸的变化，如GLYMA2269S00200:GLYMA2269S00200.1:exon1:c.C298A:p.Q100K表示突变位于基因GLYMA2269S00200，转录本GLYMA2269S00200.1的第一个外显子区，第298个碱基由C突变为A，第100个氨基酸由Q变为K
+other                               数据库注释结果

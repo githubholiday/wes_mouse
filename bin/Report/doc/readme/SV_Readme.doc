@@ -1,0 +1,69 @@
+说明此文件夹中所有文件中的内容所代表的含义。
+
+*SV
+|-- sample.SV.*_multianno.xls           SV的Annovar注释结果
+|-- sample.Format.SV.*_multianno.xls    SV的Annovar注释结果
+|-- Stat                                   相关统计结果目录
+|---|-- All.sv.genome.xls/png/pdf          SV在基因组各功能区域的分布；
+|---|-- All.sv.num.xls/png/pdf             SV的数目的结果；
+|---|-- All.sv.type.xls/png/pdf            SV类型统计结果；
+
+
+*SV.*_multianno.xls  格式说明
+Chr                   变异所在染色体
+Start                 变异起始位点
+End                   变异终止位点
+Ref                   参考基因组碱基型
+Alt                   样品变异碱基型
+Func.refGene          基于refGene数据库对变异位点所在区域进行注释
+Gene.refGene          基于refGene数据库对变异位点相关转录本的注释
+GeneDetail.refGene    基于refGene数据库对UTR、splicing等区域的注释，如为间区，则为突变位点距上下游基因的距离，如为外显子区，则为发生突变的基因，以及所发生的碱基突变类型，GLYMA20G31580.1:c.-130A>T,表示突变在转录本GLYMA20G31580.1的第UTR5区域，第130个碱基A变为T
+ExonicFunc.refGene    基于refGene数据库对外显子区域的变异位点注释
+AAChange.refGene      基于refGene数据库对变异位点处的氨基酸改变注释，如GLYMA2269S00200:GLYMA2269S00200.1:exon1:c.C298A:p.Q100K表示突变位于基因GLYMA2269S00200，转录本GLYMA2269S00200.1的第一个外显子区，第298个碱基由C突变为A，第100个氨基酸由Q变为K
+other                 数据库注释结果
+
+All.sv.genome.xls  格式说明
+Type: 基因组不同的功能元件；
+UTR3：发生在基因的UTR3的SV数目；
+UTR5：发生在基因的UTR5的SV数目；
+downstream：发生在基因下游（1000bp）内的SV数目；
+exonic：发生在外显子区域的SV数目；
+intergenic：发生在基因间区的SV数目；
+intronic：发生在内含子区域的SV数目；
+ncRNA：没有相关编码注释的RNA，并非不翻译的RNA，参见ANNOVAR的Gene注释说明；
+splicing：发生在基因剪切区域内（剪切位点上游2bp，即非Exonic区）的SV数目；
+upstream：发生在基因上游（1000bp）内的SV数目；
+other：是指杂合的SV，与参考基因组不一致，所以Annovar未得到注释，注释结果中为“.”。
+
+All.sv.type.xls
+DEL    缺失
+DUP    重复
+INS    插入
+INV    倒位
+TRA    易位
+
+All.sv.num.xls  格式说明
+Sample:                  样品名；
+Total：                  基因组中全部的SV数目；
+UTR5：                   发生在基因的UTR5的SV数目；
+UTR3：                   发生在基因的UTR3的SV数目；
+UTR5;UTR3：              同时发生在UTR3和UTR5区域内的SV数目，两个不同的基因；
+exonic：                 发生在外显子区域的SV数目；
+splicing：               发生在基因剪切区域内（剪切位点上游2bp，即非Exonic区）的SV数目；
+exonic;splicing：        同时发生在外显子区域和基因剪切区域内的SV数目，两个不同的基因；
+upstream：               发生在基因上游（1000bp）内的SV数目；
+downstream：             发生在基因下游（1000bp）内的SV数目；
+upstream;downstream：    发生在基因上游或者下游（1000bp）内的SV数目，两个不同的基因；
+intronic：               发生在内含子区域的SV数目；
+intergenic：             发生在基因间区的SV数目；
+ncRNA：                  没有相关编码注释的RNA，并非不翻译的RNA，参见ANNOVAR的Gene注释说明；子区间注释同上;
+other：                  是指杂合的SV，与参考基因组不一致，所以Annovar未得到注释，注释结果中为“.”。
+
+All.sv.genome.png/pdf 格式说明
+柱状图，横坐标为样本名，纵坐标为各区间的SV个数百分比；作图时，将相同功能区的合并，如UTR5;UTR3归入UTR5分类。
+
+All.sv.type.png/pdf
+柱状图，各种类型所占比例
+
+All.sv.num.png/pdf
+柱状图，横坐标为样本，纵坐标为sv的个数

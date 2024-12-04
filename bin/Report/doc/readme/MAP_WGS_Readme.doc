@@ -1,0 +1,29 @@
+说明此文件夹中所有文件中的内容所代表的含义。
+
+*MAP
+|-- sample_cumuPlot.pdf/png                样本累积深度分布图
+|-- sample_histPlot.pdf/png                样本单碱基深度分布图
+|-- All.map.stat.pdf/png                   比对率及覆盖度分析图
+|-- All.map.stat.xls                       比对率及覆盖度统计表
+
+
+All.map.stat.xls内容说明：
+（1） Sample：样本名称；
+（2） Genome Length (bp)：参考基因组大小（不含N）；
+（3） Clean Reads：过滤后的Reads的个数；
+（4） Clean Bases：过滤后的碱基数；
+（5） Mapped Reads：比对到参考基因组上的Reads个数；
+（6） Mapped Bases：比对到参考基因组上的Bases个数；
+（7） Mapping Rate (%)：比对到参考基因组上的Reads的百分比；
+（8） Duplication Rate (%)：PCR重复Reads的百分比；
+（9） Mean Depth：有效平均测序深度；
+（10） Coverage Rate (%)：覆盖度，即参考序列中有多大比例的区域至少测到了1次(计算覆盖度时只考虑基因组中非N碱基区域的覆盖度大小)。
+
+All.map.stat.pdf/png 内容说明：
+横坐标为样本名，纵坐标为比对率及覆盖率。
+
+sample_cumuPlot.pdf/png 内容说明：
+累积深度分布图以测序深度为横坐标，Fraction of bases为纵坐标。
+
+sample_histPlot.pdf/png 内容说明：
+单碱基深度分布图以碱基累积深度为横坐标，Fraction of bases为纵坐标。

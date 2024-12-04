@@ -1,0 +1,20 @@
+说明此文件夹中所有文件中的内容所代表的含义。
+
+*_FusionGene
+|-- SampleID.FusionReport.xls： 各个样品FusionGene文件，若无某个样品的对应文件，说明该样品未检测出融合基因阳性结果
+|-- All.Fugene.num.xls：        融合基因数量统计表
+|-- All.Fugene.num.pdf/png：    融合基因数量统计图
+
+*.FusionReport.xls	格式说明
+（1） SV_type：融合基因对应的结构变异类型；
+（2） fusion_gene1：融合基因1（“.”代表在非外显子区）；
+（3） fusion_gene2：融合基因2（“.”代表在非外显子区）；
+（4） fusion_break1：断点1信息；
+（5） fusion_break2：断点2信息；
+
+All.Fugene.num.xls
+Sample                样本名称
+Fusion Gene           样本中检测到的融合基因数目
+
+All.Fugene.num.pdf/png
+样本检测的融合基因数目统计，横坐标为样本名称，纵坐标为融合基因数目。

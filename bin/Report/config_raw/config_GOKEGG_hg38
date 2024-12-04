@@ -1,0 +1,11 @@
+
+
+##### hg38 GRCh38.83  ref information #######/annoroad/data1/bioinfo/PMO/yangym/bin/GIT/Adavanced_Cancer/Workflow_Cancer/bin/Adanced/GO_KEGG_PPI/
+
+gene_anno=$(Bindir)/../../../database/KOGO/hg38/Homo_sapiens.GRCh38.83.pure.anno.txt
+go_list=$(Bindir)/../../../database/KOGO/hg38/hg38.go.list
+ko_list=$(Bindir)/../../../database/KOGO/hg38/hg38.ko.list
+ref_ppi=$(Bindir)/../../../database/KOGO/hg38/hg38.pro.txt
+all_list=$(Bindir)/../../../database/KOGO/hg38/all_hg38.list
+
+

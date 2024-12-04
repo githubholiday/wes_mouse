@@ -1,0 +1,41 @@
+说明此文件夹中所有文件中的内容所代表的含义。
+
+|--*FQ
+|--|--sampleID.base.png/pdf              每个样品过滤后数据的碱基分布图
+|--|--sampleID.quality.png/pdf           每个样品过滤后数据的测序质量值分布图
+|--|--CleanBases.pdf/png                 所有样品Clean Bases统计图
+|--|--filter_rate.pdf/png                所有样品数据组成统计图
+|--|--Q30.pdf/png                        所有样品Q30 Reads所占比例统计图
+|--|--filter_stat.xls                    所有样品的统计结果
+
+
+*base.png/pdf
+横轴为Reads（双端测序则为一对Reads）的碱基位置，纵轴为单碱基所占的比例，不同颜色代表不同的碱基类型。
+
+*quality.png/pdf
+横坐标为Clean Reads的碱基位置，纵坐标为平均碱基质量。
+
+CleanBases.pdf/png
+横坐标为样品名，纵坐标Clean Bases数量。
+
+filter_rate.pdf/png
+横坐标为样品名，纵坐标各种数据组成所占比例。
+
+Q30.pdf/png
+横坐标为样品名，纵坐标Q30数据所占比例。
+
+filter_stat.xls
+Sample：样品名
+Raw Reads Number：原始下机的Reads数；
+Raw Bases Number：原始下机序列的碱基数；
+Clean Reads Number：过滤后得到的高质量的Reads数；
+Clean Reads Rate(%): 过滤后得到的Clean Reads占Raw Reads的比例。这个值越大，说明测序质量越好；
+Clean Bases Number：过滤后的高质量序列的碱基数；
+Low-quality Reads Number：去除的低质量的Reads数（如双端测序，一端是低质量，则去除的为双端）；
+Low-quality Reads Rate(%)：去掉的低质量的Reads占Raw Reads的比例；
+Ns Reads Number：去除的含N比例大于5%的Reads数；
+Ns Reads Rate(%)：去除的含N比例大于5%的Reads占Raw Reads的比例；
+Adapter Polluted Reads Number：去除的接头污染的Reads数；
+Adapter Polluted Reads Rate(%)：去除的接头污染的Reads占Raw Reads的比例；
+Raw Q30 Bases Rate(%)：Raw Reads中测序质量值大于30（错误率小于0.1%）的碱基占总碱基（Raw Bases）的比例；
+Clean Q30 Bases Rate(%)：Clean Reads中测序质量值大于30（错误率小于0.1%）的碱基占总碱基（Clean Bases）的比例。

@@ -1,0 +1,28 @@
+说明此文件夹中所有文件中的内容所代表的含义。
+
+|-- Neoantigens
+|--|--sample.*.final.xls         Neoantigens相关信息
+|--|--sample.TNBfreq.xls         Neoantigens统计信息(存在DNA数据时)
+
+sample.*.final.xls         文件格式说明
+（1）Chromosome                      染色体
+（2）Start                           起始位置
+（3）Stop                            终止位置
+（4）Reference                       参考基因组碱基型
+（5）Variant                         变异碱基型
+（6）Variant Type                    变异类型
+（7）Gene Name                       基因名称
+（8）HLA Allele                      HLA等位基因型
+（9）MT Epitope Seq                  突变序列
+（10）WT Epitope Seq                 野生型序列
+（11）Best MT Score Method           最优检测方法
+（12）Median MT Score                突变型得分中位数
+（13）Median WT Score                野生型得分中位数
+（14）Median Fold Change             Fold Change中位数
+
+
+
+sample.TNBfreq.xls                  文件格式说明
+（1）Sample:                         样品名
+（2）TNB：                           Tumor Neoantigen Murden
+（3）TNF：                           Tumor Neoantigen Frequency(TNB/TMB)

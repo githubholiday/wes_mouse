@@ -166,7 +166,7 @@ Major	T
 Order	6
 Thread	5
 Qsub	True
-Command	make -f BIN/CNV/CNV.mk config=Para_config inbam=OUTDIR/Alignment/$(sample)[0]/$(sample)[0].sorted.bam genome=Para_ref outdir=OUTDIR/CNV/$(sample)[0] CNV
+Command	make -f BIN/CNV/CNV.mk config=Para_config inbam=OUTDIR/Alignment/$(sample)[0]/$(sample)[0].sorted.bam genome=Para_ref outdir=OUTDIR/CNV/$(sample)[0] bed=Para_bed CNV
 [Job End]
 
 [Job Start]

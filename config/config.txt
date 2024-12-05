@@ -36,6 +36,7 @@ annovar_opt=-protocol  ensGene  -operation  g   --otherinfo  -nastring  .  -vcfi
 annovardb=/annoroad/data1/bioinfo/PROJECT/Commercial/Cooperation/Public/Database/GenomeDatabase/animal/Mus_musculus/Mus_musculus.UCSC.mm39/DNA/annotation/
 gff=/annoroad/data1/bioinfo/PROJECT/Commercial/Cooperation/Public/Database/GenomeDatabase/animal/Mus_musculus/Mus_musculus.UCSC.mm39/DNA/annotation/Mus_musculus.gff3
 dbname=Mus_musculus
+annovar_perl=/annoroad/data1/bioinfo/PMO/Public/share/admin-sci/every-group/DNA-Medicine/Pipeline/Software/Annovar_201602/table_annovar.pl
 
 ##SV-DELLY2
 DELLY2_238=export OMP_NUM_THREADS=5 && /annoroad/data1/software/bin/miniconda/envs/WES_circos/bin/delly
@@ -44,3 +45,8 @@ DELLY2_238=export OMP_NUM_THREADS=5 && /annoroad/data1/software/bin/miniconda/en
 ## Report
 python3_report=/annoroad/data1/software/bin/miniconda/envs/python3_base/bin/python3
 Report_PY=/annoroad/data1/bioinfo/PROJECT/Commercial/Cooperation/Public/Pipeline/Stable/Public/Report/Report_local/current/Public_webreport/Report.py
+
+## CNV
+cnvkit_env=source /annoroad/data1/bioinfo/PROJECT/RD/Cooperation/RD_Group/renxue/install/miniconda3/bin/activate cnvkit
+flat_file=/annogene/data1/bioinfo/Seq/RD/PMO/tuchengfang/238/database/WES_MM/refFlat.txt
+access_file=/annogene/data1/bioinfo/Seq/RD/PMO/tuchengfang/238/database/WES_MM/access-10kb.mm10.bed

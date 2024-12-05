@@ -24,6 +24,7 @@ CNV:
 
 CNV_anno:
 	echo CNV anno start at `date`
-	awk -F "\t" '{print  $1"\t"$2"\t"$3"\t"$4"\t"$5"\t"$6"\t"$7"\t"$8"\tGT\t./.\t"$9"\t-\t-\t-"}' $(infile) |sed '1d' - > $(outdir)/$(sample).CNV.raw.vcf
+	mkdir -p $(outdir)
+	awk -F "\t" '{print  $$1"\t"$$2"\t"$$3"\t"$$4"\t"$$5"\t"$$6"\t"$$7"\t"$$8"\tGT\t./.\t"$$9"\t-\t-\t-"}' $(infile) |sed '1d' - > $(outdir)/$(sample).CNV.raw.vcf
 	$(PERL) $(annovar_perl) $(outdir)/$(sample).CNV.raw.vcf $(annovardb) -outfile $(outdir)/$(sample).CNV -buildver Mus_musculus $(annovar_opt)
 	echo CNV anno end at `date`

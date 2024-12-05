@@ -26,7 +26,7 @@ def main():
 				head = ["Chr",'Start',"End","Func.ensGene","Gene.ensGene","GeneDetail.ensGene","ExonicFunc.ensGene","AAChange.ensGene","Gene","CN","Depth"]
 				output.write('\t'.join(head)+'\n')
 				continue
-			out_index = [ 0,1,2,5,6,7,8,9,11,20,23 ]
+			out_index = [ 0,1,2,5,6,7,8,9,16,18,19 ]
 			out_value = [tmp[i] for i in out_index]
 			output.write('\t'.join(out_value)+'\n')
 	

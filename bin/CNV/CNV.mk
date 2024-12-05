@@ -19,7 +19,10 @@ HELP:
 CNV:
 	echo CNV start at `date`
 	mkdir -p $(outdir)
-	$(cnvkit_env) && cnvkit.py batch $(inbam) -n -m hybrid -t $(bed) --annotate $(flat_file) --fasta $(genome) --access $(access_file) --output-reference $(outdir)/mm10.cnn --output-dir $(outdir) --diagram
+	$(cnvkit_env) && cnvkit.py batch $(inbam) -n -m hybrid -t $(bed) --annotate $(flat_file) --fasta $(genome) --access $(access_file) --output-reference $(outdir)/mm10.cnn --output-dir $(outdir) --diagram --scatter
+	cut -f 1,2,3,4,6,7 $(outdir)/$(sample).sorted.call.cns > $(outdir)/$(sample).CNV.raw.xls
+	convert $(outdir)/$(sample).sorted-diagram.pdf $(outdir)/$(sample).sorted-diagram.png
+	convert $(outdir)/$(sample).sorted-scatter.pdf $(outdir)/$(sample).sorted-scatter.png
 	echo CNV end at `date`
 
 CNV_anno:

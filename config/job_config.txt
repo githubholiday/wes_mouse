@@ -146,15 +146,42 @@ Memory	15G
 Queue	sci.q
 CPU	N
 Major	T
-Order	6
+Order	5
 Thread	5
 Qsub	True
+Depend  SV_DELLY2
 Command	make -f BIN/Annovar_anno/Common_ANNO_Annovar.mk config=Para_config genome=Para_ref vcf=OUTDIR/SV/$(sample)[0]/$(sample)[0].SV.pass.vcf sample=$(sample)[0] type=SV outdir=OUTDIR/SV_ANNO/ genome=Para_genome ANNOVAR_VCF ANNOVAR_CytoBand SV_CP
 make -f BIN/SV_Stat/Common_SV_Stat.mk config=Para_config infile=OUTDIR/SV/$(sample)[0]/$(sample)[0].SV.pass.vcf genome=Para_genome sampleID=$(sample)[0] outdir=OUTDIR/SV_ANNO/Result/Stat genome=Para_genome SV_COUNT
 make -f BIN/SV_Stat/Common_SV_Stat.mk config=Para_config infile=OUTDIR/SV_ANNO/Middle/$(sample)[0].SV.Mus_musculus_multianno.txt genome=Para_genome sampleID=$(sample)[0] outdir=OUTDIR/SV_ANNO/Result/Stat genome=Para_genome SV_DISTRIBUTION
 make -f BIN/SV_Stat/Common_SV_Stat.mk config=Para_config infile=OUTDIR/SV/$(sample)[0]/$(sample)[0].SV.pass.vcf sampleID=$(sample)[0] outdir=OUTDIR/SV_ANNO/Result/Stat genome=Para_genome SV_TYPE
 make -f BIN/Common_ANNO_Format/Common_ANNO_Format.mk config=Para_config infile=OUTDIR/SV_ANNO/Middle/$(sample)[0] type=SV genome=Mus_musculus.UCSC chr_all
 [Job End]
+
+[Job Start]
+Name	CNV
+Memory	15G
+Queue	sci.q
+CPU	N
+Major	T
+Order	6
+Thread	5
+Qsub	True
+Command	make -f BIN/CNV/CNV.mk config=Para_config inbam=OUTDIR/Alignment/$(sample)[0]/$(sample)[0].sorted.bam genome=Para_ref outdir=OUTDIR/CNV/$(sample)[0] bed=Para_bed CNV
+[Job End]
+
+[Job Start]
+Name	CNV
+Memory	15G
+Queue	sci.q
+CPU	N
+Major	T
+Order	6
+Thread	5
+Qsub	True
+Depend  CNV
+Command	make -f BIN/CNV/CNV.mk config=Para_config infile=OUTDIR/CNV/$(sample)[0]/$(sample)[0].sorted.call.cns outdir=OUTDIR/CNV/CNV_ANNO/$(sample)[0] sample=$(sample)[0] CNV_anno
+[Job End]
+
 
 [Job Start]
 Name	Total_Stat

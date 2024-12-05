@@ -326,7 +326,7 @@ Excel:upload/*_CNV/*.CNV.raw.xls,,,具体的结果文件请见：;
 
 ThirdMenu:CNV注释
 P:#,;#利用ANNOVAR软件对CNV检测结果进行注释，如下表所示：
-Table:upload/*_CNV/*.CNV.hg19_multianno.xls,2,5,1000,,0,CNV注释结果示例表（前两行前五列）
+Table:upload/*_CNV/*.CNV.anno.multianno.xls,2,5,1000,,0,CNV注释结果示例表（前两行前五列）
 PRE:,,50;
 （1） Chr：染色体号；
 （2） Start：突变起始位置；
@@ -336,7 +336,7 @@ PRE:,,50;
 （6） 第六列之后为各数据库注释结果，详细说明见下方链接。
 PRE
 P:#,;#CNV检测结果注释文件下载链接：
-Excel:upload/*_CNV/*.CNV.hg19_multianno.xls,,,具体的结果文件请见：;
+Excel:upload/*_CNV/*.CNV.anno.multianno.xls,,,具体的结果文件请见：;
 P:#,;#结果文件说明下载链接：
 Excel:upload/common/sup1.xlsx,,,结果详见：;
 

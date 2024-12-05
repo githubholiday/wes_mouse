@@ -1,7 +1,7 @@
 [Job Start]
 Name	Ln_Fq
 Memory	1G
-Queue	"pag.q,sci.q,nassci.q,mid.q"
+Queue	"pag.q,sci.q,pag.q,wes.q,nassci.q,wes.q,mid.q"
 CPU	N
 Major	T
 Order	1
@@ -13,7 +13,7 @@ Command	make -f BIN/mk_filter config=Para_config filter=Para_fqdir samplelist=Pa
 [Job Start]
 Name	Local_Sention_Map
 Memory	24G
-Queue	"pag.q,sci.q,nassci.q,pag.q,mid.q"
+Queue	"pag.q,sci.q,pag.q,wes.q,nassci.q,wes.q,pag.q,mid.q"
 CPU	N
 Major	T
 Order	2
@@ -25,7 +25,7 @@ Command	make -f BIN/local_sentieon/sentieon.mk config=Para_config REF=Para_ref R
 [Job Start]
 Name	Local_Sention_uniq
 Memory	3G
-Queue	"pag.q,sci.q,nassci.q"
+Queue	"pag.q,sci.q,pag.q,wes.q,nassci.q,wes.q,mid.q"
 CPU	N
 Major	T
 Order	2
@@ -38,7 +38,7 @@ Command	make -f BIN/local_sentieon/sentieon.mk config=Para_config sort_bam=OUTDI
 [Job Start]
 Name	Local_Sention_rmdup
 Memory	26G
-Queue	"pag.q,sci.q,nassci.q"
+Queue	"pag.q,sci.q,pag.q,wes.q,nassci.q,wes.q,mid.q"
 CPU	N
 Major	T
 Order	2
@@ -51,7 +51,7 @@ Command	make -f BIN/local_sentieon/sentieon.mk config=Para_config uniq_bam=OUTDI
 [Job Start]
 Name	Sentieon_Stat
 Memory	26G
-Queue	"pag.q,sci.q,nassci.q"
+Queue	"pag.q,sci.q,pag.q,wes.q,nassci.q,wes.q,mid.q"
 CPU	N
 Major	T
 Order	2
@@ -64,7 +64,7 @@ Command	make -f BIN/local_sentieon/sentieon.mk config=Para_config outdir=OUTDIR/
 [Job Start]
 Name	MapStat
 Memory	1G
-Queue	pag.q,sci.q,nassci.q
+Queue	pag.q,sci.q,pag.q,wes.q,nassci.q,wes.q,mid.q
 CPU	N
 Major	T
 Order	2
@@ -78,7 +78,7 @@ Command	make -f BIN/Common_STAT/Common_MAP_Stat.mk config=Para_config samplelist
 [Job Start]
 Name	Local_Sention_call 
 Memory	26G
-Queue	"pag.q,sci.q,nassci.q"
+Queue	"pag.q,sci.q,pag.q,wes.q,nassci.q,wes.q,mid.q"
 CPU	N
 Major	T
 Order	2
@@ -91,7 +91,7 @@ Command	make -f BIN/local_sentieon/sentieon.mk config=Para_config thread=16 rmdu
 [Job Start]
 Name	SNP_INDEL
 Memory	20G
-Queue	sci.q,nassci.q
+Queue	sci.q,wes.q,nassci.q,wes.q,pag.q,mid.q
 CPU	4
 Major	T
 Order	3
@@ -104,7 +104,7 @@ Command	make -f BIN/local_sentieon/sentieon.mk config=Para_config sample=$(sampl
 [Job Start]
 Name	SNP_ANNO
 Memory	60G
-Queue	sci.q
+Queue	sci.q,wes.q,pag.q,mid.q,all.q
 CPU	N
 Major	T
 Order	4
@@ -117,7 +117,7 @@ make -f /annoroad/data1/bioinfo/PROJECT/RD/Cooperation/RD_Group/renxue/Pipeline/
 [Job Start]
 Name	INDEL_ANNO
 Memory	60G
-Queue	sci.q
+Queue	sci.q,wes.q,pag.q,mid.q,pag.q
 CPU	N
 Major	T
 Order	4
@@ -130,7 +130,7 @@ make -f /annoroad/data1/bioinfo/PROJECT/RD/Cooperation/RD_Group/renxue/Pipeline/
 [Job Start]
 Name	SV_DELLY2
 Memory	15G
-Queue	sci.q
+Queue	sci.q,wes.q,mid.q,all.q,pag.q
 CPU	N
 Major	T
 Order	5
@@ -143,13 +143,12 @@ make -f BIN/SV/nonPair_SV_Delly2.mk config=Para_config genome=Para_ref type=Para
 [Job Start]
 Name	SV_ANNO
 Memory	15G
-Queue	sci.q
+Queue	sci.q,wes.q
 CPU	N
 Major	T
-Order	5
+Order	6
 Thread	5
 Qsub	True
-Depend  SV_DELLY2
 Command	make -f BIN/Annovar_anno/Common_ANNO_Annovar.mk config=Para_config genome=Para_ref vcf=OUTDIR/SV/$(sample)[0]/$(sample)[0].SV.pass.vcf sample=$(sample)[0] type=SV outdir=OUTDIR/SV_ANNO/ genome=Para_genome ANNOVAR_VCF ANNOVAR_CytoBand SV_CP
 make -f BIN/SV_Stat/Common_SV_Stat.mk config=Para_config infile=OUTDIR/SV/$(sample)[0]/$(sample)[0].SV.pass.vcf genome=Para_genome sampleID=$(sample)[0] outdir=OUTDIR/SV_ANNO/Result/Stat genome=Para_genome SV_COUNT
 make -f BIN/SV_Stat/Common_SV_Stat.mk config=Para_config infile=OUTDIR/SV_ANNO/Middle/$(sample)[0].SV.Mus_musculus_multianno.txt genome=Para_genome sampleID=$(sample)[0] outdir=OUTDIR/SV_ANNO/Result/Stat genome=Para_genome SV_DISTRIBUTION
@@ -158,35 +157,9 @@ make -f BIN/Common_ANNO_Format/Common_ANNO_Format.mk config=Para_config infile=O
 [Job End]
 
 [Job Start]
-Name	CNV
-Memory	15G
-Queue	sci.q
-CPU	N
-Major	T
-Order	6
-Thread	5
-Qsub	True
-Command	make -f BIN/CNV/CNV.mk config=Para_config inbam=OUTDIR/Alignment/$(sample)[0]/$(sample)[0].sorted.bam genome=Para_ref outdir=OUTDIR/CNV/$(sample)[0] bed=Para_bed CNV
-[Job End]
-
-[Job Start]
-Name	CNV
-Memory	15G
-Queue	sci.q
-CPU	N
-Major	T
-Order	6
-Thread	5
-Qsub	True
-Depend  CNV
-Command	make -f BIN/CNV/CNV.mk config=Para_config infile=OUTDIR/CNV/$(sample)[0]/$(sample)[0].sorted.call.cns outdir=OUTDIR/CNV/CNV_ANNO/$(sample)[0] sample=$(sample)[0] CNV_anno
-[Job End]
-
-
-[Job Start]
 Name	Total_Stat
 Memory	1G
-Queue	sci.q
+Queue	sci.q,wes.q
 CPU	N
 Major	T
 Order	9
@@ -198,7 +171,7 @@ Command	make -f BIN/Common_STAT/Common_STAT.mk config=Para_config joblist=Para_j
 [Job Start]
 Name	Web_Report
 Memory	5G
-Queue	sci.q
+Queue	sci.q,wes.q
 CPU	N
 Major	T
 Order	10

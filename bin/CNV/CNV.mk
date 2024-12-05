@@ -27,4 +27,5 @@ CNV_anno:
 	mkdir -p $(outdir)
 	awk -F "\t" '{print  $$1"\t"$$2"\t"$$3"\t"$$4"\t"$$5"\t"$$6"\t"$$7"\t"$$8"\tGT\t./.\t"$$9"\t-\t-\t-"}' $(infile) |sed '1d' - > $(outdir)/$(sample).CNV.raw.vcf
 	$(PERL) $(annovar_perl) $(outdir)/$(sample).CNV.raw.vcf $(annovardb) -outfile $(outdir)/$(sample).CNV -buildver Mus_musculus $(annovar_opt)
+	$(PYTHON3) $(script)/format.py -i $(outdir)/$(sample).CNV.anno.Mus_musculus_multianno.txt -o $(outdir)/$(sample).CNV.anno.multianno.xls
 	echo CNV anno end at `date`

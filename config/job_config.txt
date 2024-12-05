@@ -188,7 +188,7 @@ Memory	1G
 Queue	sci.q,wes.q
 CPU	N
 Major	T
-Order	9
+Order	7
 Thread	1
 Qsub	True
 Command	make -f BIN/Common_STAT/Common_STAT.mk config=Para_config joblist=Para_joblist indir=OUTDIR outdir=OUTDIR/Stat project_id=Para_projectID project_name=Para_project type=wes genome=Para_genome STAT QC
@@ -200,7 +200,7 @@ Memory	5G
 Queue	sci.q,wes.q
 CPU	N
 Major	T
-Order	10
+Order	8
 Thread	1
 Qsub	True
 Command	make -f BIN/Report/Common_REPORT.mk config=Para_config pipetype=Para_pipetype datatype=Para_datatype indir=OUTDIR outdir=OUTDIR/Web_Report project_id=Para_projectID project=Para_project platform=Para_platform genome=Para_ref pipe_conf=Para_pipeconf UPLOAD WEB

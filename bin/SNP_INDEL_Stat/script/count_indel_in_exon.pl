@@ -35,7 +35,7 @@ die $usage if ( !defined $file || !defined $sampleID|| !defined $outdir );
 
 #----------------------------------------------------------
 
-my %TS_TV = (    #×ª»»¡¢áÛ»»
+my %TS_TV = (    #×ªï¿½ï¿½ï¿½ï¿½ï¿½Û»ï¿½
     "AT" => "TV",
     "TA" => "TV",
     "GC" => "TV",
@@ -50,7 +50,7 @@ my %TS_TV = (    #×ª»»¡¢áÛ»»
     "CT" => "TS",
 );
 
-my %snp_pattern = (    #Í»±äÀàÐÍ£¬Í»±äÆµÆ×
+my %snp_pattern = (    #Í»ï¿½ï¿½ï¿½ï¿½ï¿½Í£ï¿½Í»ï¿½ï¿½Æµï¿½ï¿½
     "A-T" => "T-A",
     "A-C" => "T-G",
     "A-G" => "T-C",
@@ -97,10 +97,10 @@ while (<IN>) {
         ($end) = grep {$tmp[$_] eq "End"} 0..$#tmp;
         ($ref) = grep {$tmp[$_] eq "Ref"} 0..$#tmp;
         ($alt) = grep {$tmp[$_] eq "Alt"} 0..$#tmp;
-        ($Func_refGene) = grep {$tmp[$_] eq "Func.refGene"} 0..$#tmp;
-        ($Gene_refGene) = grep {$tmp[$_] eq "Gene.refGene"} 0..$#tmp;
-        ($GeneDetail_refGene) = grep {$tmp[$_] eq "GeneDetail.refGene"} 0..$#tmp;
-        ($ExonicFunc_refGene) = grep {$tmp[$_] eq "ExonicFunc.refGene"} 0..$#tmp;
+        ($Func_refGene) = grep {$tmp[$_] eq "Func.ensGene"} 0..$#tmp;
+        ($Gene_refGene) = grep {$tmp[$_] eq "Gene.ensGene"} 0..$#tmp;
+        ($GeneDetail_refGene) = grep {$tmp[$_] eq "GeneDetail.ensGene"} 0..$#tmp;
+        ($ExonicFunc_refGene) = grep {$tmp[$_] eq "ExonicFunc.ensGene"} 0..$#tmp;
         next;
     }
     my @tmp = split /\t/, $_;

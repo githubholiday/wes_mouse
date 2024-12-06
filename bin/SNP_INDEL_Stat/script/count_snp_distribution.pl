@@ -95,10 +95,10 @@ while (<IN>) {
         ($end) = grep {$tmp[$_] eq "End"} 0..$#tmp;
         ($ref) = grep {$tmp[$_] eq "Ref"} 0..$#tmp;
         ($alt) = grep {$tmp[$_] eq "Alt"} 0..$#tmp;
-        ($Func_refGene) = grep {$tmp[$_] eq "Func.refGene"} 0..$#tmp;
-        ($Gene_refGene) = grep {$tmp[$_] eq "Gene.refGene"} 0..$#tmp;
-        ($GeneDetail_refGene) = grep {$tmp[$_] eq "GeneDetail.refGene"} 0..$#tmp;
-        ($ExonicFunc_refGene) = grep {$tmp[$_] eq "ExonicFunc.refGene"} 0..$#tmp;
+        ($Func_refGene) = grep {$tmp[$_] eq "Func.ensGene"} 0..$#tmp;
+        ($Gene_refGene) = grep {$tmp[$_] eq "Gene.ensGene"} 0..$#tmp;
+        ($GeneDetail_refGene) = grep {$tmp[$_] eq "GeneDetail.ensGene"} 0..$#tmp;
+        ($ExonicFunc_refGene) = grep {$tmp[$_] eq "ExonicFunc.ensGene"} 0..$#tmp;
         next;
     }
 	my @tmp = split /\t/, $_;

@@ -3,9 +3,6 @@
 |--*FQ
 |--|--sampleID.base.png/pdf              每个样品过滤后数据的碱基分布图
 |--|--sampleID.quality.png/pdf           每个样品过滤后数据的测序质量值分布图
-|--|--CleanBases.pdf/png                 所有样品Clean Bases统计图
-|--|--filter_rate.pdf/png                所有样品数据组成统计图
-|--|--Q30.pdf/png                        所有样品Q30 Reads所占比例统计图
 |--|--filter_stat.xls                    所有样品的统计结果
 
 
@@ -14,15 +11,6 @@
 
 *quality.png/pdf
 横坐标为Clean Reads的碱基位置，纵坐标为平均碱基质量。
-
-CleanBases.pdf/png
-横坐标为样品名，纵坐标Clean Bases数量。
-
-filter_rate.pdf/png
-横坐标为样品名，纵坐标各种数据组成所占比例。
-
-Q30.pdf/png
-横坐标为样品名，纵坐标Q30数据所占比例。
 
 filter_stat.xls
 Sample：样品名

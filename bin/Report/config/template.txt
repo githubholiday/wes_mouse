@@ -308,18 +308,13 @@ ThirdMenu:CNV检测及过滤
 P:#,;#我们利用CODEX（Jiang, Yuchao, et al., 2015）软件检测外显子数据的拷贝数变异，检测到的CNV统计如下：
 Table:upload/*_CNV/*.CNV.raw.xls,2,6,1000,,0,CNV检测统计（前两行前六列）
 PRE:,,75;
-（1） Chr：染色体；
-（2） Start：CNV的起始位置；
-（3） End：CNV的终止位置；
-（4） Type：为CNV类型，del和dup；
-（5） Copy_num：拷贝数；
-（6） Length(kb)：CNV的长度，以kb为单位；
-（7） st_exon：起始的外显子；
-（8） ed_exon：终止的外显子；
-（9） raw_cov：原始的覆盖度；
-（10） norm_cov：标准化后的覆盖度；
-（11） lratio：模型预测的值；
-（12） mBIC：模型预测的值。
+（1） chromosome：染色体；
+（2） start: CNV的起始位置；
+（3） end：CNV的终止位置；
+（4） gene: 基因名称；
+（5） cn: 拷贝数；
+（6） depth：深度。
+
 PRE
 P:#,;#CNV检测结果文件下载链接：
 Excel:upload/*_CNV/*.CNV.raw.xls,,,具体的结果文件请见：;
@@ -331,9 +326,7 @@ PRE:,,50;
 （1） Chr：染色体号；
 （2） Start：突变起始位置；
 （3） End：突变终止位置；
-（4） Ref：参考基因型；
-（5） Alt：突变型；
-（6） 第六列之后为各数据库注释结果，详细说明见下方链接。
+（4） 第六列之后为各数据库注释结果，详细说明见下方链接。
 PRE
 P:#,;#CNV检测结果注释文件下载链接：
 Excel:upload/*_CNV/*.CNV.anno.multianno.xls,,,具体的结果文件请见：;
@@ -353,7 +346,7 @@ P:#,;#经过高通量测序获得的序列片段，由ATCG组成。
 P:#S,;#名词3、覆盖度
 P:#,;#测序获得的序列占整个基因组的比例，对外显子测序而言，覆盖度指测序获得的序列占整个外显子芯片目标区域的比例，即目标捕获区中有多大比例的区域至少测到了1次。由于基因组中的高GC、重复序列等复杂结构的存在，测序最终拼接组装获得的序列往往无法覆盖所有的区域。
 P:#S,;#名词4、测序深度
-P:#,;#测序获得的碱基数和参考基因组大小的比例，对外显子测序而言，测序深度指测序获得的碱基总数占整个外显子芯片目标区域的比例。如人的参考基因组大小为3G，测序获得90G数据，则测序深度为30X。
+P:#,;#测序获得的碱基数和参考基因组大小的比例，对外显子测序而言，测序深度指测序获得的碱基总数占整个外显子芯片目标区域的比例。如参考基因组大小为3G，测序90G数据，则测序深度为30X。
 P:#S,;#名词5、单核苷酸多态性（Single Nucleotide Polymorphism，SNP）
 P:#,;#单核苷酸多态性是指基因组上单个位点发生的改变，由单个碱基A,T,C,G的改变造成的。单核苷酸多态性与人类的多种疾病紧密相关。
 P:#S,;#名词6、插入缺失（insertion-deletion，InDel）
@@ -371,18 +364,14 @@ P:#,;#unknown代表该位点在相应数据库注释结果为unknown，是数据
 P:#S,;#问题3、注释文件中AAChange.refGene列信息如何解读？
 P:#,;#发生在外显子区的突变的碱基型以及造成的氨基酸的变化，如GLYMA2269S00200:GLYMA2269S00200.1:exon1:c.C298A:p.Q100K表示突变位于基因GLYMA2269S00200，转录本GLYMA2269S00200.1的第一个外显子区，第298个碱基由C突变为A，第100个氨基酸由Q变为K。这一列信息能够明确表明突变位点对氨基酸序列造成的影响。
 P:#S,;#问题4、如何获得突变相关的基因列表？
-P:#,;#在XXX_multianno.xls突变注释文件，Gene.refGene列即为突变位点所在的基因，如果该位点位于基因间区，则注释到的基因为该位点上下游距离最近的基因。
-P:#S,;#问题5、运用哪一项或几项指标对SNP位点致病性或保守性进行预测比较准确？
-P:#,;#安诺优达外显子数据分析过程中运用了多个主流的突变位点致病性预测数据库对突变位点进行注释，比如：SIFT、Polyphen2_HVAR、Polyphen2_HDIV、MCAP、REVEL、MutationTaster、CADD等。目前比较常用的筛选数据库为SIFT和Polyphen2，SIFT：分值<=0.05为有害；Polyphen2_HVAR：分值>=0.909为有害。我们分析过程中筛选二者都预测为有害的位点作预测致病性突变位点。
-P:#S,;#问题6、外显子测序捕获效率偏低有何影响？如何进行改善？
+P:#,;#在XXX_multianno.xls突变注释文件，Gene.ensGene列即为突变位点所在的基因，如果该位点位于基因间区，则注释到的基因为该位点上下游距离最近的基因。
+P:#S,;#问题5、外显子测序捕获效率偏低有何影响？如何进行改善？
 P:#,;#捕获效率是指在测序得到的Clean数据中可以比对到目标区域的数据比例。该比例偏低会导致最终用于分析的有效数据量减少，覆盖度及深度都会受影响，主要是深度不够。改进方法有两种：一种是重新进行洗脱建库测序；第二种是通过增加测序数据量来提高有效数据量。
-P:#S,;#问题7、为什么有一些突变位点一代测序能检测到而二代测序反而检测不到 / 感兴趣的突变位点不在结果文件中？
-P:#,;#sample.SNP/INDEL.hg19_multianno.xls是过滤后的突变位点过滤结果，因此在过滤标准以外的突变位点会过滤掉。未过滤的原始突变位点的注释结果（只进行refGene注释）可以查看sample.raw.SNP/INDEL.hg19_multianno.xls文件。突变过滤标准：--filterExpression "QD < 2.0" --filterName LowQD --filterExpression "ReadPosRankSum < -8.0" --filterName LowRPRS --filterExpression "FS >60.0(100.0)" --filterName HighFS --filterExpression "QUAL <30" --filterName LowQUAL  --filterExpression "DP<4"  --filterName LowDP
 
 SubMenu:参考文献
 P:#,;#[1] Li, H. & Durbin, R. Fast and accurate short read alignment with Burrows–Wheeler transform. Bioinformatics 25, 1754-1760 (2009).
 P:#,;#[2] BAM. http://samtools.github.io/hts-specs/SAMv1.pdf
-P:#,;#[3] Li, H. et al. The sequence alignment/map format and SAMtools. Bioinformatics 25, 2078-2079 （2009).
+P:#,;#[3] Li, H. et al. The sequence alignment/map format and SAMtools. Bioinformatics 25, 2078-2079 （2009）.
 P:#,;#[4] Picard. http://broadinstitute.github.io/picard/
 P:#,;#[5] McKenna, A. et al. The Genome Analysis Toolkit: a MapReduce framework for analyzing next-generation DNA sequencing data. Genome research 20, 1297-1303 (2010).
 P:#,;#[6] Wang, K., Li, M. & Hakonarson, H. ANNOVAR: functional annotation of genetic variants from high-throughput sequencing data. Nucleic acids research 38, e164-e164 (2010).

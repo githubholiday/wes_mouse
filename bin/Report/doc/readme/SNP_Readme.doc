@@ -1,8 +1,7 @@
 说明此文件夹中所有文件中的内容所代表的含义。
 
 *SNP
-|-- sample.SNP.*_multianno.xls                  过滤后SNP的Annovar注释结果
-|-- sample.raw.SNP.*_multianno.xls              所有SNP的refGene注释结果
+|-- sample.SNP.*_multianno.xls                     SNP的Annovar注释结果
 |-- Stat                                           相关统计结果目录
 |---|-- *.TS_TV.stat.xls                           SNP 转换和颠换的统计，包括全基因组上和外显子区域
 |---|-- All.snp.genome.png/pdf/xls                 所有样品基因组不同区域的SNP分布结果
@@ -10,7 +9,7 @@
 |---|-- All.snp.pattern.png/pdf/xls                所有样品SNP的碱基突变模式分布结果
 |---|-- All.snp.num.png/pdf/xls                    SNP个数统计结果
 |---Samples
-|---|-- sample.Format.chr*.SNP.*_multianno.xls  过滤后SNP的Annovar注释结果(按染色体分割)
+|---|-- sample.SNP.*_multianno.xls  过滤后SNP的Annovar注释结果
 
 
 *SNP.*_multianno.xls    格式说明(详细说明见结题报告说明文档下载链接)
@@ -19,20 +18,14 @@ Start                 变异起始位点
 End                   变异终止位点
 Ref                   参考基因组碱基型
 Alt                   样品变异碱基型
-RefDepth              参考基因组的reads数目
-AltDepth              突变的reads数目
-AltFre                突变的reads数目/(参考基因组的reads数目+突变的reads数目)
-Hom                   纯合（纯合为1，杂合为0）
-Hem                   杂合（杂合为1，纯合为0）
-Quality               变异的比对质量值
-Func.refGene          基于refGene数据库对变异位点所在区域进行注释
-Gene.refGene          基于refGene数据库对变异位点相关转录本的注释
-GeneDetail.refGene    基于refGene数据库对UTR、splicing等区域的注释，如为间区，则为突变位点距上下游基因的距离，如为外显子区，则为发生突变的基因，以及所发生的碱基突变类型，GLYMA20G31580.1:c.-130A>T,表示突变在转录本GLYMA20G31580.1的第UTR5区域，第130个碱基A变为T
-ExonicFunc.refGene    基于refGene数据库对外显子区域的变异位点注释
-AAChange.refGene      基于refGene数据库对变异位点处的氨基酸改变注释，如GLYMA2269S00200:GLYMA2269S00200.1:exon1:c.C298A:p.Q100K表示突变位于基因GLYMA2269S00200，转录本GLYMA2269S00200.1的第一个外显子区，第298个碱基由C突变为A，第100个氨基酸由Q变为K
-other                 数据库注释结果
+Func.ensGene          基于ensGene数据库对变异位点所在区域进行注释
+Gene.ensGene          基于ensGene数据库对变异位点相关转录本的注释
+GeneDetail.ensGene    基于ensGene数据库对UTR、splicing等区域的注释，如为间区，则为突变位点距上下游基因的距离，如为外显子区，则为发生突变的基因，以及所发生的碱基突变类型，GLYMA20G31580.1:c.-130A>T,表示突变在转录本GLYMA20G31580.1的第UTR5区域，第130个碱基A变为T
+ExonicFunc.ensGene    基于ensGene数据库对外显子区域的变异位点注释
+AAChange.ensGene      基于ensGene数据库对变异位点处的氨基酸改变注释，如GLYMA2269S00200:GLYMA2269S00200.1:exon1:c.C298A:p.Q100K表示突变位于基因GLYMA2269S00200，转录本GLYMA2269S00200.1的第一个外显子区，第298个碱基由C突变为A，第100个氨基酸由Q变为K
+Otherinfo                 数据库注释结果
 
-*.Format.chr*.SNP.*_multianno.xls 格式说明
+*.SNP.*_multianno.xls 格式说明
 Chr                   变异所在染色体
 Start                 变异起始位点
 End                   变异终止位点
@@ -40,32 +33,13 @@ Ref                   参考基因组碱基型
 Alt                   样品变异碱基型
 RefDepth              参考基因组的reads数目
 AltDepth              突变的reads数目
-AltFre                突变的reads数目/(参考基因组的reads数目+突变的reads数目)
-Hom                   纯合（纯合为1，杂合为0）
-Hem                   杂合（杂合为1，纯合为0）
-Quality               变异的比对质量值
-snp138                dbsnp138数据库中变异位点对应的等位基因频率
-avsnp147              dbSNP147数据库注释结果,有提供rs编号，无.表示
-Func.refGene          基于refGene数据库对变异位点所在区域进行注释
-Gene.refGene          基于refGene数据库对变异位点相关转录本的注释
-GeneDetail.refGene    基于refGene数据库对UTR、splicing等区域的注释，如为间区，则为突变位点距上下游基因的距离，如为外显子区，则为发生突变的基因，以及所发生的碱基突变类型，GLYMA20G31580.1:c.-130A>T,表示突变在转录本GLYMA20G31580.1的第UTR5区域，第130个碱基A变为T
-ExonicFunc.refGene    基于refGene数据库对外显子区域的变异位点注释
-AAChange.refGene      基于refGene数据库对变异位点处的氨基酸改变注释，如GLYMA2269S00200:GLYMA2269S00200.1:exon1:c.C298A:p.Q100K表示突变位于基因GLYMA2269S00200，转录本GLYMA2269S00200.1的第一个外显子区，第298个碱基由C突变为A，第100个氨基酸由Q变为K
-other                 数据库注释结果
-
-sample.raw.SNP.*_multianno.xls    格式说明
-Chr                   变异所在染色体
-Start                 变异起始位点
-End                   变异终止位点
-Ref                   参考基因组碱基型
-Alt                   样品变异碱基型
-Func.refGene          基于refGene数据库对变异位点所在区域进行注释
-Gene.refGene          基于refGene数据库对变异位点相关转录本的注释
-GeneDetail.refGene    基于refGene数据库对UTR、splicing等区域的注释，如为间区，则为突变位点距上下游基因的距离，如为外显子区，则为发生突变的基因，以及所发生的碱基突变类型，GLYMA20G31580.1:c.-130A>T,表示突变在转录本GLYMA20G31580.1的第UTR5区域，第130个碱基A变为T
-ExonicFunc.refGene    基于refGene数据库对外显子区域的变异位点注释
-AAChange.refGene      基于refGene数据库对变异位点处的氨基酸改变注释，如GLYMA2269S00200:GLYMA2269S00200.1:exon1:c.C298A:p.Q100K表示突变位于基因GLYMA2269S00200，转录本GLYMA2269S00200.1的第一个外显子区，第298个碱基由C突变为A，第100个氨基酸由Q变为K
-Otherinfo             位点的突变检测信息，详见VCF格式说明
-
+GenoType                突变的reads数目/(参考基因组的reads数目+突变的reads数目)
+Func.ensGene          基于ensGene数据库对变异位点所在区域进行注释
+Gene.ensGene          基于ensGene数据库对变异位点相关转录本的注释
+GeneName.ensGene
+GeneDetail.ensGene    基于ensGene数据库对UTR、splicing等区域的注释，如为间区，则为突变位点距上下游基因的距离，如为外显子区，则为发生突变的基因，以及所发生的碱基突变类型，GLYMA20G31580.1:c.-130A>T,表示突变在转录本GLYMA20G31580.1的第UTR5区域，第130个碱基A变为T
+ExonicFunc.ensGene    基于ensGene数据库对外显子区域的变异位点注释
+AAChange.ensGene      基于ensGene数据库对变异位点处的氨基酸改变注释，如GLYMA2269S00200:GLYMA2269S00200.1:exon1:c.C298A:p.Q100K表示突变位于基因GLYMA2269S00200，转录本GLYMA2269S00200.1的第一个外显子区，第298个碱基由C突变为A，第100个氨基酸由Q变为K
 
 *.TS_TV.stat.xls 格式说明
 （1）TS_genome：              所有捕获到的区域上发生转换的SNP数；

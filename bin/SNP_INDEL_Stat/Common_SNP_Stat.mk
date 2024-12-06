@@ -1,8 +1,6 @@
-bindir=$(dir $(firstword $(MAKEFILE_LIST)))/../
+bindir=$(dir $(firstword $(MAKEFILE_LIST)))/
 name=$(notdir $(firstword $(MAKEFILE_LIST)))
 script=$(bindir)/script/
-database=$(bindir)../database
-software=$(bindir)../software
 
 ifeq ($(strip $(config)),)
 Bconfig=$(bindir)/config/config.txt

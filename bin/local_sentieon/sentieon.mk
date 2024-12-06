@@ -91,8 +91,8 @@ Filter:
 
 .PHONY:extract
 extract:
-	$(PERL) $(scriptdir)/snp_indel/vcf2gp.pl -v $(outdir)/$(sample).snp.filter.vcf -o $(outdir)/$(sample).All.SNP.variants.list.xls
-	$(PERL) $(scriptdir)/snp_indel/vcf2gp.pl -v $(outdir)/$(sample).indel.filter.vcf -o $(outdir)/$(sample).All.INDEL.variants.list.xls
+	$(PERL) $(scriptdir)/vcf2gp.pl -v $(outdir)/$(sample).snp.filter.vcf -o $(outdir)/$(sample).All.SNP.variants.list.xls
+	$(PERL) $(scriptdir)/vcf2gp.pl -v $(outdir)/$(sample).indel.filter.vcf -o $(outdir)/$(sample).All.INDEL.variants.list.xls
 
 
 .PHONY:STAT

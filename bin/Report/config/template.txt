@@ -186,7 +186,7 @@ ThirdMenu:SNP注释及统计
 P:#,;#通过ANNOVAR软件对各样品的SNP过滤结果进行注释，主要包括三方面：基于基因、基因组区域以及功能的注释。基于基因的数据库注释，主要注释该变异所在的基因名称、是否影响编码蛋白以及所影响的氨基酸位置信息，如refGene数据库的注释；基于基因组区域的数据库注释，主要注释该变异所位于的基因组功能区域，如gene、exon、UTR、转录因子结合位点等，如tfbsConsSites数据库的注释；基于功能的数据库注释，主要注释该变异是否出现在一些常见数据库中以及该变异的保守性和致病性，如1000 Genomes、dbSNP、dbNSFP等数据库的注释。
 P:#,;#本项目共注释了包括1000 Genomes、COSMIC、Clinvar、dbSNP、OMIM、miRBase、ExAC、cpgIslandExt、dbNSFP、ESP6500在内的40多个常见且重要的突变数据库。多个数据库的注释有利于对变异所影响的方面以及在人群中的突变频率等信息进行全面了解。
 P:#,;#对各样品的SNP进行数据库注释后的结果如下表所示：
-Table:upload/*_SNP/*.SNP_multianno.xls,2,5,1000,,0,SNP结果示例表（前两行前五列）
+Table:upload/*_SNP/*.SNP*multianno.xls,2,5,1000,,0,SNP结果示例表（前两行前五列）
 PRE:,,60;
 （1） Chr：染色体号；
 （2） Start：突变起始位置；
@@ -196,9 +196,9 @@ PRE:,,60;
 （6） 第六列之后为各数据库注释结果，详细说明见下方链接。
 PRE
 P:#,;#为了方便查看，注释结果按染色体切割并按分类添加颜色，结果下载链接：
-Excel:upload/*_SNP/Samples/*.SNP_multianno.xls,,,为了方便查看，注释结果按染色体切割并按分类添加颜色，结果下载链接：;
+Excel:upload/*_SNP/Samples/*.SNP*multianno.xls,,,为了方便查看，注释结果按染色体切割并按分类添加颜色，结果下载链接：;
 P:#,;#原始注释文件下载链接：
-Excel:upload/*_SNP/*.SNP_multianno.xls,,,原始注释文件下载链接：;
+Excel:upload/*_SNP/*.SNP*multianno.xls,,,原始注释文件下载链接：;
 P:#,;#结果文件说明下载链接：
 Excel:upload/common/sup1.xlsx,,,结果文件说明下载链接：;
 P:#,;#关于基因组区域注释，对各区域上的SNP个数所占百分比统计作图，可直观看出样本突变在基因组不同区域的分布情况。
@@ -236,7 +236,7 @@ Excel:upload/*_InDel/Stat/*.INDEL.length.pattern.stat.p*,,,结果下载链接：
 
 ThirdMenu:InDel注释及统计
 P:#,;#利用ANNOVAR对InDel进行数据库注释，其结果如下表所示：
-Table:upload/*_InDel/*.INDEL_multianno.xls,2,5,1000,,0,InDel结果示例表（前两行前五列）
+Table:upload/*_InDel/*.INDEL*multianno.xls,2,5,1000,,0,InDel结果示例表（前两行前五列）
 PRE:,,50;
 （1） Chr：染色体号；
 （2） Start：突变起始位置；
@@ -246,9 +246,9 @@ PRE:,,50;
 （6） 第六列之后为各数据库注释结果，详细说明见下方链接。
 PRE
 P:#,;#为了方便查看，注释结果按染色体切割并按分类添加颜色，结果下载链接：
-Excel:upload/*_InDel/Samples/*.INDEL_multianno.xls,,,为了方便查看，注释结果按染色体切割并按分类添加颜色，结果下载链接：;
+Excel:upload/*_InDel/Samples/*.INDEL*multianno.xls,,,为了方便查看，注释结果按染色体切割并按分类添加颜色，结果下载链接：;
 P:#,;#原始注释文件下载链接：
-Excel:upload/*_InDel/*.INDEL_multianno.xls,,,原始注释文件下载链接：;
+Excel:upload/*_InDel/*.INDEL*multianno.xls,,,原始注释文件下载链接：;
 P:#,;#结果文件说明下载链接：
 Excel:upload/common/sup1.xlsx,,,结果文件说明下载链接：;
 P:#,;#统计每个样品在相应基因组区域上的分布百分比，作图如下：

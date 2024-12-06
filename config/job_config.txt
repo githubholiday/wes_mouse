@@ -136,8 +136,8 @@ Major	T
 Order	5
 Thread	5
 Qsub	True
-Command	make -f BIN/SV/nonPair_SV_Delly2.mk config=Para_config REF=Para_ref type=Para_pipetype bam=OUTDIR/Alignment/$(sample)[0]/Recal/$(sample)[0].rmdup.bam outdir=OUTDIR/SV/$(sample)[0] sample=$(sample)[0] DELLY2_SV
-make -f BIN/SV/nonPair_SV_Delly2.mk config=Para_config genome=Para_ref type=Para_pipetype bam=OUTDIR/Alignment/$(sample)[0]/Recal/$(sample)[0].rmdup.bam outdir=OUTDIR/SV/$(sample)[0] sample=$(sample)[0] gene_bed=Para_bed Filter
+Command	make -f BIN/SV/nonPair_SV_Delly2.mk config=Para_config REF=Para_ref type=Para_pipetype bam=OUTDIR/Alignment/$(sample)[0]/$(sample)[0].rmdup.bam outdir=OUTDIR/SV/$(sample)[0] sample=$(sample)[0] DELLY2_SV
+make -f BIN/SV/nonPair_SV_Delly2.mk config=Para_config genome=Para_ref type=Para_pipetype bam=OUTDIR/Alignment/$(sample)[0]/$(sample)[0].rmdup.bam outdir=OUTDIR/SV/$(sample)[0] sample=$(sample)[0] gene_bed=Para_bed Filter
 [Job End]
 
 [Job Start]

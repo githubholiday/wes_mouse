@@ -111,7 +111,7 @@ Order	4
 Thread	4
 Qsub	True
 Command	make -f BIN/Annovar_anno/mk_annovar config=Para_config outdir=OUTDIR/SNP_INDEL_ANNO/$(sample)[0]/SNP/ sample=$(sample)[0].SNP ploidy=2 vcf=OUTDIR/SNP_INDEL/$(sample)[0]/$(sample)[0].snp.filter.vcf dbname=Mus_musculus type=SNP variation=snp ANNO STAT
-make -f /annoroad/data1/bioinfo/PROJECT/RD/Cooperation/RD_Group/renxue/Pipeline/Medical_pipeline_MonoDisease_v4.2.0/bin/makefile/Common_SNP_Stat.mk config=Para_config vcf=OUTDIR/SNP_INDEL/$(sample)[0]/$(sample)[0].snp.filter.vcf infile=OUTDIR/SNP_INDEL_ANNO/$(sample)[0]/SNP/$(sample)[0].anno.Mus_musculus_multianno.txt sampleID=$(sample)[0] outdir=OUTDIR/SNP_INDEL_ANNO/ SNP_COUNT SNP_DISTRIBUTION SNP_EXON SNP_TS_TV SNP_MUT CP
+make -f BIN/SNP_INDEL_Stat/Common_SNP_Stat.mk config=Para_config vcf=OUTDIR/SNP_INDEL/$(sample)[0]/$(sample)[0].snp.filter.vcf infile=OUTDIR/SNP_INDEL_ANNO/$(sample)[0]/SNP/$(sample)[0].SNP.anno.Mus_musculus_multianno.txt sampleID=$(sample)[0] outdir=OUTDIR/SNP_INDEL_ANNO/ SNP_COUNT SNP_DISTRIBUTION SNP_EXON SNP_TS_TV SNP_MUT CP
 [Job End]
 
 [Job Start]
@@ -124,7 +124,7 @@ Order	4
 Thread	4
 Qsub	True
 Command	make -f BIN/Annovar_anno/mk_annovar config=Para_config outdir=OUTDIR/SNP_INDEL_ANNO/$(sample)[0]/INDEL sample=$(sample)[0].INDEL ploidy=2 vcf=OUTDIR/SNP_INDEL/$(sample)[0]/$(sample)[0].indel.filter.vcf dbname=Mus_musculus type=INDEL variation=indel ANNO STAT
-make -f /annoroad/data1/bioinfo/PROJECT/RD/Cooperation/RD_Group/renxue/Pipeline/Medical_pipeline_MonoDisease_v4.2.0/bin/makefile/Common_INDEL_Stat.mk config=Para_config vcf=OUTDIR/SNP_INDEL/$(sample)[0]/$(sample)[0].indel.filter.vcf infile=OUTDIR/SNP_INDEL_ANNO/$(sample)[0]/INDEL/$(sample)[0].anno.Mus_musculus_multianno.txt sampleID=$(sample)[0] outdir=OUTDIR/SNP_INDEL_ANNO/ INDEL_COUNT INDEL_DISTRIBUTION INDEL_EXON INDEL_LEN CP
+make -f BIN/SNP_INDEL_Stat/Common_INDEL_Stat.mk config=Para_config vcf=OUTDIR/SNP_INDEL/$(sample)[0]/$(sample)[0].indel.filter.vcf infile=OUTDIR/SNP_INDEL_ANNO/$(sample)[0]/INDEL/$(sample)[0].INDEL.anno.Mus_musculus_multianno.txt sampleID=$(sample)[0] outdir=OUTDIR/SNP_INDEL_ANNO/ INDEL_COUNT INDEL_DISTRIBUTION INDEL_EXON INDEL_LEN CP
 [Job End]
 
 [Job Start]

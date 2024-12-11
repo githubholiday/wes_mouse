@@ -103,7 +103,7 @@ foreach my $file (@list){
 
 		my $annohead="";
 		foreach my $sam (@sample){
-			my $annofile=`ls $annodir/$sam/$type/$sam.$type.$key`;
+			my $annofile=`ls $annodir/$sam/$type/$sam.$type.anno.$key`;
 			chomp $annofile;
 			open ANNO, $annofile or die;
 			@anno=<ANNO>;

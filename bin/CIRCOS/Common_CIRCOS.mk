@@ -1,4 +1,4 @@
-bindir=$(dir $(firstword $(MAKEFILE_LIST)))/../
+bindir=$(dir $(firstword $(MAKEFILE_LIST)))/
 name=$(notdir $(firstword $(MAKEFILE_LIST)))
 script=$(bindir)/script/
 
@@ -23,6 +23,7 @@ endif
 
 ex= export PERL5LIB=/home/hougy/src/perl/lib/site_perl/5.16.2/x86_64-linux-thread-multi:/home/hougy/src/perl/lib/site_perl/5.16.2
 window=1000000
+
 .PHONY:DATA1
 DATA1:
 	mkdir -p ${outdir}/data/

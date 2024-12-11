@@ -200,7 +200,8 @@ foreach $sam (@samples){
 	$total.="\t".&qianfen($total_n);
 }
 
-@comm=`cut -f 2-6,13 $commonfile |sort -u`;
+#@comm=`cut -f 2-6,13 $commonfile |sort -u`;
+@comm=`sort -u $commonfile`;
 
 $UTR3_n='0';
 $UTR5_n='0';

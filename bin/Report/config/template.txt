@@ -264,6 +264,60 @@ P:#,;#横坐标为样本名，纵坐标为各类型的InDel个数百分比。
 P:#,;#InDel功能分布结果下载链接：
 Excel:upload/*_InDel/Stat/All.indel.exonic.p*,,,结果下载链接：;
 
+SubMenu:SNP&InDel差异分析
+P:#,;#针对样品的SNP和InDel的注释信息，进行样品间的差异分析。
+ThirdMenu:SNP差异分析
+P:#,;#统计比对样本间共有和特异的SNP个数，并以VENN图的方式展示如下：
+Image:upload/*_SNP_INDEL_DIFF/SNP/*venn.png,,1,样本间SNP分布VENN图
+P:#,;#图中圆圈特有部分表示样本特有的SNP数量，圆圈交集表示两样本共有的SNP数量。
+P:#,;#样本间SNP分布结果下载链接：
+Excel:upload/*_SNP_INDEL_DIFF/SNP/*venn.png,,,结果下载链接：;
+P:#,;#针对不同的功能区间，对样本的SNP做差异分析，如下表所示：
+Table:upload/*_SNP_INDEL_DIFF/SNP/*stat.xls,,2,1000,,0,SNP差异分析表（仅展示前两列）
+PRE:,,50;
+（1） UTR3：发生在基因的UTR3的SNP数目；
+（2） UTR5：发生在基因的UTR5的SNP数目；
+（3） UTR5;UTR3：同时发生在UTR3和UTR5区域内的SNP数目，两个不同的基因；
+（4） Downstream：发生在基因下游（1000bp）内的SNP数目；
+（5） Exonic：发生在外显子区域的SNP数目；
+（6） Exonic;splicing：同时发生在外显子区域和基因剪切区域内的SNP数目，两个不同的基因；
+（7） Intergenic：发生在基因间区的SNP数目；
+（8） Intronic：发生在内含子区域的SNP数目；
+（9） NcRNA*：没有相关编码注释的RNA，并非不翻译的RNA，参见ANNOVAR的Gene注释说明；子区间注释同上；
+（10） Splicing：发生在基因剪切区域内（剪切位点上下游2bp，即非Exonic区）的SNP数目；
+（11） Upstream：发生在基因上游（1000bp）内的SNP数目；
+（12） Upstream:downstream：发生在基因上游或者下游（1000bp）内的SNP数目，两个不同的基因；
+（13） Total：基因组中全部的SNP数目。
+PRE
+:#,;#SNP差异分析注释结果下载链接：
+Excel:upload/*_SNP_INDEL_DIFF/SNP/*_multianno.xls,,结果下载链接：;
+
+ThirdMenu:InDel差异分析
+P:#,;#统计比对样本间共有和特异的InDel个数，并以VENN图的方式展示如下：
+Image:upload/*_SNP_INDEL_DIFF/INDEL/*venn.png,,1,样本间InDel分布VENN图
+P:#,;#图中圆圈特有部分表示样本特有的InDel数量，圆圈交集表示两样本共有的InDel数量。
+P:#,;#样本间InDel分布结果下载链接：
+Excel:upload/*_SNP_INDEL_DIFF/INDEL/*venn.png,,,结果下载链接：;
+P:#,;#针对不同的功能区间，对样本的InDel做差异分析，如下表所示：
+Table:upload/*_SNP_INDEL_DIFF/INDEL/*stat.xls,,2,1000,,0,InDel差异分析表（仅展示前两列）
+PRE:,,50;
+（1） UTR3：发生在基因的UTR3的InDel数目；
+（2） UTR5：发生在基因的UTR5的InDel数目；
+（3） UTR5;UTR3：同时发生在UTR3和UTR5区域内的InDel数目，两个不同的基因；
+（4） Downstream：发生在基因下游（1000bp）内的InDel数目；
+（5） Exonic：发生在外显子区域的InDel数目；
+（6） Exonic;splicing：同时发生在外显子区域和基因剪切区域内的InDel数目，两个不同的基因；
+（7） Intergenic：发生在基因间区的InDel数目；
+（8） Intronic：发生在内含子区域的InDel数目；
+（9） NcRNA*：没有相关编码注释的RNA，并非不翻译的RNA，参见ANNOVAR的Gene注释说明；子区间注释同上；
+（10） Splicing：发生在基因剪切区域内（剪切位点上下游2bp，即非Exonic区）的InDel数目；
+（11） Upstream：发生在基因上游（1000bp）内的InDel数目；
+（12） Upstream:downstream：发生在基因上游或者下游（1000bp）内的InDel数目，两个不同的基因；
+（13） Total：基因组中全部的InDel数目。
+PRE
+P:#,;#INDEL差异分析注释结果下载链接：
+Excel:upload/*_SNP_INDEL_DIFF/INDEL/*multianno.xls,,结果下载链接：;
+
 SubMenu:SV检测及注释
 P:#,;#染色体结构变异（Structural variation，SV）是染色体变异的一种，是内因和外因共同作用的结果，外因有各种射线、化学药剂、温度的剧变等，内因有生物体内代谢过程的失调、衰老等。染色体结构变异的主要类型有缺失、重复、倒位和易位。染色体结构的改变，会使排列在染色体上的基因数目和排列顺序发生改变，从而导致性状的变异。大多数染色体结构变异对生物体是不利的，有的甚至会导生物体死亡。稀有且相同的一些结构性变异往往和疾病（包括一些癌症）的发生相关联甚至还是其致病的诱因。
 

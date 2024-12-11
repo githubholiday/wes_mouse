@@ -41,7 +41,7 @@ def main():
 	allvars = {}
 	samples = {}
 	for sample in args.sample.split(','):
-		ANNO = '{0}/{1}.{2}.{3}'.format(args.indir, sample, args.Type, args.key)
+		ANNO = '{0}/{1}/{2}/{1}.{2}.anno.{3}'.format(args.indir, sample, args.Type, args.key)
 		check_exists(ANNO, 'file')
 
 		OUT_FILE = '{0}/{1}.{2}.diff_key.txt'.format(args.outdir, sample, args.Type)

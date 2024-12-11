@@ -5,7 +5,7 @@ database=$(bindir)../database
 software=$(bindir)../software
 
 ifeq ($(strip $(config)),)
-Bconfig=$(bindir)/../../config/config_$(genome).txt
+Bconfig=$(bindir)/../../config/config.txt
 else
 Bconfig=$(config)
 endif
@@ -25,7 +25,6 @@ DIFF:
 	@echo
 	@echo `date "+%Y-%m-%d %H:%M:%S"` "-DIFF-INFO- ### Prepare Start"
 	@echo
-	#-rm -r $(outdir)
 	mkdir -p $(outdir)/{Middle,Result}
 	$(Python3) $(script)/preDIFF.py -g $(group) -s $(sample) -i $(annodir) -o $(outdir)/Middle -t $(type) -k $(genome)_multianno.txt
 	@echo `date "+%Y-%m-%d %H:%M:%S"` "-DIFF-INFO- ### Prepare End"

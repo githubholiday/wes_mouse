@@ -41,7 +41,7 @@ UPLOAD:
 	find $(outdir)/upload -name "*txt" -exec rename txt xls {} \;
 	@echo
 	$(PYTHON3) $(script)/get_readme.py -i $(script)/../doc/readme -o $(outdir)/upload -c $(indir)/../pre/config.ini -p $(pipetype) -d $(datatype)
-	cp $(script)/../doc/common/$(platform)/* $(outdir)/upload/common/
+	cp $(script)/../doc/common/* $(outdir)/upload/common/
 	
 	@echo
 	$(PERL) $(script)/folder_rank.pl -i $(outdir)/upload

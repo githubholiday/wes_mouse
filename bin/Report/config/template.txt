@@ -389,6 +389,28 @@ Excel:upload/*_CNV/*.CNV.anno.multianno.xls,,,具体的结果文件请见：;
 P:#,;#结果文件说明下载链接：
 Excel:upload/common/sup1.xlsx,,,结果详见：;
 
+SubMenu:融合基因分析
+P:#,;#融合基因是指两个基因的全部或一部分序列相互融合为一个新的基因的过程，是染色体易位、中间缺失或染色体倒置所致的结果，通常具有致瘤性，存在于多种疾病中。融合基因可促进疾病的发生和发展，并可作为疾病的分子诊断和治疗靶标。融合基因的示意图如下：
+Image:upload/common/fusiongene.png,200,1,融合基因示意图
+P:#,;#利用过滤后的高质量的Clean Reads，基于DELLY2的检测结果，对结构变异进行基因注释并结合一系列过滤标准，最终得到高可信度融合基因，部
+分结果如下所示：
+Table:upload/*_FusionGene/*.FusionReport.xls,2,3,1000,,0,融合基因检测结果（前两行前三列）
+PRE:,,73;
+（1） SV_type：融合基因对应的结构变异类型；
+（2） fusion_gene1：融合基因1；
+（3） fusion_gene2：融合基因2；
+（4） fusion_break1：断点1信息；
+（5） fusion_break2：断点2信息；
+PRE
+P:#,;#融合基因检测下载链接：
+Excel:upload/*_FusionGene/*.FusionReport.xls,,,融合基因检测下载链接：;
+P:#,;#将所有样本检测得到的可信的融合基因个数进行统计，作如下柱状图：
+Image:upload/*_FusionGene/All.Fugene.num.png,,1,融合基因个数统计
+P:#,;#横坐标为样本名，纵坐标为检测得到的融合基因个数。
+P:#,;#融合基因个数统计图下载链接：
+Excel:upload/*_FusionGene/All.Fugene.num.p*,,,融合基因个数统计图下载链接：;
+
+
 
 #附录--------------------------------------------------
 

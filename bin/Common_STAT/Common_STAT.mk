@@ -87,7 +87,7 @@ CNV:
 	-$(Rscript) $(script)/barplot.r $(outdir)/All.cnv.num.xls $(outdir) 1,2,4,6,8 'Number of CNV' All.cnv.num stack n '' ''
 	-convert $(outdir)/All.cnv.num.pdf $(outdir)/All.cnv.num.png || echo ok
 
-STAT:SNP INDEL SV
+STAT:SNP INDEL SV Fusion
 
 .PHONY:QC
 QC:

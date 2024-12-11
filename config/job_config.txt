@@ -103,7 +103,7 @@ Command	make -f BIN/local_sentieon/sentieon.mk config=Para_config sample=$(sampl
 
 [Job Start]
 Name	SNP_ANNO
-Memory	60G
+Memory	5G
 Queue	sci.q,wes.q,pag.q,mid.q,all.q
 CPU	N
 Major	T
@@ -116,7 +116,7 @@ make -f BIN/SNP_INDEL_Stat/Common_SNP_Stat.mk config=Para_config vcf=OUTDIR/SNP_
 
 [Job Start]
 Name	INDEL_ANNO
-Memory	60G
+Memory	5G
 Queue	sci.q,wes.q,pag.q,mid.q,pag.q
 CPU	N
 Major	T
@@ -125,6 +125,19 @@ Thread	4
 Qsub	True
 Command	make -f BIN/Annovar_anno/mk_annovar config=Para_config outdir=OUTDIR/SNP_INDEL_ANNO/$(sample)[0]/INDEL sample=$(sample)[0].INDEL ploidy=2 vcf=OUTDIR/SNP_INDEL/$(sample)[0]/$(sample)[0].indel.filter.vcf dbname=Mus_musculus type=INDEL variation=indel ANNO STAT
 make -f BIN/SNP_INDEL_Stat/Common_INDEL_Stat.mk config=Para_config vcf=OUTDIR/SNP_INDEL/$(sample)[0]/$(sample)[0].indel.filter.vcf infile=OUTDIR/SNP_INDEL_ANNO/$(sample)[0]/INDEL/$(sample)[0].INDEL.anno.Mus_musculus_multianno.txt sampleID=$(sample)[0] outdir=OUTDIR/SNP_INDEL_ANNO/ INDEL_COUNT INDEL_DISTRIBUTION INDEL_EXON INDEL_LEN CP
+[Job End]
+
+[Job Start]
+Name	SNP_INDEL_DIFF
+Memory	2G
+Queue	sci.q,wes.q,pag.q,mid.q,pag.q
+CPU	N
+Major	T
+Order	4
+Thread	4
+Qsub	True
+Command	make -f BIN/DIFF/Common_DIFF.mk config=Para_config group=$(group)[0] sample=$(group)[1] annodir=OUTDIR/SNP_INDEL_ANNO outdir=OUTDIR/DIFF  type=SNP genome=Mus_musculus DIFF
+make -f BIN/DIFF/Common_DIFF.mk config=Para_config group=$(group)[0] sample=$(group)[1] annodir=OUTDIR/SNP_INDEL_ANNO outdir=OUTDIR/DIFF  type=INDEL genome=Mus_musculus DIFF
 [Job End]
 
 [Job Start]
@@ -181,6 +194,20 @@ Qsub	True
 Depend  CNV
 Command	make -f BIN/CNV/CNV.mk config=Para_config infile=OUTDIR/CNV/$(sample)[0]/$(sample)[0].sorted.call.cns outdir=OUTDIR/CNV_ANNO/$(sample)[0] sample=$(sample)[0] CNV_anno
 [Job End]
+
+[Job Start]
+Name	Funsion
+Memory	2G
+Queue	sci.q,wes.q,mid.q,all.q,pag.q
+CPU	N
+Major	T
+Order	7
+Thread	5
+Qsub	True
+Depend  CNV
+Command	make -f BIN/Fusion/Common_Fusion.mk config=Para_config SVdir=OUTDIR/SV/$(sample)[0] Fusiondir=OUTDIR/FusionGene sample=$(sample)[0] Fusion
+[Job End]
+
 
 [Job Start]
 Name	Total_Stat

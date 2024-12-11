@@ -1,21 +1,12 @@
-bindir=$(dir $(firstword $(MAKEFILE_LIST)))/../
+bindir=$(dir $(firstword $(MAKEFILE_LIST)))/
 name=$(notdir $(firstword $(MAKEFILE_LIST)))
 script=$(bindir)/script/
-database=$(bindir)../database
-software=$(bindir)../software
 ifeq ($(strip $(config)),)
-Bconfig=$(bindir)/config/config_$(genome).txt
+Bconfig=$(bindir)/../../config/config.txt
 else
 Bconfig=$(config)
 endif
 include $(Bconfig)
-
-ifeq ($(genome),hg19)
-	REF=$(REF_hg19)
-endif
-ifeq ($(genome),hg38)
-	REF=$(REF_hg38)
-endif
 
 HELP:
 	@echo
@@ -33,7 +24,7 @@ Fusion:
 	@echo
 	mkdir -p $(Fusiondir)
 	cp $(SVdir)/$(sample).FusionReport.txt $(Fusiondir)
-	$(PERL) $(script)/Common_FUSION_Stat/count_fugene.pl -file $(Fusiondir)/$(sample).FusionReport.txt -sample $(sample) -outdir $(Fusiondir)
+	$(PERL) $(script)/count_fugene.pl -file $(Fusiondir)/$(sample).FusionReport.txt -sample $(sample) -outdir $(Fusiondir)
 	if [ `cat $(Fusiondir)/$(sample).FusionReport.txt|wc -l` -eq 1 ]; \
 	then \
 		echo "$(sample) get no positive FusionGene result!"; \

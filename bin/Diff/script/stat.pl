@@ -139,7 +139,7 @@ foreach $sam (@samples){
 		if ($uniq_var[0] eq $sam){
 
 			$total_n++;
-			my $anno_u=$uniq_var[12];
+			my $anno_u=$uniq_var[6];
 			if ($anno_u eq "UTR3"){
 				$UTR3_n++;
 			}elsif($anno_u eq "UTR5"){
@@ -275,7 +275,7 @@ if ($#comm==0){
 
 			$total_n++;
 
-		my $anno_comm=$comm_var[7];
+		my $anno_comm=$comm_var[6];
 
 		if ($anno_comm eq "UTR3"){
 			$UTR3_n++;

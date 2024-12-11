@@ -275,7 +275,7 @@ if ($#comm==0){
 
 			$total_n++;
 
-		my $anno_comm=$comm_var[5];
+		my $anno_comm=$comm_var[7];
 
 		if ($anno_comm eq "UTR3"){
 			$UTR3_n++;

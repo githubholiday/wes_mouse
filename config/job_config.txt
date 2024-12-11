@@ -218,7 +218,7 @@ Major	T
 Order	7
 Thread	1
 Qsub	True
-Command	make -f BIN/Common_STAT/Common_STAT.mk config=Para_config joblist=Para_joblist indir=OUTDIR outdir=OUTDIR/Stat project_id=Para_projectID project_name=Para_project type=wes genome=Para_genome SNP INDEL SV
+Command	make -f BIN/Common_STAT/Common_STAT.mk config=Para_config joblist=Para_joblist indir=OUTDIR outdir=OUTDIR/Stat project_id=Para_projectID project_name=Para_project type=wes genome=Para_genome SNP INDEL SV Fusion
 [Job End]
 
 [Job Start]

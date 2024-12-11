@@ -3,7 +3,7 @@ name=$(notdir $(firstword $(MAKEFILE_LIST)))
 script=$(bindir)/script/
 
 ifeq ($(strip $(config)),)
-Bconfig=$(bindir)/../../config/config.txt
+Bconfig=$(bindir)/../../config/config_hg19.txt
 else
 Bconfig=$(config)
 endif
@@ -18,7 +18,7 @@ HELP:
 
 joblist?=$(script)/../config/circos.list
 ifndef $(config1)
-	config1=$(script)/../../config/config.txt
+	config1=$(script)/../../config/config_hg19.txt
 endif
 
 ex= export PERL5LIB=/home/hougy/src/perl/lib/site_perl/5.16.2/x86_64-linux-thread-multi:/home/hougy/src/perl/lib/site_perl/5.16.2

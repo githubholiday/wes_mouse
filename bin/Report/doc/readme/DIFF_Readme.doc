@@ -1,6 +1,6 @@
 说明此文件夹中所有文件中的内容所代表的含义。
 
-|-- SNP-INDEL_DIFF
+|-- SNP_INDEL_DIFF
 |--|-- SNP/INDEL
 |--|--|-- *.stat.xls：                                   两组样品突变位点分布统计信息
 |--|--|-- *.venn.png：                                   两组样品VENN图

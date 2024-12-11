@@ -5,7 +5,7 @@ database=$(bindir)../database
 software=$(bindir)../software
 
 ifeq ($(strip $(config)),)
-Bconfig=$(bindir)/config/config_$(genome).txt
+Bconfig=$(bindir)/../../config/config_$(genome).txt
 else
 Bconfig=$(config)
 endif

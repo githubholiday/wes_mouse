@@ -30,7 +30,7 @@ DIFF:
 	@echo `date "+%Y-%m-%d %H:%M:%S"` "-DIFF-INFO- ### Prepare End"
 	@echo `date "+%Y-%m-%d %H:%M:%S"` "-DIFF-INFO- ### Extract ANNO Start"
 	mkdir -p $(outdir)/{Middle,Result}
-	$(PERL) $(script)/extractinfo.pl -indir $(outdir)/Middle/ -group $(group) -type $(type) -annodir $(annodir) -key $(key) -outdir $(outdir)/Middle
+	$(PERL) $(script)/extractinfo.pl -indir $(outdir)/Middle/ -group $(group) -type $(type) -annodir $(annodir) -key $(genome)_multianno.txt -outdir $(outdir)/Middle
 	@echo `date "+%Y-%m-%d %H:%M:%S"` "-DIFF-INFO- ### Extract ANNO End"
 	@echo `date "+%Y-%m-%d %H:%M:%S"` "-DIFF-INFO- ### STAT Start"
 	mkdir -p $(outdir)/{Middle,Result}
